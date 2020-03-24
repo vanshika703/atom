@@ -23,52 +23,51 @@ app.set("view engine","ejs")
 const mongoClient = mongodb.MongoClient
 const url = process.env.DB_URL
 
-app.get("/", (req,res) => {
-    res.render("login",{msg:''})
+app.get("/admin/login", (req,res) => {
+    res.render("adminlogin",{msg:''})
 })
 
-app.get('/register', (req,res) => {
-    res.render('register',{msg:''})
+app.get("/admin/register", (req,res) => {
+    res.render("adminregister",{msg:''})
 })
 
-app.post('/register',(req,res) => {
-    const {error} = registerValidation(req.body)
-
-    if(error) return res.status(400).render('register',{msg:error.details[0].message})
-
+app.post('/adminRegister', (req,res) => {
+    
     mongoClient.connect(url, {useUnifiedTopology:true}, (err,db) => {
         if(err) throw err
 
+        const salt = bcrypt.genSaltSync(10)
+        const hashed = bcrypt.hashSync(req.body.password,salt)
+
+        let newData = {
+            name:req.body.name,
+            email:req.body.email,
+            password: hashed
+        }
+
         let dbo = db.db('atom')
 
-        dbo.collection('non-member').find({email:req.body.email}).toArray((dbErr,result) => {
+        dbo.collection('admin').insertOne(newData, (dbErr,result) => {
             if(dbErr) throw dbErr
 
-            if(result.length) return res.status(400).render('register',{msg:"Email already exists"})
-
-            const salt = bcrypt.genSaltSync(10)
-            const hashed = bcrypt.hashSync(req.body.password,salt)
-
-            const newData = {
-                name:req.body.name,
-                regno:req.body.regno,
-                year:req.body.year,
-                email:req.body.email,
-                password:hashed
-            }
-
-            dbo.collection('non-member').insertOne(newData, (dbErr,result) => {
-                if(dbErr) throw dbErr
-
-                console.log("Registered")
-            })
-            res.render('login',{msg:"You have been registered. Login to continue."})
+            console.log("inserted"+result.insertedCount)
+            res.status(200).send("Registered!")
         })
     })
 })
 
-app.post('/login', (req,res) => {
-    res.send(req.body)
+app.post('/adminLogin', (req,res) => {
+
+    mongoClient.connect(url, {useUnifiedTopology:true} , (err,db) => {
+        let dbo = db.db('atom')
+
+        dbo.collection('admin').find({email:req.body.email}).toArray((dbErr,result) => {
+            if(!result.length || !bcrypt.compareSync(req.body.password,result[0].password))
+                return res.status(400).send("Email/Password is wrong")
+
+            res.status(200).send("logged in")
+        })
+    })
 })
 
 var PORT = process.env.PORT || 5000
