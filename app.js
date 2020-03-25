@@ -131,7 +131,7 @@ app.get('/verify', (req,res) => {
                         if(dbErr) throw dbErr
                         console.log(result)
                         console.log("User verified in database")
-                        res.redirect('/login')
+                        'res.redirect('/login')
                     })
                 
             })
