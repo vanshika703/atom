@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs')
 
 const mongoClient = require('mongodb').MongoClient
 
+const nodemailer = require('nodemailer')
 
 
 const schema = Joi.object({
@@ -26,7 +27,7 @@ app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 
 app.get('/', (req,res)=>{
-    res.sendFile(__dirname+"/index.html")
+    res.sendFile(__dirname+"/register.html")
 })
 
 app.post('/register', (req,res)=>{
@@ -58,10 +59,39 @@ app.post('/register', (req,res)=>{
                 year : req.body.year,
                 domain : req.body.domain,
                 password : hashedPassword
+                
                 }
                 dbo.collection('user').insertOne(userInfo, (dbErr,result)=>{
                     if(dbErr) throw dbErr
-                    res.redirect('/')
+
+                    var transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        auth: {
+                          user: 'vanshi.loveart@gmail.com',
+                          pass: 'vanshika419'
+                        },
+                        tls:{
+                          rejectUnauthorized:false
+                        }
+                    });
+                      
+                    var mailOptions = {
+                        from: 'vanshi.loveart@gmail.com',
+                        to: 'vanshi.loveart@gmail.com,adamlahiri@gmail.com',
+                        subject: 'Sending Email using Node.js',
+                        text: 'That was easy!',
+                        html: "<p>opt is....</p>"
+                    };
+                      
+                    transporter.sendMail(mailOptions, function(error, info){
+                        if (error) {
+                          console.log(error);
+                        } else {
+                          console.log('Email sent: ' + info.response);
+                        }
+                    });
+
+                    res.send("Check email for otp")
                 })
             }
         })
