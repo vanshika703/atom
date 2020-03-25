@@ -30,6 +30,8 @@ app.get('/', (req,res)=>{
     res.sendFile(__dirname+"/register.html")
 })
 
+let rand,host;
+
 app.post('/register', (req,res)=>{
 
     let { error } = schema.validate(req.body)
@@ -58,13 +60,17 @@ app.post('/register', (req,res)=>{
                 dept : req.body.dept,
                 year : req.body.year,
                 domain : req.body.domain,
-                password : hashedPassword
-                
+                password : hashedPassword,
+                verified : 0
                 }
                 dbo.collection('user').insertOne(userInfo, (dbErr,result)=>{
                     if(dbErr) throw dbErr
 
-                    var transporter = nodemailer.createTransport({
+                    rand = Math.floor( ( Math.random() * 100) + 54 )
+                    host = req.get('host')
+                    link = "http://"+req.get('host')+"/verify?id="+rand;
+
+                    let transporter = nodemailer.createTransport({
                         service: 'gmail',
                         auth: {
                           user: 'vanshi.loveart@gmail.com',
@@ -75,12 +81,12 @@ app.post('/register', (req,res)=>{
                         }
                     });
                       
-                    var mailOptions = {
+                    let mailOptions = {
                         from: 'vanshi.loveart@gmail.com',
-                        to: 'vanshi.loveart@gmail.com,adamlahiri@gmail.com',
+                        to: req.body.email,
                         subject: 'Sending Email using Node.js',
                         text: 'That was easy!',
-                        html: "<p>opt is....</p>"
+                        html: "<p>link is...<a href="+link+">Click here to verify</a></p>"
                     };
                       
                     transporter.sendMail(mailOptions, function(error, info){
@@ -98,6 +104,25 @@ app.post('/register', (req,res)=>{
         
     })
     
+})
+
+app.get('/verify', (req,res) => {
+
+    console.log(req.protocol+":/"+req.get('host'))
+    if((req.protocol+"://"+req.get('host'))==("http://"+host))
+    {
+        console.log("Domain matched")
+        if(req.query.id==rand)
+        {
+            res.send("Email verified")
+        }
+         else {
+        console.log("Email not verified")
+        }
+    } else {
+        res.send("request from unknown source")
+    }
+
 })
 
 app.listen(3000, (err)=>{
