@@ -123,14 +123,13 @@ app.get('/verify', (req,res) => {
             let dbo = db.db('register')
             dbo.collection('user').findOne({rand : req.query.id}, (dbErr, user)=>{
                 if(dbErr) throw dbErr
-                console.log("userrrr found")
                 
                     console.log("user found")
 
-                    dbo.collection('user').updateOne({rand : req.query.id}, { $set: {verified : 1} }, (dbErr, res)=>{
+                    dbo.collection('user').updateOne({rand : req.query.id}, { $set: {verified : 1} }, async(dbErr, result)=>{
 
                         if(dbErr) throw dbErr
-
+                        console.log(result)
                         console.log("User verified in database")
                         res.redirect('/login')
                     })
@@ -149,17 +148,19 @@ app.get('/login', (req,res)=>{
 })
 
 app.post('/login', (req,res) =>{
-
+    console.log("entered login")
     mongoClient.connect(process.env.DB_CONNECT, {useUnifiedTopology : true}, (err,db) => {
         if(err) throw err
-
+        console.log("connected to db")
         let dbo = db.db('register')
         dbo.collection('user').findOne({email : req.body.email}, (dbErr, user)=>{
             if(dbErr) throw dbErr
-            if(user)
-            {
-                if(user.verified)
+            console.log("user found")
+            let ver = user.verified
+            console.log(ver)
+                if(ver == 1)
                 {
+                    console.log("user is verified")
                     if(bcrypt.compareSync(req.body.password,user.password))
                     {
                         res.send("successful log in")
@@ -173,8 +174,6 @@ app.post('/login', (req,res) =>{
                 {
                     console.log("User is not verified..please check email for verification link")
                 }
-            }
-            res.send("No such user found")
         })
     })
 })
