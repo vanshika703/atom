@@ -30,7 +30,7 @@ app.get('/', (req,res)=>{
     res.sendFile(__dirname+"/register.html")
 })
 
-let rand,host;
+let host;
 
 app.post('/register', (req,res)=>{
 
@@ -52,21 +52,23 @@ app.post('/register', (req,res)=>{
                 const salt = await bcrypt.genSalt(10)
                 const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
+                let rand = Math.floor( ( Math.random() * 100) + 54 )
+
                 //new user info
                 let userInfo = {
-                name : req.body.name,
-                email : req.body.email,
-                regno : req.body.regno,
-                dept : req.body.dept,
-                year : req.body.year,
-                domain : req.body.domain,
-                password : hashedPassword,
-                verified : 0
+                    name : req.body.name,
+                    email : req.body.email,
+                    regno : req.body.regno,
+                    dept : req.body.dept,
+                    year : req.body.year,
+                    domain : req.body.domain,
+                    password : hashedPassword,
+                    verified : 0,
+                    rand : rand
                 }
                 dbo.collection('user').insertOne(userInfo, (dbErr,result)=>{
                     if(dbErr) throw dbErr
 
-                    rand = Math.floor( ( Math.random() * 100) + 54 )
                     host = req.get('host')
                     link = "http://"+req.get('host')+"/verify?id="+rand;
 
@@ -86,7 +88,7 @@ app.post('/register', (req,res)=>{
                         to: req.body.email,
                         subject: 'Sending Email using Node.js',
                         text: 'That was easy!',
-                        html: "<p>link is...<a href="+link+">Click here to verify</a></p>"
+                        html: "<p>link is...<a href="+link+">Click here to verify....</a></p>"
                     };
                       
                     transporter.sendMail(mailOptions, function(error, info){
@@ -108,22 +110,70 @@ app.post('/register', (req,res)=>{
 
 app.get('/verify', (req,res) => {
 
-    console.log(req.protocol+":/"+req.get('host'))
+    console.log("link :"+req.protocol+":/"+req.get('host'))
     if((req.protocol+"://"+req.get('host'))==("http://"+host))
     {
         console.log("Domain matched")
-        if(req.query.id==rand)
-        {
-            res.send("Email verified")
-        }
-         else {
-        console.log("Email not verified")
-        }
-    } else {
+
+        mongoClient.connect(process.env.DB_CONNECT,{useUnifiedTopology : true},(err,db)=>{
+            if(err) throw err
+
+            let dbo = db.db('register')
+            dbo.collection('user').findOne({rand : req.query.id}, (dbErr, user)=>{
+                if(dbErr) throw dbErr
+
+                if(user)
+                {
+                    dbo.collection('user').updateOne({rand : req.query.id}, {verified : 1} , (dbErr, res)=>{
+                        if(dbErr) throw dbErr
+                        console.log("User verified in database")
+                    })
+                }
+            })
+        })
+        res.redirect('/login')
+    } 
+    else {
         res.send("request from unknown source")
     }
-
 })
+
+app.get('/login', (req,res)=>{
+    res.sendFile(__dirname+"/login.html")
+})
+
+app.post('/login', (req,res)=>{
+
+    mongoClient.connect(process.env.DB_CONNECT, {useUnifiedTopology : true}, (err,db) => {
+        if(err) throw err
+
+        let dbo = db.db('register')
+        dbo.collection('user').findOne({email : req.body.email}, (dbErr, user)=>{
+            if(dbErr) throw dbErr
+            if(user)
+            {
+                if(user.verified)
+                {
+                    if(bcrypt.compareSync(req.body.password,user.password))
+                    {
+                        res.send("successful log in")
+                    }
+                    else
+                    {
+                        res.send("Password does not match")
+                    }
+                }
+                else
+                {
+                    console.log("User is not verified..please check email for verification link")
+                }
+            }
+            res.send("No such user found")
+        })
+    })
+})
+
+
 
 app.listen(3000, (err)=>{
     if(err) throw err
