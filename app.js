@@ -118,20 +118,26 @@ app.get('/verify', (req,res) => {
         mongoClient.connect(process.env.DB_CONNECT,{useUnifiedTopology : true},(err,db)=>{
             if(err) throw err
 
+            console.log("db connected")
+
             let dbo = db.db('register')
             dbo.collection('user').findOne({rand : req.query.id}, (dbErr, user)=>{
                 if(dbErr) throw dbErr
+                console.log("userrrr found")
+                
+                    console.log("user found")
 
-                if(user)
-                {
-                    dbo.collection('user').updateOne({rand : req.query.id}, {verified : 1} , (dbErr, res)=>{
+                    dbo.collection('user').updateOne({rand : req.query.id}, { $set: {verified : 1} }, (dbErr, res)=>{
+
                         if(dbErr) throw dbErr
+
                         console.log("User verified in database")
+                        res.redirect('/login')
                     })
-                }
+                
             })
         })
-        res.redirect('/login')
+        
     } 
     else {
         res.send("request from unknown source")
@@ -142,7 +148,7 @@ app.get('/login', (req,res)=>{
     res.sendFile(__dirname+"/login.html")
 })
 
-app.post('/login', (req,res)=>{
+app.post('/login', (req,res) =>{
 
     mongoClient.connect(process.env.DB_CONNECT, {useUnifiedTopology : true}, (err,db) => {
         if(err) throw err
