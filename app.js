@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs')
 const ejs = require('ejs')
 const dotenv = require('dotenv')
 dotenv.config()
-const {registerValidation,loginValidation} = require('./validation')
+const {adminloginValidation,passwordValidation} = require('./validation')
 
 
 app.use(express.urlencoded({extended:false}))
@@ -58,6 +58,9 @@ app.post('/adminRegister', (req,res) => {
 
 app.post('/adminLogin', (req,res) => {
 
+    let {error} = adminloginValidation(req.body)
+    if(error) return res.status(400).send(error.details[0].message)
+
     mongoClient.connect(url, {useUnifiedTopology:true} , (err,db) => {
         let dbo = db.db('atom')
 
@@ -92,17 +95,20 @@ app.get('/admin/changePassword', (req,res) => {
 })
 
 app.post('/admin/changePassword',(req,res) => {
-    
+
+    let {error} = passwordValidation(req.body)
+    if(error) return res.status(400).send(error.details[0].message) 
+             
     mongoClient.connect(url, {useUnifiedTopology:true},(err,db) => {
         let dbo = db.db('atom')
 
         dbo.collection('admin').findOne({_id:new ObjectId(req.session.user.id)},(dbErr,user) => {
             if(dbErr) throw dbErr
 
-            if(!bcrypt.compareSync(req.body.cpassword,user.password)) return res.status(400).send('Current Password is incorrect')
+            if(!bcrypt.compareSync(req.body.currentPassword,user.password)) return res.status(400).send('Current Password is incorrect')
 
             const salt = bcrypt.genSaltSync(10)
-            const hashed = bcrypt.hashSync(req.body.npassword,salt)
+            const hashed = bcrypt.hashSync(req.body.newPassword,salt)
             dbo.collection('admin').updateOne({_id:new ObjectId(req.session.user.id)},{$set:{password:hashed}}, (dbErr,result) => {
                 if(dbErr) throw dbErr 
 
