@@ -9,9 +9,9 @@ dotenv.config()
 const bcrypt = require('bcryptjs')
 
 const mongoClient = require('mongodb').MongoClient
+const objectId = require('mongodb').ObjectId
 
 const nodemailer = require('nodemailer')
-
 
 const schema = Joi.object({
     name : Joi.string().min(3).required(),
@@ -39,6 +39,7 @@ app.post('/register', (req,res)=>{
 
     mongoClient.connect(process.env.DB_CONNECT, { useUnifiedTopology: true }, (err,db)=>{
         if(err) throw err
+
         let dbo = db.db("register")
 
         dbo.collection('user').findOne({email : req.body.email}, async(dbErr, user)=>{
@@ -52,8 +53,6 @@ app.post('/register', (req,res)=>{
                 const salt = await bcrypt.genSalt(10)
                 const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
-                let rand = Math.floor( ( Math.random() * 100) + 54 )
-
                 //new user info
                 let userInfo = {
                     name : req.body.name,
@@ -63,13 +62,13 @@ app.post('/register', (req,res)=>{
                     year : req.body.year,
                     domain : req.body.domain,
                     password : hashedPassword,
-                    verified : 0,
-                    rand : rand
+                    verified : 0
                 }
                 dbo.collection('user').insertOne(userInfo, (dbErr,result)=>{
                     if(dbErr) throw dbErr
 
                     host = req.get('host')
+                    rand = result.insertedId
                     link = "http://"+req.get('host')+"/verify?id="+rand;
 
                     let transporter = nodemailer.createTransport({
@@ -121,17 +120,17 @@ app.get('/verify', (req,res) => {
             console.log("db connected")
 
             let dbo = db.db('register')
-            dbo.collection('user').findOne({rand : req.query.id}, (dbErr, user)=>{
+            dbo.collection('user').findOne({_id : req.query.id}, (dbErr, user)=>{
                 if(dbErr) throw dbErr
                 
                     console.log("user found")
 
-                    dbo.collection('user').updateOne({rand : req.query.id}, { $set: {verified : 1} }, async(dbErr, result)=>{
-
+                    dbo.collection('user').updateOne({"_id" : objectId(req.query.id) }, { $set: {verified : 1} }, async(dbErr, result)=>{
+ 
                         if(dbErr) throw dbErr
                         console.log(result)
                         console.log("User verified in database")
-                        'res.redirect('/login')
+                        res.redirect('/login')
                     })
                 
             })
@@ -148,7 +147,7 @@ app.get('/login', (req,res)=>{
 })
 
 app.post('/login', (req,res) =>{
-    
+
     console.log("entered login")
     mongoClient.connect(process.env.DB_CONNECT, {useUnifiedTopology : true}, (err,db) => {
         if(err) throw err
@@ -178,8 +177,6 @@ app.post('/login', (req,res) =>{
         })
     })
 })
-
-
 
 app.listen(3000, (err)=>{
     if(err) throw err
