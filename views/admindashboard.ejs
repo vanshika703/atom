@@ -3,11 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Dashboard</title>
 </head>
 <body>
     <h1>Welcome <%= user.name %></h1>
     <a href="/admin/logout"><button>Logout</button></a>
     <a href="/admin/changePassword"><button>Change Password</button></a>
+    <hr>
+    
+    <div style="width:50vw">
+        <h2 style="text-align: center;">Add Task</h2>
+        <form id="addTask">
+            
+            <button id="add">Add Another</button>
+        </form>
+    </div>
+    
+
+    <script>
+        
+        document.querySelector('#add').addEventListener('click',addField)
+        var i=0
+
+        function addField(e) {
+            e.preventDefault()
+            
+            var form = document.getElementById('form')
+            var input = document.createElement('input')
+            input.setAttribute('type','text')
+            input.setAttribute('placeholder','Member '+i)
+            form.appendChild(input)
+            i++
+        }
+    </script>
 </body>
 </html>

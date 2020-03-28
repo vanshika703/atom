@@ -1,0 +1,12 @@
+#addTask{
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-around; 
+    align-items: center;
+    height: 60%;
+}
+
+#addTask input{
+    margin-top: 1rem;
+    height: 1.5rem;
+}
