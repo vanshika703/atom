@@ -28,7 +28,7 @@
                 email: document.getElementById('email').value,
                 password: document.getElementById('password').value
             })
-            xhr.open('POST','/adminRegister',true)
+            xhr.open('POST','/admin/register',true)
             xhr.setRequestHeader('content-type','application/json')
 
             xhr.onload = function() {
