@@ -12,11 +12,20 @@
     <a href="/admin/changePassword"><button>Change Password</button></a>
     <hr>
     
-    <div style="width:50vw">
+    <div style="width:50vw; float: left;">
         <h2 style="text-align: center;">Add Task</h2>
         <form id="addTask">
             
             <button id="add">Add Another</button>
+        </form>
+    </div>
+
+    <div style="float:right;width: 50vw;">
+        <h2 style="text-align: center;">Recruitment Info</h2>
+        <form id="addInfo">
+            <input type="text" placeholder="Event title">
+            <input type="date" id="date" placeholder="Event Date">
+            <input type="submit">
         </form>
     </div>
     
@@ -29,12 +38,19 @@
         function addField(e) {
             e.preventDefault()
             
-            var form = document.getElementById('form')
+            var form = document.getElementById('addTask')
             var input = document.createElement('input')
             input.setAttribute('type','text')
             input.setAttribute('placeholder','Member '+i)
             form.appendChild(input)
             i++
+        }
+
+        document.querySelector('#addInfo').addEventListener('submit',addInfo)
+
+        function addInfo(e) {
+            e.preventDefault()
+            console.log(document.querySelector('#date').value)
         }
     </script>
 </body>
