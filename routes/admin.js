@@ -30,7 +30,7 @@ Router.post('/register', (req,res) => {
 
         let dbo = db.db('atom')
 
-        dbo.collection('admin').insertOne(newData, (dbErr,result) => {
+        dbo.collection('admins').insertOne(newData, (dbErr,result) => {
             if(dbErr) throw dbErr
 
             console.log("inserted"+result.insertedCount)
@@ -39,15 +39,16 @@ Router.post('/register', (req,res) => {
     })
 })
 
+
 Router.post('/login', (req,res) => {
 
     let {error} = adminloginValidation(req.body)
     if(error) return res.status(400).send(error.details[0].message)
-
+    
     mongoClient.connect(url, {useUnifiedTopology:true} , (err,db) => {
         let dbo = db.db('atom')
 
-        dbo.collection('admin').find({email:req.body.email}).toArray((dbErr,result) => {
+        dbo.collection('admins').find({email:req.body.email}).toArray((dbErr,result) => {
             if(!result.length || !bcrypt.compareSync(req.body.password,result[0].password)) return res.status(400).send("Email/Password is wrong")
 
             req.session.user = {
@@ -82,25 +83,30 @@ Router.post('/changePassword',(req,res) => {
 
     let {error} = passwordValidation(req.body)
     if(error) return res.status(400).send(error.details[0].message) 
-             
+    
     mongoClient.connect(url, {useUnifiedTopology:true},(err,db) => {
         let dbo = db.db('atom')
-
-        dbo.collection('admin').findOne({_id:new ObjectId(req.session.user.id)},(dbErr,user) => {
+        
+        dbo.collection('admins').findOne({_id:new ObjectId(req.session.user.id)},(dbErr,user) => {
             if(dbErr) throw dbErr
 
             if(!bcrypt.compareSync(req.body.currentPassword,user.password)) return res.status(400).send('Current Password is incorrect')
 
             const salt = bcrypt.genSaltSync(10)
             const hashed = bcrypt.hashSync(req.body.newPassword,salt)
-            dbo.collection('admin').updateOne({_id:new ObjectId(req.session.user.id)},{$set:{password:hashed}}, (dbErr,result) => {
+            dbo.collection('admins').updateOne({_id:new ObjectId(req.session.user.id)},{$set:{password:hashed}}, (dbErr,result) => {
                 if(dbErr) throw dbErr 
-
+                
                 console.log(result)
                 res.send('Password Updated')
             })
         })
     })
+})
+
+Router.post('/addInfo',(req,res) => {
+    
+    setTimeout(() => res.send(req.body),5000)
 })
 
 Router.get('/logout', (req,res) => {

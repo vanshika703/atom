@@ -11,46 +11,51 @@
     <a href="/admin/logout"><button>Logout</button></a>
     <a href="/admin/changePassword"><button>Change Password</button></a>
     <hr>
-    
-    <div style="width:50vw; float: left;">
-        <h2 style="text-align: center;">Add Task</h2>
-        <form id="addTask">
-            
-            <button id="add">Add Another</button>
-        </form>
-    </div>
 
-    <div style="float:right;width: 50vw;">
+    <div style="width: 50vw;">
         <h2 style="text-align: center;">Recruitment Info</h2>
+
         <form id="addInfo">
-            <input type="text" placeholder="Event title">
-            <input type="date" id="date" placeholder="Event Date">
-            <input type="submit" value="Add">
+            <input type="text" placeholder="Event title" id="title" required>
+            <label for="date">Date</label>
+            <input type="date" id="date" placeholder="Event Date" required>
+            <label for="startTime" style="display:inline-block;">Start time</label>
+            <input type="time" id="startTime" required>
+            <label for="endTime">End time</label>
+            <input type="time" id="endTime" required>
+            <textarea name="" id="description" cols="30" rows="10" placeholder="Description" required></textarea>
+            <input type="text" placeholder="domain" id="domain" required>
+            <input type="submit" value="Submit">
         </form>
+        <p id="msg"></p>
     </div>
     
 
     <script>
-        
-        document.querySelector('#add').addEventListener('click',addField)
-        var i=0
-
-        function addField(e) {
-            e.preventDefault()
-            
-            var form = document.getElementById('addTask')
-            var input = document.createElement('input')
-            input.setAttribute('type','text')
-            input.setAttribute('placeholder','Member '+i)
-            form.appendChild(input)
-            i++
-        }
 
         document.querySelector('#addInfo').addEventListener('submit',addInfo)
 
         function addInfo(e) {
             e.preventDefault()
-            console.log(document.querySelector('#date').value)
+            var xhr = new XMLHttpRequest
+
+            let data = JSON.stringify({
+                title:document.querySelector('#title').value,
+                date:document.querySelector('#date').value,
+                startTime:document.querySelector('#startTime').value,
+                endTime:document.querySelector('#endTime').value,
+                description:document.querySelector('#description').value,
+                domain:document.querySelector('#domain').value,
+            })
+            
+            xhr.open('POST','/admin/addInfo',true)
+            xhr.setRequestHeader('content-type','application/json')
+            
+            xhr.onload = function() {
+                document.querySelector('#msg').innerHTML = this.responseText
+                
+            }
+            xhr.send(data)
         }
     </script>
 </body>

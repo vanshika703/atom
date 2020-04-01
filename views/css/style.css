@@ -1,4 +1,4 @@
-#addTask,#addInfo{
+#addInfo{
     display: flex; 
     flex-direction: column; 
     justify-content: space-around; 
@@ -6,7 +6,15 @@
     height: 60%;
 }
 
-#addTask,#addInfo input{
+#addInfo input{
     margin-top: 1rem;
     height: 1.5rem;
+}
+
+textarea{
+    width: 200px;
+    max-width: 200px;
+    height: 60px;
+    max-height:100px;
+    margin-top: 1rem;
 }
