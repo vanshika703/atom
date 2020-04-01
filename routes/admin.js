@@ -123,7 +123,22 @@ Router.post('/addInfo',(req,res) => {
     })
 })
 
-Router.get('/logout', (req,res) => {
+Router.get('/viewInfo', (req,res) => {
+    
+    mongoClient.connect(url,{useUnifiedTopology:true},(err,db) => {
+        if(err) throw err
+
+        let dbo=db.db('atom')
+
+        dbo.collection('events').find({}).toArray((dbErr,data) => {
+            if(dbErr) throw dbErr
+
+            res.render('adminviewinfo',{data:data})
+        })
+    })
+})
+
+Router.all('/logout', (req,res) => {
     req.session.destroy()
     res.render('adminlogin',{msg : "you have been logged out"})
 })

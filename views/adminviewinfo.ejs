@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Info</title>
+</head>
+<body>
+    <h2>Recruitment Events</h2>
+    <% for(var i in data){ %>
+       <ul>
+           <li>Title: <%= data[i].title %></li>
+           <li>Domain: <%= data[i].domain %></li>
+           <li>Date: <%= data[i].date %></li>
+           <li>Time: <%= data[i].startTime %> to <%= data[i].endTime %></li>
+           <li>Venue: <%= data[i].venue %></li>
+           <li>Description: <%= data[i].description %></li>
+           <li>Added by: <%= data[i].addedBy %></li>
+       </ul>
+    <% } %>
+</body>
+</html>

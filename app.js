@@ -8,7 +8,6 @@ const ejs = require('ejs')
 const dotenv = require('dotenv')
 dotenv.config()
 
-
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 app.use(session({
@@ -16,6 +15,7 @@ app.use(session({
     resave:true,
     saveUninitialized:false
 }))
+
 app.use(express.static(__dirname + '/views'))
 app.set("view engine","ejs")
 
