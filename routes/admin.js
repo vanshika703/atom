@@ -106,7 +106,21 @@ Router.post('/changePassword',(req,res) => {
 
 Router.post('/addInfo',(req,res) => {
     
-    setTimeout(() => res.send(req.body),5000)
+    req.body.addedBy = req.session.user.name
+
+    mongoClient.connect(url,{useUnifiedTopology:true},(err,db) => {
+        if(err) throw err
+
+        let dbo = db.db('atom')
+
+        dbo.collection('events').insertOne(req.body,(dbErr,result) => {
+            if(dbErr) throw dbErr
+
+            console.log(result.insertedCount)
+            res.send("Info added")
+        })
+
+    })
 })
 
 Router.get('/logout', (req,res) => {

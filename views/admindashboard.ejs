@@ -13,12 +13,14 @@
     <hr>
 
     <div style="width: 50vw;">
+        <p id="msg"></p>
         <h2 style="text-align: center;">Recruitment Info</h2>
 
         <form id="addInfo">
             <input type="text" placeholder="Event title" id="title" required>
             <label for="date">Date</label>
             <input type="date" id="date" placeholder="Event Date" required>
+            <input type="text" id="venue" placeholder="Venue" required>
             <label for="startTime" style="display:inline-block;">Start time</label>
             <input type="time" id="startTime" required>
             <label for="endTime">End time</label>
@@ -27,7 +29,6 @@
             <input type="text" placeholder="domain" id="domain" required>
             <input type="submit" value="Submit">
         </form>
-        <p id="msg"></p>
     </div>
     
 
@@ -42,6 +43,7 @@
             let data = JSON.stringify({
                 title:document.querySelector('#title').value,
                 date:document.querySelector('#date').value,
+                venue:document.querySelector('#venue').value,
                 startTime:document.querySelector('#startTime').value,
                 endTime:document.querySelector('#endTime').value,
                 description:document.querySelector('#description').value,
@@ -53,7 +55,15 @@
             
             xhr.onload = function() {
                 document.querySelector('#msg').innerHTML = this.responseText
-                
+                if(this.status === 200){
+                    document.querySelector('#title').value = ""
+                    document.querySelector('#date').value = ""
+                    document.querySelector('#venue').value = ""
+                    document.querySelector('#startTime').value = ""
+                    document.querySelector('#endTime').value = ""
+                    document.querySelector('#domain').value = ""
+                    document.querySelector('#description').value = ""
+                }
             }
             xhr.send(data)
         }
