@@ -138,6 +138,25 @@ Router.get('/viewInfo', (req,res) => {
     })
 })
 
+Router.get('/viewUsers', (req,res) => {
+    
+    mongoClient.connect(url,{useUnifiedTopology:true}, (err,db) => {
+        if(err) throw err
+
+        let dbo= db.db('atom')
+
+        dbo.collection('users').find({ userType: 0 }).toArray((dbErr, ntdians) => {
+            if (dbErr) throw dbErr
+
+            dbo.collection('users').find({userType:1}).toArray((dbErr1,tdians) => {
+                if(dbErr1) throw dbErr1
+
+                res.render('adminviewusers',{tdians:tdians,ntdians:ntdians})
+            })
+        })
+    })
+})
+
 Router.all('/logout', (req,res) => {
     req.session.destroy()
     res.render('adminlogin',{msg : "you have been logged out"})
