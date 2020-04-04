@@ -138,21 +138,30 @@ Router.get('/viewInfo', (req,res) => {
     })
 })
 
-Router.get('/viewUsers', (req,res) => {
+Router.get('/viewMembers', (req,res) => {
     
     mongoClient.connect(url,{useUnifiedTopology:true}, (err,db) => {
         if(err) throw err
 
         let dbo= db.db('atom')
 
-        dbo.collection('users').find({ userType: 0 }).toArray((dbErr, ntdians) => {
+        dbo.collection('users').find({ userType: 1 }).toArray((dbErr, tdians) => {
             if (dbErr) throw dbErr
+            
+            res.render('adminviewmembers',{data:tdians})
+        })
+    })
+})
 
-            dbo.collection('users').find({userType:1}).toArray((dbErr1,tdians) => {
-                if(dbErr1) throw dbErr1
+Router.get('/viewUsers', (req,res) => {
 
-                res.render('adminviewusers',{tdians:tdians,ntdians:ntdians})
-            })
+    mongoClient.connect(url, {useUnifiedTopology:true}, (err,db) => {
+        if(err) throw err
+
+        db.db('atom').collection('users').find({userType:0}).toArray((dbErr,ntdians) => {
+            if(dbErr) throw dbErr
+
+            res.render('adminviewusers',{data:ntdians})
         })
     })
 })
