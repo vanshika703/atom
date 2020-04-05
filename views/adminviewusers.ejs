@@ -7,15 +7,9 @@
 </head>
 <body>
     <h1>Users</h1>
-    <% for(var i in data){ %>
+    <% for(let user of data){ %>
         <ul>
-            <li>Name: <%= data[i].name %></li>
-            <!-- <li class="domain">Domain: <%= data[i].domain %></li>
-            <li>Date: <%= data[i].date %></li>
-            <li>Time: <%= data[i].startTime %> to <%= data[i].endTime %></li>
-            <li>Venue: <%= data[i].venue %></li>
-            <li>Description: <%= data[i].description %></li>
-            <li>Added by: <%= data[i].addedBy %></li> -->
+            <li>Name: <%= user.name %></li>
         </ul>
      <% } %>
 </body>

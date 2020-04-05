@@ -4,19 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Members</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        table{
+            width: 50%;
+        }
+    </style>
 </head>
 <body>
     <h1>Members</h1>
-    <% for(var i in data){ %>
-        <ul>
-            <li>Name: <%= data[i].name %></li>
-            <!-- <li class="domain">Domain: <%= data[i].domain %></li>
-            <li>Date: <%= data[i].date %></li>
-            <li>Time: <%= data[i].startTime %> to <%= data[i].endTime %></li>
-            <li>Venue: <%= data[i].venue %></li>
-            <li>Description: <%= data[i].description %></li>
-            <li>Added by: <%= data[i].addedBy %></li> -->
-        </ul>
-     <% } %>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Domain</th>
+            <th>Year</th>
+            <th>Department</th>
+        </tr>
+        <% for(let member of data){ %>
+            <tr>
+                <td><%= member.name %></td>
+                <td><%= member.domain %></td>
+                <td><%= member.year %></td>
+                <td><%= member.dept %></td>
+            </tr>
+         <% } %>
+
+    </table>
 </body>
 </html>
