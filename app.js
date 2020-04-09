@@ -3,6 +3,8 @@ const app = express()
 
 const Joi = require('@hapi/joi')
 
+const jwt = require('jsonwebtoken')
+
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -62,8 +64,10 @@ app.post('/register', (req,res)=>{
                     year : req.body.year,
                     domain : req.body.domain,
                     password : hashedPassword,
+                    userType : 0,
                     verified : 0
                 }
+
                 dbo.collection('user').insertOne(userInfo, (dbErr,result)=>{
                     if(dbErr) throw dbErr
 
@@ -74,8 +78,8 @@ app.post('/register', (req,res)=>{
                     let transporter = nodemailer.createTransport({
                         service: 'gmail',
                         auth: {
-                          user: 'vanshi.loveart@gmail.com',
-                          pass: 'vanshika419'
+                          user: 'abc@gmail.com',
+                          pass: 'abcxyz'
                         },
                         tls:{
                           rejectUnauthorized:false
@@ -83,10 +87,9 @@ app.post('/register', (req,res)=>{
                     });
                       
                     let mailOptions = {
-                        from: 'vanshi.loveart@gmail.com',
+                        from: 'abc@gmail.com',
                         to: req.body.email,
-                        subject: 'Sending Email using Node.js',
-                        text: 'That was easy!',
+                        subject: 'Confirmation email for Tdian register',
                         html: "<p>link is...<a href="+link+">Click here to verify....</a></p>"
                     };
                       
@@ -106,10 +109,11 @@ app.post('/register', (req,res)=>{
     })
     
 })
-
+  
 app.get('/verify', (req,res) => {
 
     console.log("link :"+req.protocol+":/"+req.get('host'))
+
     if((req.protocol+"://"+req.get('host'))==("http://"+host))
     {
         console.log("Domain matched")
@@ -132,8 +136,7 @@ app.get('/verify', (req,res) => {
                         console.log("User verified in database")
                         res.redirect('/login')
                     })
-                
-            })
+                }) 
         })
         
     } 
@@ -148,29 +151,38 @@ app.get('/login', (req,res)=>{
 
 app.post('/login', (req,res) =>{
 
-    console.log("entered login")
     mongoClient.connect(process.env.DB_CONNECT, {useUnifiedTopology : true}, (err,db) => {
+        
         if(err) throw err
-        console.log("connected to db")
+        
         let dbo = db.db('register')
+
         dbo.collection('user').findOne({email : req.body.email}, (dbErr, user)=>{
+
             if(dbErr) throw dbErr
             console.log("user found")
+
             let ver = user.verified
-            console.log(ver)
+
                 if(ver == 1)
                 {
                     console.log("user is verified")
                     if(bcrypt.compareSync(req.body.password,user.password))
                     {
-                        res.send("successful log in")
+                        if(user.userType === 0)
+                            console.log('welcome to nontdian dashboard')
+                        if(user.userType === 1)
+                            console.log('welcome to tdian dashboard')
+                            
+                        const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET) 
+                        res.header('auth-token', token).send(token)
                     }
                     else
                     {
                         res.send("Password does not match")
                     }
                 }
-                else
+                else 
                 {
                     console.log("User is not verified..please check email for verification link")
                 }
@@ -178,7 +190,18 @@ app.post('/login', (req,res) =>{
     })
 })
 
+const verify = require('./verifyToken')
+
+app.get('/post',verify,(req,res) =>{
+    res.json({
+        posts:{
+            title:'verified jwt'
+        }
+    })
+})
+
 app.listen(3000, (err)=>{
     if(err) throw err
-    console.log("App running on 3000")
+    console.log("App running on 3000") 
 })
+
