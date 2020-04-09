@@ -3,14 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Members</title>
+    <title>View Users</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        table{
+            width: 80%;
+        }
+        th,td {
+            height:2rem;
+        }
+        td{
+            padding-left: 50px;
+        }
+    </style>
 </head>
 <body>
     <h1>Users</h1>
-    <% for(let user of data){ %>
-        <ul>
-            <li>Name: <%= user.name %></li>
-        </ul>
-     <% } %>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Interested Domain</th>
+            <th>Year</th>
+            <th>Department</th>
+        </tr>
+        <% for(let user of data){ %>
+            <tr>
+                <td><%= user.name %></td>
+                <td><%= user.domain %></td>
+                <td><%= user.year %></td>
+                <td><%= user.dept %></td>
+                <td>
+                    <form>
+                        <input type="hidden" id="" value="<%= user._id %>">
+                        <button id="deleteBtn">Delete user</button>
+                        <button id="promoteBtn">Promote to member</button>
+                    </form>
+                </td>
+            </tr>
+         <% } %>
+
+    </table>
 </body>
 </html>
