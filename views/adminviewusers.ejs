@@ -37,14 +37,20 @@
                 <td><%= user.dept %></td>
                 <td>
                     <form>
-                        <input type="hidden" id="" value="<%= user._id %>">
-                        <button id="deleteBtn">Delete user</button>
-                        <button id="promoteBtn">Promote to member</button>
+                        <input type="hidden" class="id" value="<%= user._id %>">
+                        <button class="deleteBtn">Delete user</button>
+                        <button class="promoteBtn">Promote to member</button>
                     </form>
                 </td>
             </tr>
          <% } %>
-
     </table>
+
+    <script>
+        var deleteBtns = document.querySelector('.deleteBtn')
+        var promoteBtns = document.querySelector('.promoteBtn')
+
+        
+    </script>
 </body>
 </html>
