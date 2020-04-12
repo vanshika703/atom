@@ -145,7 +145,7 @@ Router.get('/viewMembers', (req,res) => {
 
         let dbo= db.db('atom')
 
-        dbo.collection('users').find({ userType: 1 }).toArray((dbErr, tdians) => {
+        dbo.collection('users').find({ userType: 1 },{projection:{password:0}}).toArray((dbErr, tdians) => {
             if (dbErr) throw dbErr
             
             res.render('adminviewmembers',{data:tdians})
@@ -158,10 +158,40 @@ Router.get('/viewUsers', (req,res) => {
     mongoClient.connect(url, {useUnifiedTopology:true}, (err,db) => {
         if(err) throw err
 
-        db.db('atom').collection('users').find({userType:0}).toArray((dbErr,ntdians) => {
+        db.db('atom').collection('users').find({userType:0},{projection:{password:0}}).toArray((dbErr,ntdians) => {
             if(dbErr) throw dbErr
 
             res.render('adminviewusers',{data:ntdians})
+        })
+    })
+})
+
+Router.get('/delete', (req,res) => {
+    let id = req.query.id
+
+    mongoClient.connect(url, {useUnifiedTopology:true} , (err,db) => {
+        if(err) throw err
+
+        db.db('atom').collection('users').deleteOne({_id:new ObjectId(id)},(dbErr,result) => {
+            if(dbErr) throw dbErr
+
+            console.log(result.deletedCount)
+            res.send({msg:'deleted'})
+        })
+    })
+})
+
+Router.get('/promote', (req,res) => {
+    let id = req.query.id
+
+    mongoClient.connect(url, {useUnifiedTopology:true} , (err,db) => {
+        if(err) throw err
+
+        db.db('atom').collection('users').updateOne({_id:new ObjectId(id)},{$set:{userType:1}},(dbErr,result) => {
+            if(dbErr) throw dbErr
+
+            console.log(result.modifiedCount)
+            res.send({msg:'promoted'})
         })
     })
 })

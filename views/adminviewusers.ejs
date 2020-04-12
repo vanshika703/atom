@@ -36,21 +36,50 @@
                 <td><%= user.year %></td>
                 <td><%= user.dept %></td>
                 <td>
-                    <form>
-                        <input type="hidden" class="id" value="<%= user._id %>">
-                        <button class="deleteBtn">Delete user</button>
-                        <button class="promoteBtn">Promote to member</button>
-                    </form>
+                    <input type="hidden" class="id" value="<%= user._id %>">
+                    <button class="deleteBtn">Delete user</button>
+                    <button class="promoteBtn">Promote to member</button>
                 </td>
             </tr>
          <% } %>
     </table>
 
     <script>
-        var deleteBtns = document.querySelector('.deleteBtn')
-        var promoteBtns = document.querySelector('.promoteBtn')
+        var deleteBtns = document.querySelectorAll('.deleteBtn')
+        var promoteBtns = document.querySelectorAll('.promoteBtn')
 
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', deleteUser)
+        })
+
+        promoteBtns.forEach(btn => {
+            btn.addEventListener('click', promoteUser)
+        })
+
+        async function deleteUser(e) {
+            let id = e.target.offsetParent.firstElementChild.value
+            let response = await fetch(`/admin/delete?id=${id}`)
+
+            let data = await response.json()
+
+            if(response.ok){
+                e.target.closest('tr').style.display = 'none'
+            }
+            console.log(data)
+        }
         
+        async function promoteUser(e) {
+            let id = e.target.offsetParent.firstElementChild.value
+            let response = await fetch(`/admin/promote?id=${id}`)
+    
+            let data = await response.json()
+    
+            if(response.ok){
+                e.target.closest('tr').innerHTML = `<p style='color:red'>User promoted</p>`
+            }
+            console.log(data)
+        }
+
     </script>
 </body>
 </html>
