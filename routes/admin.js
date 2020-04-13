@@ -166,8 +166,8 @@ Router.get('/viewUsers', (req,res) => {
     })
 })
 
-Router.get('/delete', (req,res) => {
-    let id = req.query.id
+Router.post('/delete', (req,res) => {
+    let id = req.body.id
 
     mongoClient.connect(url, {useUnifiedTopology:true} , (err,db) => {
         if(err) throw err
@@ -181,8 +181,8 @@ Router.get('/delete', (req,res) => {
     })
 })
 
-Router.get('/promote', (req,res) => {
-    let id = req.query.id
+Router.post('/promote', (req,res) => {
+    let id = req.body.id
 
     mongoClient.connect(url, {useUnifiedTopology:true} , (err,db) => {
         if(err) throw err

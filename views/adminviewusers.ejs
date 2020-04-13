@@ -58,7 +58,12 @@
 
         async function deleteUser(e) {
             let id = e.target.offsetParent.firstElementChild.value
-            let response = await fetch(`/admin/delete?id=${id}`)
+
+            let response = await fetch(`/admin/delete`,{
+                method: 'POST',
+                headers:{'content-type':'application/json'},
+                body:JSON.stringify({id})
+            })
 
             let data = await response.json()
 
@@ -70,7 +75,14 @@
         
         async function promoteUser(e) {
             let id = e.target.offsetParent.firstElementChild.value
-            let response = await fetch(`/admin/promote?id=${id}`)
+
+            let response = await fetch(`/admin/promote`,{
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body:JSON.stringify({id})
+            })
     
             let data = await response.json()
     
