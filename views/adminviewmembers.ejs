@@ -10,7 +10,13 @@
             border-collapse: collapse;
         }
         table{
-            width: 50%;
+            width: 80%;
+        }
+        th,td {
+            height:2rem;
+        }
+        td{
+            padding-left: 50px;
         }
     </style>
 </head>
@@ -29,9 +35,37 @@
                 <td><%= member.domain %></td>
                 <td><%= member.year %></td>
                 <td><%= member.dept %></td>
+                <td>
+                    <input type="hidden" class="id" value="<%= member._id %>">
+                    <button class="deleteBtn">Delete member</button>
+                </td>
             </tr>
          <% } %>
-
     </table>
+
+    <script>
+        var deleteBtns = document.querySelectorAll('.deleteBtn')
+
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click',deleteMember)
+        })
+
+        async function deleteMember(e) {
+            let id = e.target.offsetParent.firstElementChild.value
+
+            let response = await fetch(`/admin/delete`,{
+                method: 'POST',
+                headers:{'content-type':'application/json'},
+                body:JSON.stringify({id})
+            })
+
+            let data = await response.json()
+
+            if(response.ok){
+                e.target.closest('tr').style.display = 'none'
+            }
+            console.log(data)
+        }
+    </script>
 </body>
 </html>
