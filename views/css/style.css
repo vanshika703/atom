@@ -1,4 +1,4 @@
-#addInfo{
+form{
     display: flex; 
     flex-direction: column; 
     justify-content: space-around; 
@@ -6,7 +6,7 @@
     height: 60%;
 }
 
-#addInfo input{
+input{
     margin-top: 1rem;
     height: 1.5rem;
 }

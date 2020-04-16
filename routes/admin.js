@@ -117,7 +117,7 @@ Router.post('/addInfo',(req,res) => {
             if(dbErr) throw dbErr
 
             console.log(result.insertedCount)
-            res.send("Info added")
+            res.send({msg:"Info added"})
         })
 
     })
