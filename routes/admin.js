@@ -75,6 +75,7 @@ Router.get('/dashboard', (req,res) => {
     res.render('admindashboard',{user:req.session.user})
 })
 
+
 Router.get('/changePassword', (req,res) => {
     res.render('adminchangepassword')
 })
@@ -89,9 +90,9 @@ Router.post('/changePassword',(req,res) => {
         
         dbo.collection('admins').findOne({_id:new ObjectId(req.session.user.id)},(dbErr,user) => {
             if(dbErr) throw dbErr
-
+            
             if(!bcrypt.compareSync(req.body.currentPassword,user.password)) return res.status(400).send('Current Password is incorrect')
-
+            
             const salt = bcrypt.genSaltSync(10)
             const hashed = bcrypt.hashSync(req.body.newPassword,salt)
             dbo.collection('admins').updateOne({_id:new ObjectId(req.session.user.id)},{$set:{password:hashed}}, (dbErr,result) => {
@@ -115,11 +116,11 @@ Router.post('/addInfo',(req,res) => {
 
         dbo.collection('events').insertOne(req.body,(dbErr,result) => {
             if(dbErr) throw dbErr
-
+            
             console.log(result.insertedCount)
             res.send({msg:"Info added"})
         })
-
+        
     })
 })
 
@@ -157,7 +158,7 @@ Router.get('/viewUsers', (req,res) => {
 
     mongoClient.connect(url, {useUnifiedTopology:true}, (err,db) => {
         if(err) throw err
-
+        
         db.db('atom').collection('users').find({userType:0},{projection:{password:0}}).toArray((dbErr,ntdians) => {
             if(dbErr) throw dbErr
 
@@ -168,13 +169,13 @@ Router.get('/viewUsers', (req,res) => {
 
 Router.post('/delete', (req,res) => {
     let id = req.body.id
-
+    
     mongoClient.connect(url, {useUnifiedTopology:true} , (err,db) => {
         if(err) throw err
-
+        
         db.db('atom').collection('users').deleteOne({_id:new ObjectId(id)},(dbErr,result) => {
             if(dbErr) throw dbErr
-
+            
             console.log(result.deletedCount)
             res.send({msg:'deleted'})
         })
@@ -189,12 +190,36 @@ Router.post('/promote', (req,res) => {
 
         db.db('atom').collection('users').updateOne({_id:new ObjectId(id)},{$set:{userType:1}},(dbErr,result) => {
             if(dbErr) throw dbErr
-
+            
             console.log(result.modifiedCount)
             res.send({msg:'promoted'})
         })
     })
 })
+
+Router.get('/addTask',(req,res) => {
+    mongoClient.connect(url,{useUnifiedTopology:true}, (err,db) => {
+        if(err) throw err
+
+        let dbo= db.db('atom')
+
+        dbo.collection('users').find({ userType: 1 },{projection:{password:0}}).toArray((dbErr, tdians) => {
+            if (dbErr) throw dbErr
+            
+            res.render('adminaddtask',{data:tdians})
+        })
+    })
+})
+
+Router.post('/addTask',async(req,res) => {
+    req.body.addedBy = req.session.user.name
+
+    const db = await mongoClient.connect(url,{useUnifiedTopology:true})
+    let result =  await db.db('atom').collection('tasks').insertOne(req.body)
+    console.log(result.insertedCount)
+    res.send({msg:'Task added'})
+})
+
 
 Router.all('/logout', (req,res) => {
     req.session.destroy()

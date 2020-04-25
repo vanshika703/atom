@@ -13,6 +13,7 @@
     <a href="/admin/viewInfo">View Info</a>
     <a href="/admin/viewUsers">View Users</a>
     <a href="/admin/viewMembers">View Members</a>
+    <a href="/admin/addTask">Add Task</a>
     <hr>
 
     <div style="width: 50vw; float: left;">
@@ -39,29 +40,7 @@
             </select>
             <input type="submit" value="Submit">
         </form>
-    </div>
-
-    <div>
-        <p id="taskMsg"></p>
-        <h2 style="text-align: center;">Task for members</h2>
-
-        <form id="addTask">
-            <input type="text" placeholder="Task title" id="title">
-            <label for="deadline">Deadline:</label>
-            <input type="date" id="deadline">
-            <textarea id="taskDescription" placeholder="Enter description here"></textarea>
-            <div id="res-group">
-                <input type="text" placeholder="Resource 1" class="resource">
-                <button id="add-res">Add another resource</button>
-            </div>
-            <div id="mem-group">
-                <input type="text" placeholder="Member 1" class="member">
-                <button id="add-mem">Add another member</button>
-            </div>
-            <input type="submit">
-        </form>
-    </div>
-    
+    </div>    
 
     <script>
 
@@ -103,32 +82,6 @@
             }
         }
 
-        //Adding fields to task form
-        document.querySelector('#add-res').addEventListener('click', addRes)
-        document.querySelector('#add-mem').addEventListener('click', addMem)
-        var resCount = 1;
-        var memCount = 1;
-
-        function addRes(e){
-            e.preventDefault()
-            let field = document.createElement('input')
-            field.setAttribute('type','text')
-            field.setAttribute('class','resource')
-            field.setAttribute('placeholder','Resource '+(++resCount))
-            document.querySelector('#res-group').appendChild(field)
-        }
-
-        function addMem(e){
-            e.preventDefault()
-            let field = document.createElement('input')
-            field.setAttribute('type','text')
-            field.setAttribute('class','member')
-            field.setAttribute('placeholder','Member '+(++memCount))
-            document.querySelector('#mem-group').appendChild(field)
-        }
-        
-        //Adding tasks
-        document.querySelector('#addTask').addEventListener('submit',addTask)
     </script>
 </body>
 </html>
