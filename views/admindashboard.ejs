@@ -22,8 +22,10 @@
 
         <form id="addInfo">
             <input type="text" placeholder="Event title" id="title" required>
-            <label for="date">Date</label>
-            <input type="date" id="date" placeholder="Event Date" required>
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" required>
+            <label for="endDate">End Date</label>
+            <input type="date" id="endDate" required>
             <input type="text" id="venue" placeholder="Venue" required>
             <label for="startTime">Start time</label>
             <input type="time" id="startTime" required>
@@ -52,7 +54,8 @@
             
             let info = JSON.stringify({
                 title:document.querySelector('#title').value,
-                date:document.querySelector('#date').value,
+                startDate:document.querySelector('#startDate').value,
+                endDate:document.querySelector('#endDate').value,
                 venue:document.querySelector('#venue').value,
                 startTime:document.querySelector('#startTime').value,
                 endTime:document.querySelector('#endTime').value,
