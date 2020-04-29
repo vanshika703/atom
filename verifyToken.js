@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+/* const jwt = require('jsonwebtoken')
 
 module.exports = (req, res, next) =>{
     const token = req.header('auth-token') 
@@ -14,3 +14,4 @@ module.exports = (req, res, next) =>{
         res.status(400).send('Invalid Token')
     }
 }
+ */

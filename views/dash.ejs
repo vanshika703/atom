@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Document</title>
+    <style>
+        .step{
+            height: 50px;
+            width: 50px;
+            line-height: 46px;
+            text-align: center;
+            border-radius: 50%;
+            position: relative;
+            color: white;
+        }
+        .timeline{
+          width: 50%;
+          margin: 0 auto;
+        }
+        .event-card{
+          width: 80%!important;
+          margin: 5%!important;
+        }
+        @media (max-width: 600px)
+        {
+          .timeline{
+            width: 100%;
+            margin: 0 auto;
+          }
+        }
+        /* .step::after{
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            width: 2px;
+            height: 150px;
+            background-color: #02c39a;
+            z-index: -1;
+        } */
+        .line{
+          position: absolute;
+            top: 25px;
+            left: 25px;
+            height: 150px;
+            z-index: -1;
+        }
+        .step img{
+            height: 20px;
+            width: 20px;
+            z-index: 1;
+        }
+        .red{
+          border: 2px solid grey;
+          color: white;
+          background-color: grey;
+        }
+        .yellow{
+            border: 2px solid #02c39a;
+            color: #02c39a;
+            background-color: white;
+        }
+        .green{
+            border: 2px solid #02c39a;
+            background-color: #02c39a;
+        }
+        .green-line{
+          border-left: 2px solid #02c39a;
+        }
+        .grey-line{
+          border-left: 2px dashed grey;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/profile">TD</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/profile">Profile<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/dash">Recruitment</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="http://think-digital.in/">Our Website</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+    <div class="container">
+      <h2>Your recruitment timeline :</h2>
+        <% let c=1 %>
+        <div class="timeline">
+        <% for(let i=0; i<result.length; i++) { %>
+            
+            <% if(user.domain === result[i].domain) { %>
+                <% let endDate = new Date(result[i].endDate) %>
+                <% let startDate = new Date(result[i].startDate) %>
+                <% if(today < startDate) { %>
+                <div class="step red float-left">
+                  <%= c++ %>
+                  <div class="line grey-line"></div>
+                </div> 
+                <% } else if (today >= startDate && today <= endDate){ %>
+                <div class="step yellow float-left"><%= c++ %> <div class="line grey-line"></div></div> 
+                <% } else { %> 
+                <div class="step green float-left"><%= c++ %> <div class="line green-line"></div></div> 
+                <% } %>
+                <div class="card event-card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title"><%= result[i].title %></h5>
+                      <h6 class="card-subtitle mb-2 text-muted">Date:  <%= result[i].date %></h6>
+                      <a class="class-link" data-toggle="collapse" href="#collapseExample<%= c %>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        View More
+                      </a>
+                      <div class="collapse" id="collapseExample<%= c %>">
+                            <p><%= result[i].description %> </p>
+                            <p>Venue:  <%= result[i].venue %> </p>
+                            <p>Time:  <%= result[i].startTime %> -  <%= result[i].endTime %></p>
+                      </div>
+                    </div>
+                </div>
+                  
+                    
+            <% } %>
+        <% } %>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>

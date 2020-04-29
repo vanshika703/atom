@@ -15,6 +15,9 @@ const objectId = require('mongodb').ObjectId
 
 const nodemailer = require('nodemailer')
 
+const ejs = require('ejs')
+app.set('view engine','ejs')
+
 const schema = Joi.object({
     name : Joi.string().min(3).required(),
     email : Joi.string().required().email(),
@@ -29,7 +32,7 @@ app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 
 app.get('/', (req,res)=>{
-    res.sendFile(__dirname+"/register.html")
+    res.render('register')
 })
 
 let host;
@@ -42,9 +45,9 @@ app.post('/register', (req,res)=>{
     mongoClient.connect(process.env.DB_CONNECT, { useUnifiedTopology: true }, (err,db)=>{
         if(err) throw err
 
-        let dbo = db.db("register")
+        let dbo = db.db("atom")
 
-        dbo.collection('user').findOne({email : req.body.email}, async(dbErr, user)=>{
+        dbo.collection('users').findOne({email : req.body.email}, async(dbErr, user)=>{
             if(dbErr) throw dbErr
 
             //if user exists
@@ -68,7 +71,7 @@ app.post('/register', (req,res)=>{
                     verified : 0
                 }
 
-                dbo.collection('user').insertOne(userInfo, (dbErr,result)=>{
+                dbo.collection('users').insertOne(userInfo, (dbErr,result)=>{
                     if(dbErr) throw dbErr
 
                     host = req.get('host')
@@ -78,8 +81,8 @@ app.post('/register', (req,res)=>{
                     let transporter = nodemailer.createTransport({
                         service: 'gmail',
                         auth: {
-                          user: 'abc@gmail.com',
-                          pass: 'abcxyz'
+                          user: 'vanshi.loveart@gmail.com',
+                          pass: 'vanshika419'
                         },
                         tls:{
                           rejectUnauthorized:false
@@ -87,7 +90,7 @@ app.post('/register', (req,res)=>{
                     });
                       
                     let mailOptions = {
-                        from: 'abc@gmail.com',
+                        from: 'vanshi.loveart@gmail.com',
                         to: req.body.email,
                         subject: 'Confirmation email for Tdian register',
                         html: "<p>link is...<a href="+link+">Click here to verify....</a></p>"
@@ -123,13 +126,13 @@ app.get('/verify', (req,res) => {
 
             console.log("db connected")
 
-            let dbo = db.db('register')
-            dbo.collection('user').findOne({_id : req.query.id}, (dbErr, user)=>{
+            let dbo = db.db('atom')
+            dbo.collection('users').findOne({_id : req.query.id}, (dbErr, user)=>{
                 if(dbErr) throw dbErr
                 
                     console.log("user found")
 
-                    dbo.collection('user').updateOne({"_id" : objectId(req.query.id) }, { $set: {verified : 1} }, async(dbErr, result)=>{
+                    dbo.collection('users').updateOne({"_id" : objectId(req.query.id) }, { $set: {verified : 1} }, async(dbErr, result)=>{
  
                         if(dbErr) throw dbErr
                         console.log(result)
@@ -146,7 +149,7 @@ app.get('/verify', (req,res) => {
 })
 
 app.get('/login', (req,res)=>{
-    res.sendFile(__dirname+"/login.html")
+    res.render('login')
 })
 
 app.post('/login', (req,res) =>{
@@ -155,27 +158,24 @@ app.post('/login', (req,res) =>{
         
         if(err) throw err
         
-        let dbo = db.db('register')
+        let dbo = db.db('atom')
 
-        dbo.collection('user').findOne({email : req.body.email}, (dbErr, user)=>{
+        dbo.collection('users').findOne({email : req.body.email}, (dbErr, user)=>{
 
             if(dbErr) throw dbErr
             console.log("user found")
 
-            let ver = user.verified
-
-                if(ver == 1)
+                if(user.verified === 1)
                 {
                     console.log("user is verified")
                     if(bcrypt.compareSync(req.body.password,user.password))
                     {
-                        if(user.userType === 0)
-                            console.log('welcome to nontdian dashboard')
-                        if(user.userType === 1)
-                            console.log('welcome to tdian dashboard')
-                            
-                        const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET) 
-                        res.header('auth-token', token).send(token)
+                        app.set('loggedUser', user)
+                        console.log("logged user :" + app.get('loggedUser'))
+                        /* if(user.userType === 0) */
+                            res.redirect('/dash')
+                        /* else 
+                            res.redirect('/memberDash') */
                     }
                     else
                     {
@@ -184,20 +184,29 @@ app.post('/login', (req,res) =>{
                 }
                 else 
                 {
-                    console.log("User is not verified..please check email for verification link")
+                    res.send("User is not verified..please check email for verification link")
                 }
         })
     })
 })
 
-const verify = require('./verifyToken')
+app.get('/dash', (req,res) =>{
 
-app.get('/post',verify,(req,res) =>{
-    res.json({
-        posts:{
-            title:'verified jwt'
-        }
+    mongoClient.connect(process.env.DB_CONNECT, { useUnifiedTopology: true }, (err,db) =>{
+        if(err) throw err
+
+        let dbo = db.db("atom")
+        dbo.collection("events").find({}).toArray((dbErr,result)=>{
+            if(dbErr) throw dbErr
+            let today = new Date()
+            res.render('dash', {result , user : app.get('loggedUser'), today})
+        })
     })
+
+})
+
+app.get('/profile', (req,res) =>{
+    res.render('profile', {user : app.get('loggedUser')})
 })
 
 app.listen(3000, (err)=>{
