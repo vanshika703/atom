@@ -214,10 +214,10 @@ Router.get('/addTask',(req,res) => {
 Router.post('/addTask',async(req,res) => {
     req.body.addedBy = req.session.user.name
 
-    const db = await mongoClient.connect(url,{useUnifiedTopology:true})
-    let result =  await db.db('atom').collection('tasks').insertOne(req.body)
+    const db = await mongoClient.connect(url,{useUnifiedTopology:true}).catch(err => console.log(err))
+    let result =  await db.db('atom').collection('tasks').insertOne(req.body).catch(err => console.log(err))
     console.log(result.insertedCount)
-    res.send({msg:'Task added'})
+    res.send({msg:'Task added. Page reloading in 3 2 1...'})
 })
 
 

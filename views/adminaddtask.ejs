@@ -17,19 +17,19 @@
             <input type="date" id="deadline" required>
             <textarea id="taskDescription" placeholder="Enter description here" required></textarea>
             <div id="res-group">
-                <input type="text" placeholder="Resource 1" class="resource" required>
+                <input type="text" placeholder="Resource" class="resource" required>
                 <button id="add-res">Add another resource</button>
             </div>
-            <div id="sub-group">
-                <input type="text" placeholder="Subtask 1" class="subtask" required>
-                <button id="add-sub">Add another subtasks</button>
-            </div>
             <div id="mem-group">
-                <select class="member">
-                    <% for(let tdian of data) { %>
-                        <option value="<%= tdian._id %>"><%= tdian.name %></option>
-                    <% } %>
-                </select>
+                <div class="member">
+                    <select class="members">
+                        <% for(let tdian of data) { %>
+                            <option value="<%= tdian._id %>"><%= tdian.name %></option>
+                            <% } %>
+                    </select>
+                    <input type="text" placeholder="Subtask" class="subtask" required>
+                    <button class="add-sub">Add another subtask</button>
+                </div>
                 <button id="add-mem">Add another member</button>
             </div>
             <input type="submit">
@@ -40,86 +40,102 @@
         //Adding fields to task form
         document.querySelector('#add-res').addEventListener('click', addRes)
         document.querySelector('#add-mem').addEventListener('click', addMem)
-        document.querySelector('#add-sub').addEventListener('click', addSub)
-        var resCount = 1;
-        var memCount = 1;
-        var subCount = 1;
+        document.querySelector('.add-sub').addEventListener('click', addSub)
 
         function addRes(e){
             e.preventDefault()
             let field = document.createElement('input')
             field.setAttribute('type','text')
             field.setAttribute('class','resource')
-            field.setAttribute('placeholder','Resource '+(++resCount))
-            field.setAttribute('required','')
-            document.querySelector('#res-group').insertBefore(field,document.querySelector('#add-res'))
+            field.setAttribute('placeholder','Resource')
+            e.target.parentNode.insertBefore(field,e.target)
         }
 
         function addMem(e){
             e.preventDefault()
-            let field = document.querySelector('.member').cloneNode(true)
-            document.querySelector('#mem-group').insertBefore(field,document.querySelector('#add-mem'))
+            let field = document.querySelector('.members').cloneNode(true)
+            let input = getSub()
+            let subBtn = getSubBtn()
+            let memDiv = document.createElement('div')
+            memDiv.classList.add('member')
+            memDiv.appendChild(field)
+            memDiv.appendChild(input)
+            memDiv.appendChild(subBtn)
+            e.target.parentNode.insertBefore(memDiv,e.target)
         }
         
         function addSub(e){
             e.preventDefault()
+            let field = getSub()
+            e.target.parentNode.insertBefore(field,e.target)
+        }
+        
+        function getSub(){
             let field = document.createElement('input')
             field.setAttribute('type','text')
             field.setAttribute('class','subtask')
-            field.setAttribute('placeholder','Subtask '+(++subCount))
-            field.setAttribute('required','')
-            document.querySelector('#sub-group').insertBefore(field,document.querySelector('#add-sub'))
+            field.setAttribute('placeholder','Subtask')
+            return field
         }
 
+        function getSubBtn(){
+            let btn = document.querySelector('.add-sub').cloneNode(true)
+            btn.addEventListener('click',addSub)
+            return btn
+        }
         //Adding tasks
         document.querySelector('#addTask').addEventListener('submit',addTask)
 
         async function addTask(e){
             e.preventDefault()
 
-            let members = document.querySelectorAll('.member')
+            let members = document.querySelectorAll('.members')
             let resources = document.querySelectorAll('.resource')
-            let subtasks = document.querySelectorAll('.subtask')
             let mem_list = []
             let res_list = []
-            let sub_list = []
 
             members.forEach(member => {
+                let sub_list = []
+                let subtasks = member.parentNode.querySelectorAll('.subtask')
+                subtasks.forEach(subtask => {
+                    let object = {
+                        title: subtask.value,
+                        status:0
+                    }
+                    sub_list.push(object)
+                })
                 let obj = {
                     name: member.selectedOptions[0].innerText,
-                    id: member.value
+                    id: member.value,
+                    subtasks:sub_list
                 }
                 mem_list.push(obj)
             })
             resources.forEach(resource => res_list.push(resource.value))
-            subtasks.forEach(subtask => {
-                let obj = {
-                    title: subtask.value,
-                    status:0
-                }
-                sub_list.push(obj)
-            })
 
-            let task = JSON.stringify({
+            let task = {
                 title:document.querySelector('#taskTitle').value,
                 deadline:document.querySelector('#deadline').value,
                 description:document.querySelector('#taskDescription').value,
-                subtasks:sub_list,
                 members:mem_list,
                 resources:res_list
-            })
+            }
 
             let response = await fetch('/admin/addTask',{
                 method:'POST',
                 headers:{
                     'content-type': 'application/json'
                 },
-                body:task
+                body:JSON.stringify(task)
             })
 
             let data = await response.json()
 
             document.querySelector('#taskMsg').innerHTML = data.msg
+
+            setTimeout(() => {
+                window.location = '/admin/addTask'
+            },3000)
 
             console.log(task)
         }
