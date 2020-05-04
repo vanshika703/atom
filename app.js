@@ -3,8 +3,6 @@ const app = express()
 
 const Joi = require('@hapi/joi')
 
-const jwt = require('jsonwebtoken')
-
 const dotenv = require('dotenv')
 dotenv.config()
 
