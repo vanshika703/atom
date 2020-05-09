@@ -51,66 +51,59 @@ app.post('/register', (req,res)=>{
             if(dbErr) throw dbErr
 
             //if user exists
-            if(user)
-                res.send("Email exists")
-            else{
-                //hashing password
-                const salt = await bcrypt.genSalt(10)
-                const hashedPassword = await bcrypt.hash(req.body.password, salt)
+            if(user) return res.status(400).json({msg:"Email already registered"})
+            //hashing password
+            const salt = await bcrypt.genSalt(10)
+            const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
-                //new user info
-                let userInfo = {
-                    name : req.body.name,
-                    email : req.body.email,
-                    regno : req.body.regno,
-                    dept : req.body.dept,
-                    year : req.body.year,
-                    domain : req.body.domain,
-                    password : hashedPassword,
-                    userType : 0,
-                    verified : 0
-                }
-
-                dbo.collection('users').insertOne(userInfo, (dbErr,result)=>{
-                    if(dbErr) throw dbErr
-
-                    host = req.get('host')
-                    rand = result.insertedId
-                    link = "http://"+req.get('host')+"/verify?id="+rand;
-
-                    let transporter = nodemailer.createTransport({
-                        service: 'gmail',
-                        auth: {
-                          user: process.env.EMAIL,
-                          pass: process.env.EMAIL_PASS
-                        },
-                        tls:{
-                          rejectUnauthorized:false
-                        }
-                    });
-                      
-                    let mailOptions = {
-                        from: 'vanshi.loveart@gmail.com',
-                        to: req.body.email,
-                        subject: 'Confirmation email for Tdian register',
-                        html: "<p>link is...<a href="+link+">Click here to verify....</a></p>"
-                    };
-                      
-                    transporter.sendMail(mailOptions, function(error, info){
-                        if (error) {
-                          console.log(error);
-                        } else {
-                          console.log('Email sent: ' + info.response);
-                        }
-                    });
-
-                    res.send("Check email for otp")
-                })
+            //new user info
+            let userInfo = {
+                name : req.body.name,
+                email : req.body.email,
+                regno : req.body.regno,
+                dept : req.body.dept,
+                year : req.body.year,
+                domain : req.body.domain,
+                password : hashedPassword,
+                userType : 0,
+                verified : 0
             }
+
+            dbo.collection('users').insertOne(userInfo, (dbError,result)=>{
+                if(dbError) throw dbError
+
+                host = req.get('host')
+                rand = result.insertedId
+                link = "http://"+req.get('host')+"/verify?id="+rand;
+
+                let transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: process.env.EMAIL,
+                        pass: process.env.EMAIL_PASS
+                    },
+                    tls:{
+                        rejectUnauthorized:false
+                    }
+                });
+                    
+                let mailOptions = {
+                    from: process.env.EMAIL,
+                    to: req.body.email,
+                    subject: 'Confirmation email for Atom',
+                    html: "<p>link is...<a href="+link+">Click here to verify....</a></p>"
+                };
+                    
+                transporter.sendMail(mailOptions, function(error, info){
+                    if (error) throw error
+                    
+                    console.log('Email sent: ' + info.response);
+                    res.json({msg:"Registered. Check email for verification link"})
+                });
+
+            })
         })
-        
-    })
-    
+    })    
 })
   
 app.get('/verify', (req,res) => {

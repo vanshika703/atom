@@ -8,11 +8,11 @@
 </head>
 <body style="text-align: center; height: 100vh;">
     <h1>Register</h1>
-    <form action="/register" method="POST" id="reg-form" style="display: flex; flex-direction: column; justify-content: space-around; align-items: center; height: 60%;">
-        <input type="text" name="name" class="name" placeholder="Name">
-        <input type="email" name="email" class="email" placeholder="Email">
-        <input type="text" name="regno" class="regno" placeholder="Register Number">
-        <input type="text" name="dept" class="dept" placeholder="Department">
+    <form id="reg-form" style="display: flex; flex-direction: column; justify-content: space-around; align-items: center; height: 60%;">
+        <input type="text" id="name" class="name" placeholder="Name" required>
+        <input type="email" id="email" class="email" placeholder="Email" required>
+        <input type="text" id="regno" class="regno" placeholder="Register Number" required>
+        <input type="text" id="dept" class="dept" placeholder="Department" required>
         <label for="year">Year:</label>
         <select form="reg-form" id="year" name="year" required>
             <option value="1">1</option>
@@ -28,13 +28,55 @@
             <option value="gd">Graphic Design</option>
             <option value="hr">HR</option>
         </select>
-        <input type="password" name="password" class="password" placeholder="Password">
+        <input type="password" id="password" class="password" placeholder="Password" required>
         <input type="submit">
     </form>
+    <p id="regMsg"></p>
 
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+        document.querySelector('#reg-form').addEventListener('submit',register)
+
+        async function register(e){
+            e.preventDefault()
+
+            let info = {
+                name:document.querySelector('#name').value,
+                email:document.querySelector('#email').value,
+                password:document.querySelector('#password').value,
+                dept:document.querySelector('#dept').value,
+                domain:document.querySelector('#domain').value,
+                year:document.querySelector('#year').value,
+                regno:document.querySelector('#regno').value
+            }
+
+            let response = await fetch('/register',{
+                method:'POST',
+                headers:{
+                    'content-type':'application/json'
+                },
+                body:JSON.stringify(info)
+            })
+
+            let data = await response.json()
+
+            if(response.status === 200){
+                document.querySelector('#name').value = ''
+                document.querySelector('#email').value = ''
+                document.querySelector('#password').value = ''
+                document.querySelector('#dept').value = ''
+                document.querySelector('#domain').value = ''
+                document.querySelector('#year').value = ''
+                document.querySelector('#regno').value = ''
+                document.querySelector('#regMsg').innerHTML = data.msg
+            }
+            else {
+                document.querySelector('#regMsg').innerHTML = data.msg
+            }
+        }
+    </script>
 </body>
 </html>

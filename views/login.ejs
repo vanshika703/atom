@@ -11,7 +11,7 @@
         <input type="password" placeholder="password" id="password" required>
         <input type="submit">
     </form>
-    <p id="msg"></p>
+    <p id="loginMsg"></p>
 
     <script>
         document.querySelector('#login-form').addEventListener('submit',login)
@@ -37,11 +37,11 @@
             if(response.status === 200){
                 document.querySelector('#email').value = ''
                 document.querySelector('#password').value = ''
-                document.querySelector('#msg').innerHTML = data.msg
+                document.querySelector('#loginMsg').innerHTML = data.msg
                 localStorage.setItem('token',data.token)
             }
             else {
-                document.querySelector('#msg').innerHTML = data.msg
+                document.querySelector('#loginMsg').innerHTML = data.msg
             }
         }
     </script>
