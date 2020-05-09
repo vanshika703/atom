@@ -13,6 +13,8 @@ const objectId = require('mongodb').ObjectId
 
 const nodemailer = require('nodemailer')
 
+const jwt = require('jsonwebtoken')
+
 const ejs = require('ejs')
 app.set('view engine','ejs')
 
@@ -79,8 +81,8 @@ app.post('/register', (req,res)=>{
                     let transporter = nodemailer.createTransport({
                         service: 'gmail',
                         auth: {
-                          user: 'vanshi.loveart@gmail.com',
-                          pass: 'vanshika419'
+                          user: process.env.EMAIL,
+                          pass: process.env.EMAIL_PASS
                         },
                         tls:{
                           rejectUnauthorized:false
@@ -161,29 +163,15 @@ app.post('/login', (req,res) =>{
         dbo.collection('users').findOne({email : req.body.email}, (dbErr, user)=>{
 
             if(dbErr) throw dbErr
-            console.log("user found")
+            
+            if(!user) return res.status(400).json({msg:"Email is not registered"})
 
-                if(user.verified === 1)
-                {
-                    console.log("user is verified")
-                    if(bcrypt.compareSync(req.body.password,user.password))
-                    {
-                        app.set('loggedUser', user)
-                        console.log("logged user :" + app.get('loggedUser'))
-                        /* if(user.userType === 0) */
-                            res.redirect('/dash')
-                        /* else 
-                            res.redirect('/memberDash') */
-                    }
-                    else
-                    {
-                        res.send("Password does not match")
-                    }
-                }
-                else 
-                {
-                    res.send("User is not verified..please check email for verification link")
-                }
+            if(!user.verified) return res.status(400).json({msg:"User is not verified..please check email for verification link"})
+            
+            if(!bcrypt.compareSync(req.body.password,user.password)) return res.status(400).json({msg:"Password does not match"})
+            
+            let token = jwt.sign({id:user._id,type:user.userType},process.env.TOKEN_SECRET,{expiresIn:3600})
+            res.json({token,msg:"logged in"})
         })
     })
 })
@@ -207,8 +195,9 @@ app.get('/profile', (req,res) =>{
     res.render('profile', {user : app.get('loggedUser')})
 })
 
-app.listen(3000, (err)=>{
+var PORT = process.env.PORT || 3000
+app.listen(PORT, (err)=>{
     if(err) throw err
-    console.log("App running on 3000") 
+    console.log(`App running on http://localhost:${PORT}`) 
 })
 

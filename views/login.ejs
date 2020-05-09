@@ -6,10 +6,44 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/login" method="POST">
-        <input type="email" placeholder="email" name="email">
-        <input type="password" placeholder="password" name="password">
+    <form id="login-form">
+        <input type="email" placeholder="email" id="email" required>
+        <input type="password" placeholder="password" id="password" required>
         <input type="submit">
     </form>
+    <p id="msg"></p>
+
+    <script>
+        document.querySelector('#login-form').addEventListener('submit',login)
+
+        async function login(e){
+            e.preventDefault()
+
+            let info = {
+                email:document.querySelector('#email').value,
+                password:document.querySelector('#password').value
+            }
+
+            let response = await fetch('/login',{
+                method:'POST',
+                headers:{
+                    'content-type':'application/json'
+                },
+                body:JSON.stringify(info)
+            })
+
+            let data = await response.json()
+
+            if(response.status === 200){
+                document.querySelector('#email').value = ''
+                document.querySelector('#password').value = ''
+                document.querySelector('#msg').innerHTML = data.msg
+                localStorage.setItem('token',data.token)
+            }
+            else {
+                document.querySelector('#msg').innerHTML = data.msg
+            }
+        }
+    </script>
 </body>
 </html>
