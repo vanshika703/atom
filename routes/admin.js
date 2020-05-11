@@ -105,9 +105,11 @@ Router.post('/changePassword',(req,res) => {
     })
 })
 
-Router.post('/addInfo',(req,res) => {
+Router.post('/addEvent',(req,res) => {
     
     req.body.addedBy = req.session.user.name
+    let date = new Date().toString().substring(4,15)
+    req.body.addedOn = date
 
     mongoClient.connect(url,{useUnifiedTopology:true},(err,db) => {
         if(err) throw err
@@ -124,7 +126,7 @@ Router.post('/addInfo',(req,res) => {
     })
 })
 
-Router.get('/viewInfo', (req,res) => {
+Router.get('/viewEvents', (req,res) => {
     
     mongoClient.connect(url,{useUnifiedTopology:true},(err,db) => {
         if(err) throw err
@@ -134,7 +136,7 @@ Router.get('/viewInfo', (req,res) => {
         dbo.collection('events').find({}).toArray((dbErr,data) => {
             if(dbErr) throw dbErr
 
-            res.render('adminviewinfo',{data:data})
+            res.render('adminviewevents',{data})
         })
     })
 })
@@ -213,6 +215,8 @@ Router.get('/addTask',(req,res) => {
 
 Router.post('/addTask',async(req,res) => {
     req.body.addedBy = req.session.user.name
+    let date = new Date().toString().substring(4,15)
+    req.body.addedOn = date
 
     mongoClient.connect(url,{useUnifiedTopology:true},(err,db) => {
         if(err) throw err
@@ -225,7 +229,6 @@ Router.post('/addTask',async(req,res) => {
         })
     })
 })
-
 
 Router.all('/logout', (req,res) => {
     req.session.destroy()

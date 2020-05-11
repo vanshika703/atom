@@ -10,7 +10,7 @@
     <h1>Welcome <%= user.name %></h1>
     <a href="/admin/logout">Logout</a>
     <a href="/admin/changePassword">Change Password</a>
-    <a href="/admin/viewInfo">View Info</a>
+    <a href="/admin/viewEvents">View Events</a>
     <a href="/admin/viewUsers">View Users</a>
     <a href="/admin/viewMembers">View Members</a>
     <a href="/admin/addTask">Add Task</a>
@@ -20,7 +20,7 @@
         <p id="infoMsg"></p>
         <h2 style="text-align: center;">Recruitment Info</h2>
 
-        <form id="addInfo">
+        <form id="addEvent">
             <input type="text" placeholder="Event title" id="title" required>
             <label for="startDate">Start Date</label>
             <input type="date" id="startDate" required>
@@ -47,28 +47,31 @@
     <script>
 
         // Adding recruitment info
-        document.querySelector('#addInfo').addEventListener('submit',addInfo)
+        document.querySelector('#addEvent').addEventListener('submit',addEvent)
         
-        async function addInfo(e) {
+        async function addEvent(e) {
             e.preventDefault()
+
+            let startDate = new Date(document.querySelector('#startDate').value).toString().substring(4,15)
+            let endDate = new Date(document.querySelector('#endDate').value).toString().substring(4,15)
             
-            let info = JSON.stringify({
+            let info = {
                 title:document.querySelector('#title').value,
-                startDate:document.querySelector('#startDate').value,
-                endDate:document.querySelector('#endDate').value,
+                startDate,
+                endDate,
                 venue:document.querySelector('#venue').value,
                 startTime:document.querySelector('#startTime').value,
                 endTime:document.querySelector('#endTime').value,
                 description:document.querySelector('#description').value,
                 domain:document.querySelector('#domain').value,
-            })
+            }
             
-            const response = await fetch('/admin/addInfo',{
+            const response = await fetch('/admin/addEvent',{
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
                 },
-                body:info
+                body:JSON.stringify(info)
             })
 
             const data = await response.json()
