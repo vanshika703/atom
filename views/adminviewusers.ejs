@@ -67,7 +67,7 @@
 
             let data = await response.json()
 
-            if(response.ok){
+            if(response.status === 200){
                 e.target.closest('tr').style.display = 'none'
             }
             console.log(data)
@@ -86,7 +86,7 @@
     
             let data = await response.json()
     
-            if(response.ok){
+            if(response.status === 200){
                 e.target.closest('tr').innerHTML = `<p style='color:red'>User promoted</p>`
             }
             console.log(data)

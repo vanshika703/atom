@@ -77,7 +77,7 @@
             const data = await response.json()
             
             document.querySelector('#infoMsg').innerHTML = data.msg
-            if(response.ok){
+            if(response.status === 200){
                 document.querySelector('#title').value = ""
                 document.querySelector('#date').value = ""
                 document.querySelector('#venue').value = ""

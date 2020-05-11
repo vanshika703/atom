@@ -131,13 +131,14 @@
 
             let data = await response.json()
 
-            document.querySelector('#taskMsg').innerHTML = data.msg
-
-            setTimeout(() => {
-                window.location = '/admin/addTask'
-            },2000)
-
-            console.log(task)
+            if(response.status === 200){
+                document.querySelector('#taskMsg').innerHTML = data.msg
+                console.log(task)
+    
+                setTimeout(() => {
+                    window.location = '/admin/addTask'
+                },2000)
+            }
         }
     </script>
 </body>

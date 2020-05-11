@@ -61,7 +61,7 @@
 
             let data = await response.json()
 
-            if(response.ok){
+            if(response.status === 200){
                 e.target.closest('tr').style.display = 'none'
             }
             console.log(data)
