@@ -30,9 +30,11 @@
             xhr.setRequestHeader('content-type','application/json')
 
             xhr.onload = function() {
-                document.querySelector('#msg').innerHTML = this.responseText
                 if(this.status === 200){
                     window.location = '/admin/dashboard'
+                }
+                else{
+                    document.querySelector('#msg').innerHTML = this.responseText
                 }
             }
             xhr.send(data) 
