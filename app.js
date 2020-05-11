@@ -1,9 +1,7 @@
 const express = require('express')
 const app = express()
 const mongodb = require('mongodb')
-const ObjectId = mongodb.ObjectId
 const session = require('express-session')
-const bcrypt = require('bcryptjs')
 const ejs = require('ejs')
 const dotenv = require('dotenv')
 dotenv.config()
@@ -28,5 +26,14 @@ app.use('/admin',adminRoute)
 app.get('*',(req,res) => {
     res.send('cannot find what you are looking for')
 })
+
 var PORT = process.env.PORT || 5000
-app.listen(PORT, () => console.log(`server up at http://localhost:${PORT}`))
+app.listen(PORT, () => {
+    console.log(`server up at http://localhost:${PORT}`)
+    mongoClient.connect(url,{useUnifiedTopology:true},(err,db) => {
+        if(err) throw err
+
+        app.locals.db = db
+        console.log("And db connected")
+    })
+})
