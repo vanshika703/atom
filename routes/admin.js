@@ -77,7 +77,7 @@ Router.get('/dashboard', (req,res) => {
 
 
 Router.get('/changePassword', (req,res) => {
-    res.render('adminchangepassword')
+    res.render('adminchangepassword',{user:req.session.user})
 })
 
 Router.post('/changePassword',(req,res) => {
@@ -136,7 +136,7 @@ Router.get('/viewEvents', (req,res) => {
         dbo.collection('events').find({}).toArray((dbErr,data) => {
             if(dbErr) throw dbErr
 
-            res.render('adminviewevents',{data})
+            res.render('adminviewevents',{data,user:req.session.user})
         })
     })
 })
@@ -151,7 +151,7 @@ Router.get('/viewMembers', (req,res) => {
         dbo.collection('users').find({ userType: 1 },{projection:{password:0}}).toArray((dbErr, tdians) => {
             if (dbErr) throw dbErr
             
-            res.render('adminviewmembers',{data:tdians})
+            res.render('adminviewmembers',{data:tdians,user:req.session.user})
         })
     })
 })
@@ -164,7 +164,7 @@ Router.get('/viewUsers', (req,res) => {
         db.db('atom').collection('users').find({userType:0},{projection:{password:0}}).toArray((dbErr,ntdians) => {
             if(dbErr) throw dbErr
 
-            res.render('adminviewusers',{data:ntdians})
+            res.render('adminviewusers',{data:ntdians,user:req.session.user})
         })
     })
 })
@@ -208,7 +208,7 @@ Router.get('/addTask',(req,res) => {
         dbo.collection('users').find({ userType: 1 },{projection:{password:0}}).toArray((dbErr, tdians) => {
             if (dbErr) throw dbErr
             
-            res.render('adminaddtask',{data:tdians})
+            res.render('adminaddtask',{data:tdians,user:req.session.user})
         })
     })
 })
