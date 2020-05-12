@@ -71,7 +71,7 @@
             let data = await response.json()
 
             if(response.status === 200){
-                e.target.closest('tr').style.display = 'none'
+                e.target.offsetParent.innerHTML = `Member deleted`
             }
             console.log(data)
         }

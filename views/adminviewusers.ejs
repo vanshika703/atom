@@ -77,7 +77,7 @@
             let data = await response.json()
 
             if(response.status === 200){
-                e.target.closest('tr').style.display = 'none'
+                e.target.offsetParent.innerHTML = `User deleted`
             }
             console.log(data)
         }
@@ -96,7 +96,7 @@
             let data = await response.json()
     
             if(response.status === 200){
-                e.target.closest('tr').innerHTML = `<p style='color:red'>User promoted</p>`
+                e.target.offsetParent.innerHTML = `User promoted`
             }
             console.log(data)
         }
