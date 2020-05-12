@@ -79,8 +79,8 @@ app.post('/register', (req,res)=>{
                     let transporter = nodemailer.createTransport({
                         service: 'gmail',
                         auth: {
-                          user: 'vanshi.loveart@gmail.com',
-                          pass: 'vanshika419'
+                          user: process.env.EMAIL,
+                          pass: process.env.PASSWORD
                         },
                         tls:{
                           rejectUnauthorized:false
@@ -88,7 +88,7 @@ app.post('/register', (req,res)=>{
                     });
                       
                     let mailOptions = {
-                        from: 'vanshi.loveart@gmail.com',
+                        from: process.env.EMAIL,
                         to: req.body.email,
                         subject: 'Confirmation email for Tdian register',
                         html: "<p>link is...<a href="+link+">Click here to verify....</a></p>"
@@ -161,9 +161,12 @@ app.post('/login', (req,res) =>{
         dbo.collection('users').findOne({email : req.body.email}, (dbErr, user)=>{
 
             if(dbErr) throw dbErr
+
+            if(!user) return res.status(400).send("user does not exist")
+
             console.log("user found")
 
-                if(user.verified === 1)
+                if(user.verified)
                 {
                     console.log("user is verified")
                     if(bcrypt.compareSync(req.body.password,user.password))
@@ -177,12 +180,12 @@ app.post('/login', (req,res) =>{
                     }
                     else
                     {
-                        res.send("Password does not match")
+                        return res.status(400).send("Password does not match")
                     }
                 }
                 else 
                 {
-                    res.send("User is not verified..please check email for verification link")
+                    return res.status(400).send("User is not verified..please check email for verification link")
                 }
         })
     })
