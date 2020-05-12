@@ -160,12 +160,23 @@ Router.get('/viewUsers', (req,res) => {
 
 Router.post('/delete', (req,res) => {
     let id = req.body.id
+    let from = req.query.from
     
     let db = req.app.locals.db
-    db.db('atom').collection('users').deleteOne({_id:new ObjectId(id)},(dbErr,result) => {
+    db.db('atom').collection(from).findOneAndDelete({_id:new ObjectId(id)},(dbErr,deleted) => {
         if(dbErr) return res.render('error')
         
-        console.log(result.deletedCount)
+        console.log(deleted.value)
+        let info = {
+            from,
+            data:deleted.value
+        }
+
+        db.db('atom').collection('garbage').insertOne(info, (error,result) => {
+            if(error) return res.render('error')
+
+            console.log(result)
+        })
         res.send({msg:'deleted'})
     })
 })

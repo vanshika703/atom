@@ -68,7 +68,7 @@
         async function deleteUser(e) {
             let id = e.target.offsetParent.firstElementChild.value
 
-            let response = await fetch(`/admin/delete`,{
+            let response = await fetch(`/admin/delete?from=users`,{
                 method: 'POST',
                 headers:{'content-type':'application/json'},
                 body:JSON.stringify({id})
