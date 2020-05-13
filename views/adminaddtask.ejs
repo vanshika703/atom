@@ -16,14 +16,24 @@
     <a href="/admin/addTask">Add Task</a>
     <hr>
     
-    <div style="width: 50%;">
+    <div>
         <p id="taskMsg"></p>
         <h2 style="text-align: center;">Task for members</h2>
 
         <form id="addTask">
             <input type="text" placeholder="Task title" id="taskTitle" required>
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" required>
             <label for="deadline">Deadline:</label>
             <input type="date" id="deadline" required>
+            <div class="phase-group">
+                <div class="phase">
+                    <input type="text" placeholder="Phase 1" class="phaseTitle" required>
+                    <label for="deadline">Till:</label>
+                    <input type="date" class="till" required>
+                </div>
+                <button id="add-phase">Add another phase</button>
+            </div>
             <textarea id="taskDescription" placeholder="Enter description here" required></textarea>
             <div id="res-group">
                 <input type="text" placeholder="Resource" class="resource" required>
@@ -36,7 +46,13 @@
                             <option value="<%= tdian._id %>"><%= tdian.name %></option>
                             <% } %>
                     </select>
-                    <input type="text" placeholder="Subtask" class="subtask" required>
+                    <div class="sub-group">
+                    	<input type="text" placeholder="Subtask" class="subtask" required>
+                    	<label for="from">From:</label>
+                    	<input type="date" class="from" required>
+                    	<label for="to">To:</label>
+                    	<input type="date" class="to" required>
+                    </div>
                     <button class="add-sub">Add another subtask</button>
                 </div>
                 <button id="add-mem">Add another member</button>
@@ -48,6 +64,7 @@
     <script>
         //Adding fields to task form
         document.querySelector('#add-res').addEventListener('click', addRes)
+        document.querySelector('#add-phase').addEventListener('click',addPhase)
         document.querySelector('#add-mem').addEventListener('click', addMem)
         document.querySelector('.add-sub').addEventListener('click', addSub)
 
@@ -63,28 +80,31 @@
         function addMem(e){
             e.preventDefault()
             let field = document.querySelector('.members').cloneNode(true)
-            let input = getSub()
+            let sub = getSub()
             let subBtn = getSubBtn()
             let memDiv = document.createElement('div')
             memDiv.classList.add('member')
             memDiv.appendChild(field)
-            memDiv.appendChild(input)
+            memDiv.appendChild(sub)
             memDiv.appendChild(subBtn)
             e.target.parentNode.insertBefore(memDiv,e.target)
         }
         
         function addSub(e){
             e.preventDefault()
-            let field = getSub()
-            e.target.parentNode.insertBefore(field,e.target)
+            let sub = getSub()
+            e.target.parentNode.insertBefore(sub,e.target)
         }
         
         function getSub(){
-            let field = document.createElement('input')
-            field.setAttribute('type','text')
-            field.setAttribute('class','subtask')
-            field.setAttribute('placeholder','Subtask')
-            return field
+            let div = document.createElement('div')
+            div.classList.add('sub-group')
+            div.innerHTML = `<input type="text" placeholder="Subtask" class="subtask">
+                    	<label for="from">From:</label>
+                    	<input type="date" class="from">
+                    	<label for="to">To:</label>
+                    	<input type="date" class="to">`
+            return div
         }
 
         function getSubBtn(){
@@ -92,6 +112,28 @@
             btn.addEventListener('click',addSub)
             return btn
         }
+
+        var phase_count = 1
+        function addPhase(e){
+            e.preventDefault()
+            let phase = getPhase()
+            e.target.parentNode.insertBefore(phase,e.target)
+        }
+
+        function getPhase(){
+            let div = document.createElement('div')
+            div.classList.add('phase')
+            div.innerHTML = `<input type="text" placeholder="Phase ${++phase_count}" class="phaseTitle">
+                    <label for="deadline">Till:</label>
+                    <input type="date" class="till">`
+            return div
+        }
+
+        //formatting dates
+        function getDate(date){
+            return new Date(date).toString().substring(4,15)
+        }
+        
         //Adding tasks
         document.querySelector('#addTask').addEventListener('submit',addTask)
 
@@ -100,15 +142,19 @@
 
             let members = document.querySelectorAll('.members')
             let resources = document.querySelectorAll('.resource')
+            let phases = document.querySelectorAll('.phase')
             let mem_list = []
             let res_list = []
+            let phase_list = []
 
             members.forEach(member => {
                 let sub_list = []
-                let subtasks = member.parentNode.querySelectorAll('.subtask')
+                let subtasks = member.parentNode.querySelectorAll('.sub-group')
                 subtasks.forEach(subtask => {
                     let object = {
-                        title: subtask.value,
+                        title: subtask.querySelector('.subtask').value,
+                        from:getDate(subtask.querySelector('.from').value),
+                        to:getDate(subtask.querySelector('.to').value),
                         status:0
                     }
                     sub_list.push(object)
@@ -120,12 +166,23 @@
                 }
                 mem_list.push(obj)
             })
+
             resources.forEach(resource => res_list.push(resource.value))
+
+            phases.forEach(phase => {
+                let obj = {
+                    title: phase.querySelector('.phaseTitle').value,
+                    deadline: getDate(phase.querySelector('.till').value)
+                }
+                phase_list.push(obj)
+            })
 
             let task = {
                 title:document.querySelector('#taskTitle').value,
-                deadline:document.querySelector('#deadline').value,
+                startDate:getDate(document.querySelector('#startDate').value),
+                deadline:getDate(document.querySelector('#deadline').value),
                 description:document.querySelector('#taskDescription').value,
+                phases:phase_list,
                 members:mem_list,
                 resources:res_list
             }
