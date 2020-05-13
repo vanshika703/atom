@@ -39,10 +39,15 @@
            <li>Description: <%= data[i].description %></li>
            <li>Added by: <%= data[i].addedBy %></li>
            <li>Added on: <%= data[i].addedOn %></li>
+           <div>
+               <input type="hidden" value="<%= data[i]._id %>">
+               <button class="deleteEvent">Delete</button>
+           </div>
        </ul>
     <% } %>
 
     <script>
+        //filter
         var buttons = document.querySelectorAll('.filter')
 
         buttons.forEach(button => {
@@ -57,6 +62,29 @@
                 else if(item.innerHTML !== 'Domain: '+c) item.parentNode.style.display='none'
                 else item.parentNode.style.display='block'
             })
+        }
+
+        //delete
+        document.querySelectorAll('.deleteEvent').forEach(btn => btn.addEventListener('click',deleteEvent))
+
+        async function deleteEvent(e) {
+            let id = e.target.previousElementSibling.value
+
+            let response = await fetch(`/admin/delete?from=events`,{
+                method: 'POST',
+                headers:{'content-type':'application/json'},
+                body:JSON.stringify({id})
+            })
+
+            let data = await response.json()
+
+            if(response.status === 200){
+                e.target.parentNode.innerHTML = `<p style="color:red">Event deleted</p>`
+                console.log(data.msg)
+            }
+            else{
+                e.target.parentNode.innerHTML = `<p style="color:red">Some error occured, please reload the page and try again</p>`
+            }
         }
     </script>
 </body>

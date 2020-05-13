@@ -22,10 +22,8 @@
 
         <form id="addEvent">
             <input type="text" placeholder="Event title" id="title" required>
-            <label for="startDate">Start Date</label>
-            <input type="date" id="startDate" required>
-            <label for="endDate">End Date</label>
-            <input type="date" id="endDate" required>
+            <label for="date">Date</label>
+            <input type="date" id="date" required>
             <input type="text" id="venue" placeholder="Venue" required>
             <label for="startTime">Start time</label>
             <input type="time" id="startTime" required>
@@ -52,13 +50,11 @@
         async function addEvent(e) {
             e.preventDefault()
 
-            let startDate = new Date(document.querySelector('#startDate').value).toString().substring(4,15)
-            let endDate = new Date(document.querySelector('#endDate').value).toString().substring(4,15)
+            let date = new Date(document.querySelector('#date').value).toString().substring(4,15)
             
             let info = {
                 title:document.querySelector('#title').value,
-                startDate,
-                endDate,
+                date,
                 venue:document.querySelector('#venue').value,
                 startTime:document.querySelector('#startTime').value,
                 endTime:document.querySelector('#endTime').value,
