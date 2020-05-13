@@ -3,34 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Event</title>
     <link rel="stylesheet" href="/css/style.css">
-    <title>Dashboard</title>
 </head>
 <body>
-    <h2>Welcome <%= user.name %></h2>
-    <a href="/admin/logout">Logout</a>
-    <a href="/admin/changePassword">Change Password</a>
-    <a href="/admin/viewEvents">View Events</a>
-    <a href="/admin/viewUsers">View Users</a>
-    <a href="/admin/viewMembers">View Members</a>
-    <a href="/admin/addTask">Add Task</a>
-    <hr>
-
     <div style="width: 50vw; float: left;">
         <p id="infoMsg"></p>
         <h2 style="text-align: center;">Recruitment Event</h2>
 
-        <form id="addEvent">
-            <input type="text" placeholder="Event title" id="title" required>
+        <form id="editEvent">
+            <input type="hidden" id="id" value="<%= event._id %>">
+            <input type="text" placeholder="Event title" id="title" value="<%= event.title %>" required>
             <label for="date">Date</label>
-            <input type="date" id="date" required>
-            <input type="text" id="venue" placeholder="Venue" required>
+            <% let date = new Date(event.date) %>
+            <% let day = date.getDate().toString() %>
+            <% if(day < 10) day = `0${day}` %>
+            <% let mon = (date.getMonth()+1).toString() %>
+            <% if(mon < 10) mon = `0${mon}` %>
+            <% let year = date.getFullYear().toString() %>
+            <% let fullDate = `${year}-${mon}-${day}` %>
+            <input type="date" id="date" value="<%= fullDate %>" required>
+            <input type="text" id="venue" placeholder="Venue" value="<%= event.venue %>" required>
             <label for="startTime">Start time</label>
-            <input type="time" id="startTime" required>
+            <input type="time" id="startTime" value="<%= event.startTime %>" required>
             <label for="endTime">End time</label>
-            <input type="time" id="endTime" required>
-            <textarea id="description" cols="30" rows="10" placeholder="Description" required></textarea>
+            <input type="time" id="endTime" value="<%= event.endTime %>" required>
+            <textarea id="description" cols="30" rows="10" placeholder="Description" required><%= event.description %></textarea>
             <select id="domain" style="margin-top: 1rem;">
+                <option value="none" selected disabled hidden>Select an option</option>
                 <option value="web">Web</option>
                 <option value="app">App</option>
                 <option value="hr">HR</option>
@@ -38,21 +38,22 @@
                 <option value="game">Game</option>
                 <option value="gd">Graphic Design</option>
             </select>
-            <input type="submit" value="Submit">
+            <input type="submit" value="Update">
         </form>
-    </div>    
+    </div>
 
     <script>
 
         // Adding recruitment info
-        document.querySelector('#addEvent').addEventListener('submit',addEvent)
+        document.querySelector('#editEvent').addEventListener('submit',editEvent)
         
-        async function addEvent(e) {
+        async function editEvent(e) {
             e.preventDefault()
 
             let date = new Date(document.querySelector('#date').value).toString().substring(4,15)
             
             let info = {
+                id:document.querySelector('#id').value,
                 title:document.querySelector('#title').value,
                 date,
                 venue:document.querySelector('#venue').value,
@@ -62,7 +63,7 @@
                 domain:document.querySelector('#domain').value,
             }
             
-            const response = await fetch('/admin/addEvent',{
+            const response = await fetch('/admin/editEvent',{
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'

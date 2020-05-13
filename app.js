@@ -23,7 +23,7 @@ const url = process.env.DB_URL
 const adminRoute = require('./routes/admin')
 app.use('/admin',adminRoute)
 
-app.get('*',(req,res) => {
+app.all('*',(req,res) => {
     res.send('cannot find what you are looking for')
 })
 

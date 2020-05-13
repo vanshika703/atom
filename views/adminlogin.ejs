@@ -20,6 +20,7 @@
 
         function adminLogin(e){
             e.preventDefault()
+            document.querySelector('#msg').innerHTML = ''
             var xhr = new XMLHttpRequest()
             
             let data = JSON.stringify({

@@ -39,10 +39,11 @@
            <li>Description: <%= data[i].description %></li>
            <li>Added by: <%= data[i].addedBy %></li>
            <li>Added on: <%= data[i].addedOn %></li>
-           <div>
-               <input type="hidden" value="<%= data[i]._id %>">
+           <form action="/admin/editEvent" method="GET">
+               <input type="hidden" value="<%= data[i]._id %>" name="id">
                <button class="deleteEvent">Delete</button>
-           </div>
+               <input type="submit" value="Edit">
+           </form>
        </ul>
     <% } %>
 
@@ -68,6 +69,7 @@
         document.querySelectorAll('.deleteEvent').forEach(btn => btn.addEventListener('click',deleteEvent))
 
         async function deleteEvent(e) {
+            e.preventDefault()
             let id = e.target.previousElementSibling.value
 
             let response = await fetch(`/admin/delete?from=events`,{

@@ -216,6 +216,33 @@ Router.post('/addTask',async(req,res) => {
     })
 })
 
+Router.get('/editEvent',(req,res) => {
+    let db = req.app.locals.db
+
+    db.db('atom').collection('events').findOne({_id:new ObjectId(req.query.id)},{projection:{password:0}},(err,event) => {
+        if(err) return res.render('error')
+
+        res.render('admineditevent',{event})
+    })
+})
+
+Router.post('/editEvent',(req,res) => {
+    req.body.editedBy = req.session.user.name
+    let date = new Date().toString().substring(4,15)
+    req.body.editedOn = date
+    let db = req.app.locals.db
+    let id = req.body.id
+    delete req.body.id
+
+    db.db('atom').collection('events').updateOne({_id:new ObjectId(id)},{$set:req.body},(err,result) => {
+        if(err) return res.render('error')
+
+        console.log(result)
+        res.json({msg:"updated"})
+    })
+})
+
+
 Router.all('/logout', (req,res) => {
     req.session.destroy()
     res.render('adminlogin',{msg : "you have been logged out"})
