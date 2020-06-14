@@ -22,10 +22,12 @@ const url = process.env.DB_URL
 
 const adminRoute = require('./routes/admin')
 app.use('/admin',adminRoute)
+const userRoute = require('./routes/user')
+app.use('/user',userRoute)
 
 app.all('*',(req,res) => {
     res.send('cannot find what you are looking for')
-})
+}) 
 
 var PORT = process.env.PORT || 5000
 app.listen(PORT, () => {

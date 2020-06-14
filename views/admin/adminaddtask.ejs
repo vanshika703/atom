@@ -146,23 +146,23 @@
             let mem_list = []
             let res_list = []
             let phase_list = []
+            let subtasks = []
 
             members.forEach(member => {
-                let sub_list = []
-                let subtasks = member.parentNode.querySelectorAll('.sub-group')
-                subtasks.forEach(subtask => {
+                let subs = member.parentNode.querySelectorAll('.sub-group')
+                subs.forEach(subtask => {
                     let object = {
                         title: subtask.querySelector('.subtask').value,
-                        from:getDate(subtask.querySelector('.from').value),
-                        to:getDate(subtask.querySelector('.to').value),
-                        status:0
+                        startDate:getDate(subtask.querySelector('.from').value),
+                        endDate:getDate(subtask.querySelector('.to').value),
+                        complete:false,
+                        member:member.value
                     }
-                    sub_list.push(object)
+                    subtasks.push(object)
                 })
                 let obj = {
                     name: member.selectedOptions[0].innerText,
-                    id: member.value,
-                    subtasks:sub_list
+                    id: member.value
                 }
                 mem_list.push(obj)
             })
@@ -184,7 +184,8 @@
                 description:document.querySelector('#taskDescription').value,
                 phases:phase_list,
                 members:mem_list,
-                resources:res_list
+                resources:res_list,
+                subtasks
             }
 
             let response = await fetch('/admin/addTask',{

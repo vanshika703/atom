@@ -4,12 +4,12 @@ const ObjectId = mongodb.ObjectId
 const bcrypt = require('bcryptjs')
 const {adminloginValidation,passwordValidation} = require('../validation')
 
-Router.get("/login", (req,res) => {
-    res.render("adminlogin",{msg:''})
+Router.get('/login', (req,res) => {
+    res.render('admin/adminlogin',{msg:''})
 })
 
-Router.get("/register", (req,res) => {
-    res.render("adminregister",{msg:''})
+Router.get('/register', (req,res) => {
+    res.render('admin/adminregister',{msg:''})
 })
 
 Router.post('/register', (req,res) => {
@@ -29,8 +29,8 @@ Router.post('/register', (req,res) => {
     dbo.collection('admins').insertOne(newData, (dbErr,result) => {
         if(dbErr) return res.render('error')
 
-        console.log("inserted"+result.insertedCount)
-        res.status(200).send("Registered!")
+        console.log('inserted'+result.insertedCount)
+        res.status(200).send('Registered!')
     })
 })
 
@@ -46,7 +46,7 @@ Router.post('/login', (req,res) => {
     dbo.collection('admins').find({email:req.body.email}).toArray((dbErr,result) => {
         if(dbErr) return res.render('error')
 
-        if(!result.length || !bcrypt.compareSync(req.body.password,result[0].password)) return res.status(400).send("Email/Password is wrong")
+        if(!result.length || !bcrypt.compareSync(req.body.password,result[0].password)) return res.status(400).send('Email/Password is wrong')
 
         req.session.user = {
             name:result[0].name,
@@ -64,7 +64,7 @@ Router.post('/login', (req,res) => {
 //middleware for authentication
 Router.use((req,res,next) => {
     if(req.session.user) next()
-    else res.render('adminlogin',{msg:"Please login to continue"})
+    else res.render('admin/adminlogin',{msg:'Please login to continue'})
 })
 
 //middleware to prevent caching for better logout
@@ -76,12 +76,12 @@ Router.use(function (req, res, next) {
 });
 
 Router.get('/dashboard', (req,res) => {
-    res.render('admindashboard',{user:req.session.user})
+    res.render('admin/admindashboard',{user:req.session.user})
 })
 
 
 Router.get('/changePassword', (req,res) => {
-    res.render('adminchangepassword',{user:req.session.user})
+    res.render('admin/adminchangepassword',{user:req.session.user})
 })
 
 Router.post('/changePassword',(req,res) => {
@@ -121,7 +121,7 @@ Router.post('/addEvent',(req,res) => {
         if(dbErr) return res.render('error')
         
         console.log(result.insertedCount)
-        res.send({msg:"Info added"})
+        res.send({msg:'Info added'})
     })
 })
 
@@ -133,7 +133,7 @@ Router.get('/viewEvents', (req,res) => {
     dbo.collection('events').find({}).toArray((dbErr,data) => {
         if(dbErr) return res.render('error')
 
-        res.render('adminviewevents',{data,user:req.session.user})
+        res.render('admin/adminviewevents',{data,user:req.session.user})
     })
 })
 
@@ -145,7 +145,7 @@ Router.get('/viewMembers', (req,res) => {
     dbo.collection('users').find({ userType: 1 },{projection:{password:0}}).toArray((dbErr, tdians) => {
         if (dbErr) return res.render('error')
         
-        res.render('adminviewmembers',{data:tdians,user:req.session.user})
+        res.render('admin/adminviewmembers',{data:tdians,user:req.session.user})
     })
 })
 
@@ -154,7 +154,7 @@ Router.get('/viewUsers', (req,res) => {
     db.db('atom').collection('users').find({userType:0},{projection:{password:0}}).toArray((dbErr,ntdians) => {
         if(dbErr) return res.render('error')
 
-        res.render('adminviewusers',{data:ntdians,user:req.session.user})
+        res.render('admin/adminviewusers',{data:ntdians,user:req.session.user})
     })
 })
 
@@ -198,21 +198,42 @@ Router.get('/addTask',(req,res) => {
     dbo.collection('users').find({ userType: 1 },{projection:{password:0}}).toArray((dbErr, tdians) => {
         if (dbErr) return res.render('error')
         
-        res.render('adminaddtask',{data:tdians,user:req.session.user})
+        res.render('admin/adminaddtask',{data:tdians,user:req.session.user})
     })
 })
 
 Router.post('/addTask',async(req,res) => {
-    req.body.addedBy = req.session.user.name
+    let {
+        title,
+        startDate,
+        deadline,
+        description,
+        phases,
+        members,
+        resources,
+        subtasks
+    } = req.body
+
+    let project = { title, startDate, deadline, description, phases, members, resources }
+    project.addedBy = req.session.user.name
     let date = new Date().toString().substring(4,15)
-    req.body.addedOn = date
+    project.addedOn = date
 
     let db = req.app.locals.db
-    db.db('atom').collection('tasks').insertOne(req.body,(dbErr,result) => {
+    db.db('atom').collection('tasks').insertOne(project,(dbErr,result) => {
         if(dbErr) return res.render('error')
 
-        console.log(result.insertedCount)
-        res.send({msg:'Task added. Page reloading in 2 seconds'})
+        console.log('Project: '+result.insertedCount)
+        subtasks.forEach(subtask => {
+            subtask.project = result.insertedId.toString()
+        })
+
+        db.db('atom').collection('subtasks').insertMany(subtasks, (err,output) => {
+            if(err) return res.render('error')
+
+            console.log(output.insertedCount)
+            res.send({msg:'Task added. Page reloading in 2 seconds'})
+        })
     })
 })
 
@@ -222,7 +243,7 @@ Router.get('/editEvent',(req,res) => {
     db.db('atom').collection('events').findOne({_id:new ObjectId(req.query.id)},{projection:{password:0}},(err,event) => {
         if(err) return res.render('error')
 
-        res.render('admineditevent',{event})
+        res.render('admin/admineditevent',{event})
     })
 })
 
@@ -238,14 +259,14 @@ Router.post('/editEvent',(req,res) => {
         if(err) return res.render('error')
 
         console.log(result)
-        res.json({msg:"updated"})
+        res.json({msg:'updated'})
     })
 })
 
 
 Router.all('/logout', (req,res) => {
     req.session.destroy()
-    res.render('adminlogin',{msg : "you have been logged out"})
+    res.render('admin/adminlogin',{msg : 'you have been logged out'})
 })
 
 module.exports = Router

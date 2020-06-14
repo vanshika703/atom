@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+        integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Project Details</title>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Hello <%=user.name%> <i class="fas fa-user"></i></a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="#">Chat</a></li>
+                <li><a href="#">Change password</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="card">
+        <div class="card-header">
+            <p>Title:<%= task.title %></p>
+            <p>From:<%= task.startDate %></p>
+            <p> Deadline:<%= task.deadline %></p>
+            <p> Description:<%= task.description %></p>
+        </div>
+        <div class="card-body">
+            <ul>
+                <h4>Resources:</h4>
+                <% task.resources.forEach(resource => {%>
+                <li>
+                    <p><%= resource %></p>
+                </li>
+                <%})%>
+            </ul>
+            <ul>
+                <h4>Phases:</h4>
+                <% task.phases.forEach(phase => {%>
+                <li>
+                    <p><%= phase.title %> till <%= phase.deadline %></p>
+                </li>
+                <%})%>
+            </ul>
+            <ul>
+                <h4>Your Tasks:</h4>
+                <% task.subtasks.forEach(subtask => {%>
+                    <li>
+                        <h5><%= subtask.title %> <%= subtask.complete?('(done)'):('(not done)') %> </h5>
+                        <p>From <%= subtask.startDate %></p>
+                        <p>To <%= subtask.endDate %></p>
+                        <% if(!subtask.complete) { %>
+                            <button id='<%= subtask._id %>' class='subtask-update btn-primary'>Done</button>
+                        <% } %>
+                    </li>
+                <%})%>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.subtask-update').forEach(btn => btn.addEventListener('click',updateSubtask))
+
+        async function updateSubtask(e){
+            let res = await fetch(`/user/update/${e.target.id}`,{
+                method:'PUT'
+            })
+            if(res.status === 200){
+                let data = await res.json()
+                console.log(data.msg)
+                e.target.style.display = 'none'
+            }
+        }
+    </script>
+</body>
+</html>

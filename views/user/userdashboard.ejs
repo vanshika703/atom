@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <title>Document</title>
+    <title>Dashboard</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
@@ -23,7 +23,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Hello <%=name%> <i class="fas fa-user"></i></a>
+                <a class="navbar-brand" href="#">Hello <%=user.name%> <i class="fas fa-user"></i></a>
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="#">Chat</a></li>
@@ -33,43 +33,20 @@
         </div>
     </nav>
     <ul>
-        <% for(var i=0; i<data.length; i++) { %>
+        <% tasks.forEach(task => { %>
         <li>
             <div class="card">
                 <div class="card-header">
-                    <p>Domain:<%= data[i].Domain %></p>
-                    <p>Title:<%= data[i].Title %></p>
-                    <p> Deadline:<%= data[i].Deadline %></p>
-                    <p> Description:<%= data[i].Description %></p>
+                    <p>Title:<%= task.title %></p>
+                    <p>From:<%= task.startDate %></p>
+                    <p> Deadline:<%= task.deadline %></p>
+                    <p> Description:<%= task.description %></p>
+                    <a href='/user/project/<%= task._id %>'>Know More</a>
                 </div>
             </div>
-            </button>
-            <div class="card-body">
-                <ul>
-                    Resources:
-                    <% for(var k=0; k<data[i].arrr.length; k++) {%>
-                    <li>
-                        <p><%= data[i].arrr[k] %></p>
-                    </li>
-                    <%}%>
-                </ul>
-                <ul>
-                    <p> Your Tasks:</p>
-                    <% for(var j=0; j<data[i].arrayy.length; j++) {%>
-                        <li>
-                            <form class="formm">
-                                <input type="checkbox" name="checkbox" class="checkbox" value="1"><%=data[i].arrayy[j].status%><%=data[i].arrayy[j].subname%>
-                                <button type="submit">update</button>
-                            </form>
-                        </li>
-                    <%}%>
-                </ul>
         </li>
-        <%}%>
+        <%})%>
     </ul>
-    <div class="w3-border">
-        <div class="w3-grey" style="height:24px;width:9px"></div>
-    </div>
 </body>
 
 </html>
