@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
-        integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -34,6 +35,9 @@
             <p> Description:<%= task.description %></p>
         </div>
         <div class="card-body">
+            <div class="w3-grey w3-round-xlarge" style="width:50%">
+                <div class="w3-container w3-blue w3-round-xlarge w3-center" style="width:<%= task.percentage %>%"><%= task.percentage %>%</div>
+            </div>
             <ul>
                 <h4>Resources:</h4>
                 <% task.resources.forEach(resource => {%>
@@ -54,7 +58,8 @@
                 <h4>Your Tasks:</h4>
                 <% task.subtasks.forEach(subtask => {%>
                     <li>
-                        <h5><%= subtask.title %> <%= subtask.complete?('(done)'):('(not done)') %> </h5>
+                        <h5><%= subtask.title %> </h5>
+                        <h6>**<%= subtask.complete?('done'):('not done') %></h6>
                         <p>From <%= subtask.startDate %></p>
                         <p>To <%= subtask.endDate %></p>
                         <% if(!subtask.complete) { %>
@@ -77,6 +82,8 @@
                 let data = await res.json()
                 console.log(data.msg)
                 e.target.style.display = 'none'
+                e.target.parentElement.childNodes[3].innerHTML = '**done'
+                location.reload()
             }
         }
     </script>

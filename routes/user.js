@@ -4,8 +4,8 @@ const ObjectId = mongodb.ObjectId
 
 Router.get('/dash',async(req,res) => {
     let user = {
-        name:'Vanshika',
-        id:'5ebd06df12899630eccdd23e'
+        name:'Arindam',
+        id:'5ebfd0562f97d128fcb82780'
     }
     
     let db = req.app.locals.db
@@ -23,8 +23,8 @@ Router.get('/dash',async(req,res) => {
 
 Router.get('/project/:id',async(req,res) => {
     let user = {
-        name:'Vanshika',
-        id:'5ebd06df12899630eccdd23e'
+        name:'Arindam',
+        id:'5ebfd0562f97d128fcb82780'
     }
     let { id } = req.params
 
@@ -37,7 +37,14 @@ Router.get('/project/:id',async(req,res) => {
         //subtasks of the user in that task
         let subtasks = await db.db('atom').collection('subtasks').find({project:id,member:user.id}).toArray()
 
+        let completed = 0
+
+        subtasks.forEach(subtask => {
+            if(subtask.complete) completed++
+        })
+
         task.subtasks = subtasks
+        task.percentage = Math.round((completed/subtasks.length)*100)
 
         res.render('user/userproject',{task,user})
 
