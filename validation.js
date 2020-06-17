@@ -9,7 +9,7 @@ const adminloginValidation = data => {
     return schema.validate(data)
 }
 
-const passwordValidation = data => {
+const changePasswordValidation = data => {
     const schema = Joi.object({
         currentPassword:Joi.string().min(8).required(),
         newPassword:Joi.string().min(8).required().disallow(Joi.ref('currentPassword')).error((err) => {
@@ -22,5 +22,30 @@ const passwordValidation = data => {
     return schema.validate(data)
 }
 
-module.exports.passwordValidation = passwordValidation
+const registerValidation = data => {
+    const schema = Joi.object({
+        name : Joi.string().min(3).required(),
+        email : Joi.string().required().email(),
+        regno : Joi.string().required().min(15).max(15),
+        password : Joi.string().min(8).required(),
+        dept : Joi.string().min(3).required(),
+        year : Joi.required(),
+        domain : Joi.required()
+    })
+
+    return schema.validate(data)
+}
+
+const loginValidation = data => {
+    const schema = Joi.object({
+        email:Joi.string().required().email(),
+        password:Joi.string().min(8).required()
+    })
+
+    return schema.validate(data)
+}
+
+module.exports.registerValidation = registerValidation
+module.exports.loginValidation = loginValidation
+module.exports.changePasswordValidation = changePasswordValidation
 module.exports.adminloginValidation = adminloginValidation

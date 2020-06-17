@@ -1,6 +1,7 @@
 const Router = require('express').Router()
 const mongodb = require('mongodb')
 const ObjectId = mongodb.ObjectId
+const { loginValidation,registerValidation } = require('../validation')
 
 Router.get('/dash',async(req,res) => {
     let user = {

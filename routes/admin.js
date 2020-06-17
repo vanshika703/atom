@@ -2,7 +2,7 @@ const Router = require('express').Router()
 const mongodb = require('mongodb')
 const ObjectId = mongodb.ObjectId
 const bcrypt = require('bcryptjs')
-const {adminloginValidation,passwordValidation} = require('../validation')
+const {adminloginValidation,changePasswordValidation} = require('../validation')
 
 Router.get('/login', (req,res) => {
     res.render('admin/adminlogin',{msg:''})
@@ -86,7 +86,7 @@ Router.get('/changePassword', (req,res) => {
 
 Router.post('/changePassword',(req,res) => {
 
-    let {error} = passwordValidation(req.body)
+    let {error} = changePasswordValidation(req.body)
     if(error) return res.status(400).send(error.details[0].message) 
     
     let db = req.app.locals.db
