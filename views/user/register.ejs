@@ -23,8 +23,21 @@
     </form>
     <h2>Or Sign In with Google</h2>
     <div class="g-signin2" data-onsuccess="onSignIn" data-onfailure="onSignInFailure"></div>
-    <p id="msg"></p>
-    <a href="#" onclick="signOut();">Sign out</a>
+    <p id="msg" style="color:red"></p>
+    <a href="#" id="sign-out" onclick="signOut();">Sign out</a>
+
+    <form action="/user/registerInfo" method="POST" style="display: none;">
+        <input type="text" id="register-token" name="token">
+        <input type="submit" id="register-btn">
+    </form>
+    <form action="/user/dashboard" method="POST" style="display: none;">
+        <input type="text" id="member-token" name="token">
+        <input type="submit" id="member-btn">
+    </form>
+    <form action="/user/primaryDash" method="POST" style="display: none;">
+        <input type="text" id="user-token" name="token">
+        <input type="submit" id="user-btn">
+    </form>
 
     <script>
         document.getElementById('reg-form').addEventListener('submit', submitForm)
@@ -43,7 +56,7 @@
                     'Content-type': 'application/json'
                 },
                 body:JSON.stringify({email, password, captcha})
-            }).catch(console.error)
+            })
 
             let data = await response.json()
             if(response.status === 200){
@@ -63,18 +76,33 @@
             var id_token = googleUser.getAuthResponse().id_token;
             console.log(id_token)
     
-            await fetch('/googleLogIn', {
+            let response = await fetch('/user/googleLogIn', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({id_token})
             })
-    
-            /* let data = await response.json()
-            if(response.status === 200)
-                console.log(data) */
-    
+
+            let data = await response.json()
+            console.log(data)
+
+            if(response.status === 200){
+                localStorage.setItem('token',data.token)
+                document.querySelector('#register-token').value = data.token
+                document.querySelector('#register-btn').click()
+            } else if(response.status === 201){
+                localStorage.setItem('token',data.token)
+                document.querySelector('#member-token').value = data.token
+                document.querySelector('#member-btn').click()
+            } else if(response.status === 202){
+                localStorage.setItem('token',data.token)
+                document.querySelector('#user-token').value = data.token
+                document.querySelector('#user-btn').click()
+            } else {
+                document.querySelector('#sign-out').click()
+                document.querySelector('#msg').innerHTML = data.msg
+            }
         }
         function signOut() {
             var auth2 = gapi.auth2.getAuthInstance();

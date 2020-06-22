@@ -1,4 +1,5 @@
 const Router = require('express').Router()
+const jwt = require('jsonwebtoken')
 
 const mongodb = require('mongodb')
 const ObjectId = mongodb.ObjectId
@@ -10,7 +11,7 @@ const fetch = require('node-fetch')
 const {OAuth2Client} = require('google-auth-library')
 const client = new OAuth2Client("523384873779-e29ttamvfnbfkhb650ppufoas5qmr328.apps.googleusercontent.com")
 
-const { loginValidation,registerValidation } = require('../validation')
+const { loginValidation } = require('../validation')
 
 let host
 let rand
@@ -36,7 +37,7 @@ Router.post('/register', async(req,res)=>{
 
     if(!data.success) return res.status(400).json({"msg":"Failed captcha verification! Please reload the page and try again"})
 
-    let { error } = registerValidation({ email,password })
+    let { error } = loginValidation({ email,password })
     if(error) return res.status(400).json({msg:error.details[0].message})
 
     let db = req.app.locals.db
@@ -46,58 +47,57 @@ Router.post('/register', async(req,res)=>{
         if(err) return res.render('error')
 
         //if user exists
-        if(user)
-            return res.status(400).json({msg:"This email is already registered!"})
-        else{
-            //hashing password
-            const salt = await bcrypt.genSalt(10)
-            const hashedPassword = await bcrypt.hash(password, salt)
+        if(user) return res.status(400).json({msg:"This email is already registered!"})
+        
+        //hashing password
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password, salt)
 
-            //new user info
-            let userInfo = {
-                email,
-                password : hashedPassword,
-                userType : 0,
-                verified : 0,
-                registered : 0
-            }
-
-            dbo.collection('users').insertOne(userInfo, (dbErr,result)=>{
-                if(dbErr) return res.render('error')
-
-                host = req.get('host')
-                rand = result.insertedId
-                link = "http://"+req.get('host')+"/user/verify?id="+rand;
-
-                let transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    auth: {
-                        user: process.env.EMAIL,
-                        pass: process.env.PASSWORD
-                    },
-                    tls:{
-                        rejectUnauthorized:false
-                    }
-                });
-                
-                let mailOptions = {
-                    from: process.env.EMAIL,
-                    to: email,
-                    subject: 'Confirmation email for Tdian register',
-                    html: "<p>link is...<a href="+link+">Click here to verify....</a></p>"
-                };
-                
-                transporter.sendMail(mailOptions, function(error, info){
-                    if (error) {
-                        console.error(error);
-                    } else {
-                        console.log('Email sent: ' + info.response);
-                    }
-                });
-
-                res.json({msg:"Check email for verification link"})
-            })
+        //new user info
+        let userInfo = {
+            email,
+            password : hashedPassword,
+            userType : 0, //0 for non-member, 1 for member
+            verified : 0,
+            registered : 0,
+            registrationType: 0 //0 for normal registration, 1 for google log in
         }
+
+        dbo.collection('users').insertOne(userInfo, (dbErr,result)=>{
+            if(dbErr) return res.render('error')
+
+            host = req.get('host')
+            rand = result.insertedId
+            link = "http://"+req.get('host')+"/user/verify?id="+rand;
+
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.PASSWORD
+                },
+                tls:{
+                    rejectUnauthorized:false
+                }
+            });
+            
+            let mailOptions = {
+                from: process.env.EMAIL,
+                to: email,
+                subject: 'Confirmation email for Tdian register',
+                html: "<p>link is...<a href="+link+">Click here to verify....</a></p>"
+            };
+            
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    console.error(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+
+            res.json({msg:"Check email for verification link"})
+        })
     })    
 })
 
@@ -133,8 +133,80 @@ Router.get('/login', (req,res)=>{
     res.render('user/login')
 })
 
+//Normal Email Login
+Router.post('/login', (req,res) =>{
 
-Router.get('/dash',async(req,res) => {
+    let {email,password} = req.body
+
+    let { error } = loginValidation({ email,password })
+    if(error) return res.status(400).json({msg:error.details[0].message})
+
+    let db = req.app.locals.db
+    let dbo = db.db('atom')
+
+    dbo.collection('users').findOne({email,registrationType:0}, (dbErr, user)=>{
+        if(dbErr) return res.render('error')
+
+        if(!user) return res.status(400).json({msg:"Incorrect credentials!"})
+
+        if(!user.verified) return res.status(400).json({msg:"Email has not been verified yet. Please check email for verification link"})
+        
+        if(!bcrypt.compareSync(password,user.password)) return res.status(400).json({msg:"Incorrect credentials!"})
+        
+        let token = jwt.sign({id:user._id,type:user.userType},process.env.TOKEN_SECRET,{expiresIn:3600})
+        if(!user.registered) return res.status(200).json({token,msg:"proceed to register info"})
+        if(user.userType) return res.status(201).json({token,msg:"proceed to member dashboard"})
+        else if (!user.userType) return res.status(202).json({token,msg:"proceed to user dashboard"})
+    })
+})
+
+Router.post('/googleLogIn', async(req,res) => {
+
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: req.body.id_token,
+            audience: "523384873779-e29ttamvfnbfkhb650ppufoas5qmr328.apps.googleusercontent.com"
+        })
+        const payload = ticket.getPayload()
+        const email = payload['email']
+        
+        let db = req.app.locals.db
+        let dbo = db.db('atom')
+    
+        let user = await dbo.collection('users').findOne({email})
+
+        if(!user) {
+            let userInfo = {
+                email,
+                userType : 0,
+                registered : 0,
+                registrationType: 1 //0 for normal registration, 1 for google log in
+            }
+            let result = await dbo.collection('users').insertOne(userInfo)
+            let token = jwt.sign({id:result.insertedId,type:0},process.env.TOKEN_SECRET,{expiresIn:3600})
+            return res.status(200).json({token,msg:"proceed to register info"})
+
+        } else if(!user.registrationType) {
+            return res.status(400).json({msg:'This email is already registered. Please proceed to login!'})
+        } else {
+
+            let token = jwt.sign({id:user._id,type:user.userType},process.env.TOKEN_SECRET,{expiresIn:3600})
+
+            if(!user.registered) return res.status(200).json({token,msg:"proceed to register info"})
+            if(user.userType) return res.status(201).json({token,msg:"proceed to member dashboard"})
+            else if (!user.userType) return res.status(202).json({token,msg:"proceed to user dashboard"})
+            
+        }
+    } catch (error) {
+        console.error(error)
+        return res.status(400).json({msg:'Server error occured! Please refresh and try again!'})
+    }
+})
+
+Router.post('/primaryDash',auth,(req,res) => res.send(`you're a regsitered user`))
+Router.post('/registerInfo',auth,(req,res) => res.send(`you're not a regsitered user`))
+
+Router.post('/dashboard', auth, async(req,res) => {
     let user = {
         name:'Arindam',
         id:'5ebfd0562f97d128fcb82780'
@@ -146,7 +218,7 @@ Router.get('/dash',async(req,res) => {
         //all tasks the user is involved in
         let tasks = await db.db('atom').collection('tasks').find({'members.id':user.id}).toArray()
 
-        res.render('user/userdashboard',{tasks,user})
+        res.render('user/memberdashboard',{tasks,user})
     } catch (error) {
         console.error(error)
         return res.render('error')
@@ -178,7 +250,7 @@ Router.get('/project/:id',async(req,res) => {
         task.subtasks = subtasks
         task.percentage = Math.round((completed/subtasks.length)*100)
 
-        res.render('user/userproject',{task,user})
+        res.render('user/memberproject',{task,user})
 
     } catch (error) {
         console.error(error)
