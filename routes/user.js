@@ -11,7 +11,7 @@ const fetch = require('node-fetch')
 const {OAuth2Client} = require('google-auth-library')
 const client = new OAuth2Client("523384873779-e29ttamvfnbfkhb650ppufoas5qmr328.apps.googleusercontent.com")
 
-const { loginValidation } = require('../validation')
+const { loginValidation, registerInfoValidation } = require('../validation')
 
 let host
 let rand
@@ -203,8 +203,53 @@ Router.post('/googleLogIn', async(req,res) => {
     }
 })
 
+Router.post('/userRegister',auth,(req,res) => {
+    res.render('user/userRegister',{msg:''})
+})
+
+Router.post('/registerInfo', async(req,res) =>{
+
+    let {token} = req.body 
+
+    if(!token) return res.status(401).json({msg:'not authorized'})
+    
+    try {
+        let user = jwt.verify(token,process.env.TOKEN_SECRET)
+    
+        if(!user) return res.status(401).json({msg:'not authorized'})
+    
+        delete req.body.token
+    
+        let { error } = registerInfoValidation(req.body)
+        if(error) return res.render('user/userRegister',{msg:error.details[0].message})
+    
+        let db = req.app.locals.db
+        let dbo = db.db("atom")
+    
+        let userInfo = {
+            name : req.body.name,
+            regno : req.body.regno,
+            dept : req.body.dept,
+            year : req.body.year,
+            batch : req.body.batch,
+            contactno : req.body.contactno,
+            whatsappno : req.body.whatsappno,
+            domain1 : req.body.domain1,
+            domain2 : req.body.domain2,
+            registered : 1
+        }
+    
+        await dbo.collection('users').updateOne({_id:new ObjectId(user.id)},  { $set: userInfo })
+        if(!user.type) return res.redirect(`/user/primarydash/`) //add token in the url
+        else return res.redirect('/user/dashboard') //add token in the url
+        
+    } catch (error) {
+        console.error(error)
+        res.render('error')
+    }
+})
+
 Router.post('/primaryDash',auth,(req,res) => res.send(`you're a regsitered user`))
-Router.post('/registerInfo',auth,(req,res) => res.send(`you're not a regsitered user`))
 
 Router.post('/dashboard', auth, async(req,res) => {
     let user = {
