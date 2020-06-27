@@ -73,10 +73,13 @@
 
     <script>
         document.querySelectorAll('.subtask-update').forEach(btn => btn.addEventListener('click',updateSubtask))
-
+        let token = localStorage.getItem('token')
         async function updateSubtask(e){
             let res = await fetch(`/user/update/${e.target.id}`,{
-                method:'PUT'
+                method:'PUT',
+                headers:{
+                    'x-auth-token':token
+                }
             })
             if(res.status === 200){
                 let data = await res.json()

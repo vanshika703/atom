@@ -41,12 +41,18 @@
                     <p>From:<%= task.startDate %></p>
                     <p> Deadline:<%= task.deadline %></p>
                     <p> Description:<%= task.description %></p>
-                    <a href='/user/project/<%= task._id %>'>Know More</a>
+                    <a class="project-link" href='/user/project/<%= task._id %>'>Know More</a>
                 </div>
             </div>
         </li>
         <%})%>
     </ul>
+
+    <script>
+        let token = localStorage.getItem('token')
+        let links = document.querySelectorAll('.project-link')
+        links.forEach(link => link.href+=`/${token}`)
+    </script>
 </body>
 
 </html>

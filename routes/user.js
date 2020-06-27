@@ -203,25 +203,103 @@ Router.post('/googleLogIn', async(req,res) => {
     }
 })
 
+Router.get('/forgotpassword', (req,res) => {
+    res.render('user/forgotpassword')
+})
+
+Router.post('/forgotpassword', async(req,res) => {
+
+    let db = req.app.locals.db
+
+    try {
+        
+        let dbo = db.db("atom")
+        let user = await dbo.collection('users').findOne({email : req.body.email,registrationType:0 })
+        if(!user) return res.json({msg:"No such user found!"})
+    
+        host = req.get('host')
+        rand = user._id
+        link = "http://"+req.get('host')+"/user/verifypasswordlink?id="+rand;
+    
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: process.env.EMAIL,
+              pass: process.env.PASSWORD
+            },
+            tls:{
+              rejectUnauthorized:false
+            }
+        });
+          
+        let mailOptions = {
+            from: process.env.EMAIL,
+            to: req.body.email,
+            subject: 'Change password link for TD Atom',
+            html: "<p>password reset link is...<a href="+link+">Click here to reset....</a></p>"
+        };
+          
+        transporter.sendMail(mailOptions, function(error, info){
+            if(error) throw error
+            
+            res.json({msg:"Please check your email"});
+            
+        })
+    } catch (error) {
+        console.error(error)
+        res.json({msg:'Server error'})
+    }
+})
+
+Router.get('/verifypasswordlink', (req,res) => {
+
+    if((req.protocol+"://"+req.get('host'))==("http://"+host))
+    {
+        res.render('user/changepassword', {id: req.query.id})
+    } 
+    else {
+        res.send("Some error occured. Please try again!")
+    }
+})
+
+Router.post('/changepassword', async(req,res) => {
+
+    let password = req.body.newPassword
+
+    if(password.length<8) return res.json({msg:'Password length must atleast be 8'})
+    
+    let db = req.app.locals.db
+
+    try {
+        
+    } catch (error) {
+        console.error(error)
+        res.json({msg:'Server error'})
+    }
+
+    let dbo = db.db('atom')
+    let user = await dbo.collection('users').findOne({_id : new ObjectId(req.body.id)}) 
+    if(!user) return res.json({msg:"no such user found"})
+
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+
+    await dbo.collection('users').updateOne({_id : new ObjectId(req.body.id) }, { $set: {password : hashedPassword} })
+
+    res.json({msg:"Password updated succesfully"})
+})
+
 Router.post('/userRegister',auth,(req,res) => {
     res.render('user/userRegister',{msg:''})
 })
 
-Router.post('/registerInfo', async(req,res) =>{
-
-    let {token} = req.body 
-
-    if(!token) return res.status(401).json({msg:'not authorized'})
+Router.post('/registerInfo', auth, async(req,res) =>{
     
+    let { token } = req.body 
+    delete req.body.token
+    let { error } = registerInfoValidation(req.body)
+    if(error) return res.render('user/userRegister',{msg:error.details[0].message})
     try {
-        let user = jwt.verify(token,process.env.TOKEN_SECRET)
-    
-        if(!user) return res.status(401).json({msg:'not authorized'})
-    
-        delete req.body.token
-    
-        let { error } = registerInfoValidation(req.body)
-        if(error) return res.render('user/userRegister',{msg:error.details[0].message})
     
         let db = req.app.locals.db
         let dbo = db.db("atom")
@@ -239,9 +317,9 @@ Router.post('/registerInfo', async(req,res) =>{
             registered : 1
         }
     
-        await dbo.collection('users').updateOne({_id:new ObjectId(user.id)},  { $set: userInfo })
-        if(!user.type) return res.redirect(`/user/primarydash/`) //add token in the url
-        else return res.redirect('/user/dashboard') //add token in the url
+        await dbo.collection('users').updateOne({_id:new ObjectId(req.userId)},{ $set: userInfo })
+        if(!req.userType) return res.redirect(`/user/primarydash/${token}`)
+        else return res.redirect(`/user/dashboard/${token}`)
         
     } catch (error) {
         console.error(error)
@@ -249,19 +327,158 @@ Router.post('/registerInfo', async(req,res) =>{
     }
 })
 
-Router.post('/primaryDash',auth,(req,res) => res.send(`you're a regsitered user`))
+Router.get('/profile/:token', authParams, async(req,res) => {
+    
+    try {
+
+        let db = req.app.locals.db
+        let dbo = db.db("atom")
+        let user = await dbo.collection('users').findOne({_id:new ObjectId(req.userId)})
+
+        res.render('user/profile', {user})
+        
+    } catch (error) {
+        console.error(error)
+        res.render('error')
+    }
+})
+
+Router.post('/primaryDash',auth, async(req,res) => {
+    try {
+
+        let db = req.app.locals.db
+        let dbo = db.db("atom")
+        let loggedUser = await dbo.collection('users').findOne({_id:new ObjectId(req.userId)})
+
+        let query = { domain : loggedUser.domain1 }
+
+        let result = await dbo.collection("events").find(query).toArray()
+        let today = new Date()
+
+        res.render('user/primary', {result , today})
+        
+    } catch (error) {
+        console.error(error)
+        res.render('error')
+    }
+})
+
+Router.get('/primarydash/:token', authParams, async(req,res) => {
+    
+    try {
+
+        let db = req.app.locals.db
+        let dbo = db.db("atom")
+        let user = await dbo.collection('users').findOne({_id:new ObjectId(req.userId)})
+
+        let query = { domain : user.domain1 }
+
+        let result = await dbo.collection("events").find(query).toArray()
+        let today = new Date()
+
+        res.render('user/primary', {result , today})
+        
+    } catch (error) {
+        console.error(error)
+        res.render('error')
+    }
+})
+
+Router.get('/secondarydash/:token', authParams, async(req,res) => {
+    
+    try {
+
+        let db = req.app.locals.db
+        let dbo = db.db("atom")
+        let user = await dbo.collection('users').findOne({_id:new ObjectId(req.userId)})
+
+        let query = { domain : user.domain2 }
+
+        let result = await dbo.collection("events").find(query).toArray()
+        let today = new Date()
+
+        res.render('user/secondary', {result , today})
+        
+    } catch (error) {
+        console.error(error)
+        res.render('error')
+    }
+})
+
+Router.post('/attendance', authHeader, async(req,res) => {
+
+    let db = req.app.locals.db
+
+    try {
+        
+        let user = await db.db('atom').collection('users').findOne({_id:new ObjectId(req.userId)})
+        let { name,email } = user
+        
+        let dbo = db.db("atom")
+        let result = await dbo.collection('events').findOne({_id : new ObjectId(req.body.id) })
+        if(result.attendance){
+            for(let i=0; i<result.attendance.length; i++){
+                if(email === result.attendance[i].email)
+                {
+                    console.log("given atn")
+                    return res.json({msg:"already marked attendance"})
+                    break
+                }
+            }
+        }
+        
+        let attendInfo = {
+            name,
+            email,
+            willAttend : req.body.attendance
+        }
+    
+        await dbo.collection('events').updateOne({_id : new ObjectId(req.body.id) },  { $push :{ attendance:  attendInfo }})
+        res.json({msg : "Thankyou for response of attendance"})
+
+    } catch (error) {
+        console.error(error)
+        res.json({msg:'Server error'})
+    }
+})
+
+Router.post('/feedback', authHeader, async(req,res) => {
+
+    let db = req.app.locals.db
+
+    try {
+        
+        let user = await db.db('atom').collection('users').findOne({_id:new ObjectId(req.userId)})
+        let { name,email } = user
+        let dbo = db.db("atom")
+        let feedbackInfo = {
+            name,
+            email,
+            environment : req.body.env,
+            speaker : req.body.speaker,
+            understanding : req.body.understanding,
+            suggestion : req.body.suggestion
+        }
+    
+        await dbo.collection('events').updateOne({_id : new ObjectId(req.body.id) },  { $push :{ feedback:  feedbackInfo }})
+        res.json({msg : "Thankyou for giving feedback"})
+
+    } catch (error) {
+        console.error(error)
+        res.json({msg:'Server error'})
+    }
+
+
+})
 
 Router.post('/dashboard', auth, async(req,res) => {
-    let user = {
-        name:'Arindam',
-        id:'5ebfd0562f97d128fcb82780'
-    }
     
     let db = req.app.locals.db
 
     try {
+        let user = await db.db('atom').collection('users').findOne({_id:new ObjectId(req.userId)})
         //all tasks the user is involved in
-        let tasks = await db.db('atom').collection('tasks').find({'members.id':user.id}).toArray()
+        let tasks = await db.db('atom').collection('tasks').find({'members.id':req.userId}).toArray()
 
         res.render('user/memberdashboard',{tasks,user})
     } catch (error) {
@@ -270,21 +487,21 @@ Router.post('/dashboard', auth, async(req,res) => {
     }
 })
 
-Router.get('/project/:id',async(req,res) => {
-    let user = {
-        name:'Arindam',
-        id:'5ebfd0562f97d128fcb82780'
-    }
+Router.get('/project/:id/:token', authParams, async(req,res) => {
+
     let { id } = req.params
 
     let db = req.app.locals.db
 
     try {
+
+        let user = await db.db('atom').collection('users').findOne({_id:new ObjectId(req.userId)})
+
         //finding the task that is requested
         let task = await db.db('atom').collection('tasks').findOne({_id:new ObjectId(id)})
 
         //subtasks of the user in that task
-        let subtasks = await db.db('atom').collection('subtasks').find({project:id,member:user.id}).toArray()
+        let subtasks = await db.db('atom').collection('subtasks').find({project:id,member:req.userId}).toArray()
 
         let completed = 0
 
@@ -303,23 +520,54 @@ Router.get('/project/:id',async(req,res) => {
     }
 })
 
-Router.put('/update/:id',async(req,res) => {
+Router.put('/update/:id',authHeader,async(req,res) => {
     let { id } = req.params
 
     let db = req.app.locals.db
 
     try {
+        let subtask = await db.db('atom').collection('subtasks').findOne({_id:new ObjectId(id)})
+        if(!subtask) return res.render('error')
+        if(subtask.member !== req.userId) return res.send('Not authorised!')
+
         await db.db('atom').collection('subtasks').updateOne({_id:new ObjectId(id)},{$set:{complete:true}})
         res.json({msg:'Updated'})
     } catch (error) {
         console.error(error)
         return res.status(500).json({msg:'Server Error!'})
     }
-
 })
 
 function auth(req,res,next){
     let token = req.body.token
+
+    if(!token) return res.status(401).json({msg:'not authorized'})
+
+    jwt.verify(token,process.env.TOKEN_SECRET,(err,user) => {
+        if(err) return res.status(400).json({msg:'token does not match'})
+
+        req.userId = user.id
+        req.userType = user.type
+        next()
+    })
+}
+
+function authParams(req,res,next){
+    let {token} = req.params
+
+    if(!token) return res.status(401).json({msg:'not authorized'})
+
+    jwt.verify(token,process.env.TOKEN_SECRET,(err,user) => {
+        if(err) return res.status(400).json({msg:'token does not match. Please login again'})
+
+        req.userId = user.id
+        req.userType = user.type
+        next()
+    })
+}
+
+function authHeader(req,res,next){
+    let token = req.headers['x-auth-token']
 
     if(!token) return res.status(401).json({msg:'not authorized'})
 
