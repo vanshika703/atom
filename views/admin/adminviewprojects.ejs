@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Info</title>
+</head>
+<body>
+    <h2>Welcome <%= user.name %></h2>
+    <a href="/admin/logout">Logout</a>
+    <a href="/admin/dashboard">Dashboard</a>
+    <a href="/admin/changePassword">Change Password</a>
+    <a href="/admin/viewEvents">View Events</a>
+    <a href="/admin/viewUsers">View Users</a>
+    <a href="/admin/viewMembers">View Members</a>
+    <a href="/admin/addTask">Add Task</a>
+    <a href="/admin/viewProjects">View Projects</a>
+    <hr>
+
+    <h2>Member Projects</h2>
+    <% for(let task of data){ %>
+       <ul>
+           <li>Title: <%= task.title %></li>
+           <li>Start Date: <%= task.startDate %></li>
+           <li>Deadline: <%= task.deadline %></li>
+           <li>Description: <%= task.description %></li>
+           <h4>Resources</h4>
+           <ul>
+               <% task.resources.forEach(res => { %>
+                    <li><%= res %> </li>
+               <% }) %>
+           </ul>
+           <h4>Phases</h4>
+           <ul>
+               <% task.phases.forEach(phase => { %>
+                <li><%= phase.title %> till <%= phase.deadline %>  </li>
+                <% }) %>
+            </ul>
+            <h4>Members</h4>
+           <ul>
+               <% task.members.forEach(member => { %>
+                    <li><%= member.name %> </li>
+               <% }) %>
+           </ul>
+           <li>Added by: <%= task.addedBy %></li>
+           <li>Added on: <%= task.addedOn %></li>
+           <!-- <form action="/admin/editProject" method="GET">
+               <input type="hidden" value="<%= task._id %>" name="id">
+               <button class="deleteTask">Delete</button>
+               <input type="submit" value="Edit">
+           </form> -->
+       </ul>
+       <hr>
+    <% } %>
+
+    <script>
+
+        //delete
+        document.querySelectorAll('.deleteEvent').forEach(btn => btn.addEventListener('click',deleteEvent))
+
+        async function deleteEvent(e) {
+            e.preventDefault()
+            let id = e.target.previousElementSibling.value
+
+            let response = await fetch(`/admin/delete?from=tasks`,{
+                method: 'POST',
+                headers:{'content-type':'application/json'},
+                body:JSON.stringify({id})
+            })
+
+            let data = await response.json()
+
+            if(response.status === 200){
+                e.target.parentNode.innerHTML = `<p style="color:red">Project deleted</p>`
+                console.log(data.msg)
+            }
+            else{
+                e.target.parentNode.innerHTML = `<p style="color:red">Some error occured, please reload the page and try again</p>`
+            }
+        }
+    </script>
+</body>
+</html>

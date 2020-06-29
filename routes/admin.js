@@ -137,6 +137,22 @@ Router.get('/viewEvents', (req,res) => {
     })
 })
 
+Router.get('/viewProjects', async(req,res) => {
+    let db = req.app.locals.db
+    
+    try {
+        //all tasks
+        let tasks = await db.db('atom').collection('tasks').find({}).toArray()
+        tasks = tasks.reverse()
+        
+
+        res.render('admin/adminviewprojects',{data:tasks,user:req.session.user})
+    } catch (error) {
+        console.error(error)
+        return res.render('error')
+    }
+})
+
 Router.get('/viewMembers', (req,res) => {
     
     let db = req.app.locals.db
@@ -257,7 +273,7 @@ Router.post('/addTask',async(req,res) => {
 Router.get('/editEvent',(req,res) => {
     let db = req.app.locals.db
 
-    db.db('atom').collection('events').findOne({_id:new ObjectId(req.query.id)},{projection:{password:0}},(err,event) => {
+    db.db('atom').collection('events').findOne({_id:new ObjectId(req.query.id)},(err,event) => {
         if(err) return res.render('error')
 
         res.render('admin/admineditevent',{event})
