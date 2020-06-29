@@ -30,13 +30,41 @@
             <input type="time" id="endTime" value="<%= event.endTime %>" required>
             <textarea id="description" cols="30" rows="10" placeholder="Description" required><%= event.description %></textarea>
             <select id="domain" style="margin-top: 1rem;">
-                <option value="none" selected disabled hidden>Select an option</option>
-                <option value="web">Web</option>
-                <option value="app">App</option>
-                <option value="hr">HR</option>
-                <option value="iot">IOT</option>
-                <option value="game">Game</option>
-                <option value="gd">Graphic Design</option>
+                <% if(event.domain == 'web') { %> 
+                    <option value="web" selected>Web</option>
+                <% } else { %> 
+                    <option value="web">Web</option>
+                <% } %> 
+
+                <% if(event.domain == 'app') { %> 
+                    <option value="app" selected>App</option>
+                <% } else { %> 
+                    <option value="app">App</option>
+                <% } %> 
+
+                <% if(event.domain == 'hr') { %> 
+                    <option value="hr" selected>HR</option>
+                <% } else { %> 
+                    <option value="hr">HR</option>
+                <% } %> 
+
+                <% if(event.domain == 'iot') { %> 
+                    <option value="iot" selected>IOT</option>
+                <% } else { %> 
+                    <option value="iot">IOT</option>
+                <% } %> 
+
+                <% if(event.domain == 'game') { %> 
+                    <option value="game" selected>Game</option>
+                <% } else { %> 
+                    <option value="game">Game</option>
+                <% } %> 
+                
+                <% if(event.domain == 'gd') { %> 
+                    <option value="gd" selected>Graphic Design</option>
+                <% } else { %> 
+                    <option value="gd">Graphic Design</option>
+                <% } %>
             </select>
             <input type="submit" value="Update">
         </form>

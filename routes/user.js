@@ -471,7 +471,39 @@ Router.post('/feedback', authHeader, async(req,res) => {
 
 })
 
+Router.get('/memberprofile/:token', authParams, async(req,res) => {
+    
+    try {
+
+        let db = req.app.locals.db
+        let dbo = db.db("atom")
+        let user = await dbo.collection('users').findOne({_id:new ObjectId(req.userId)})
+
+        res.render('user/memberprofile', {user})
+        
+    } catch (error) {
+        console.error(error)
+        res.render('error')
+    }
+})
+
 Router.post('/dashboard', auth, async(req,res) => {
+    
+    let db = req.app.locals.db
+
+    try {
+        let user = await db.db('atom').collection('users').findOne({_id:new ObjectId(req.userId)})
+        //all tasks the user is involved in
+        let tasks = await db.db('atom').collection('tasks').find({'members.id':req.userId}).toArray()
+
+        res.render('user/memberdashboard',{tasks,user})
+    } catch (error) {
+        console.error(error)
+        return res.render('error')
+    }
+})
+
+Router.get('/dashboard/:token', authParams, async(req,res) => {
     
     let db = req.app.locals.db
 

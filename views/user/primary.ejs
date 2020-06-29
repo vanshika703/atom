@@ -66,7 +66,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/profile">TD</a>
+        <a class="navbar-brand" href="#">TD</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -83,6 +83,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="http://think-digital.in/">Our Website</a>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" id="logout-btn" style="cursor: pointer;">Logout</button>
             </li>
           </ul>
         </div>
@@ -158,8 +161,16 @@
       </div>
     </div>
     <script>
+      //adding the token to all links
       let token = localStorage.getItem('token')
       document.querySelectorAll('.dynamic-link').forEach(link => link.href+=`/${token}`)
+
+      //logout functionality
+      document.querySelector('#logout-btn').addEventListener('click',() => {
+        localStorage.removeItem('token')
+        window.location = '/user/login'
+      })
+
       let atns = document.querySelectorAll('.attendance')
 
       atns.forEach(atn => {

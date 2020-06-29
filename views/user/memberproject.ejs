@@ -21,9 +21,10 @@
                 <a class="navbar-brand" href="#">Hello <%=user.name%> <i class="fas fa-user"></i></a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="#">Chat</a></li>
-                <li><a href="#">Change password</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="/user/memberprofile" class="dynamic-link">Profile</a></li>
+                <li><a href="/user/dashboard" class="dynamic-link">Dashboard</a></li>
+                <li><a href="http://think-digital.in/">Our Website</a></li>
+                <li><button id="logout-btn">Logout</button></li>
             </ul>
         </div>
     </nav>
@@ -72,8 +73,18 @@
     </div>
 
     <script>
-        document.querySelectorAll('.subtask-update').forEach(btn => btn.addEventListener('click',updateSubtask))
         let token = localStorage.getItem('token')
+
+        //adding the token to all links
+        document.querySelectorAll('.dynamic-link').forEach(link => link.href+=`/${token}`)
+
+        //logout functionality
+        document.querySelector('#logout-btn').addEventListener('click',() => {
+            localStorage.removeItem('token')
+            window.location = '/user/login'
+        })
+
+        document.querySelectorAll('.subtask-update').forEach(btn => btn.addEventListener('click',updateSubtask))
         async function updateSubtask(e){
             let res = await fetch(`/user/update/${e.target.id}`,{
                 method:'PUT',

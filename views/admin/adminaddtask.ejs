@@ -9,6 +9,7 @@
 <body>
     <h2>Welcome <%= user.name %></h2>
     <a href="/admin/logout">Logout</a>
+    <a href="/admin/dashboard">Dashboard</a>
     <a href="/admin/changePassword">Change Password</a>
     <a href="/admin/viewEvents">View Events</a>
     <a href="/admin/viewUsers">View Users</a>
@@ -42,6 +43,8 @@
             <div id="mem-group">
                 <div class="member">
                     <select class="members">
+                        <option value="" disabled selected>Select a member</option>
+
                         <% for(let tdian of data) { %>
                             <option value="<%= tdian._id %>"><%= tdian.name %></option>
                             <% } %>

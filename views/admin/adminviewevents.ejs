@@ -8,6 +8,7 @@
 <body>
     <h2>Welcome <%= user.name %></h2>
     <a href="/admin/logout">Logout</a>
+    <a href="/admin/dashboard">Dashboard</a>
     <a href="/admin/changePassword">Change Password</a>
     <a href="/admin/viewEvents">View Events</a>
     <a href="/admin/viewUsers">View Users</a>
@@ -27,13 +28,7 @@
        <ul>
            <li>Title: <%= data[i].title %></li>
            <li class="domain">Domain: <%= data[i].domain %></li>
-           <% let endDate = new Date(data[i].endDate) %>
-           <% let startDate = new Date(data[i].startDate) %>
-           <% if(endDate.getTime() === startDate.getTime()){ %>
-           <li>Date: <%= data[i].startDate %></li>
-           <% } else { %>
-           <li>Date: From <%= data[i].startDate %> To <%= data[i].endDate %></li>
-           <% } %>
+           <li>Date: <%= data[i].date %></li>
            <li>Time: From <%= data[i].startTime %> To <%= data[i].endTime %></li>
            <li>Venue: <%= data[i].venue %></li>
            <li>Description: <%= data[i].description %></li>

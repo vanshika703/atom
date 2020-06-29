@@ -10,19 +10,20 @@
             border-collapse: collapse;
         }
         table{
-            width: 80%;
+            width: 100%;
         }
         th,td {
             height:2rem;
         }
         td{
-            padding-left: 50px;
+            padding-left: 15px;
         }
     </style>
 </head>
 <body>
     <h2>Welcome <%= user.name %></h2>
     <a href="/admin/logout">Logout</a>
+    <a href="/admin/dashboard">Dashboard</a>
     <a href="/admin/changePassword">Change Password</a>
     <a href="/admin/viewEvents">View Events</a>
     <a href="/admin/viewUsers">View Users</a>
@@ -34,20 +35,28 @@
     <table>
         <tr>
             <th>Name</th>
-            <th>Interested Domain</th>
+            <th>Primary Domain</th>
+            <th>Secondary Domain</th>
             <th>Year</th>
             <th>Department</th>
         </tr>
         <% for(let user of data){ %>
             <tr>
                 <td><%= user.name %></td>
-                <td><%= user.domain %></td>
+                <td><%= user.domain1 %></td>
+                <td><%= user.domain2 %></td>
                 <td><%= user.year %></td>
                 <td><%= user.dept %></td>
                 <td>
                     <input type="hidden" class="id" value="<%= user._id %>">
-                    <button class="deleteBtn">Delete user</button>
+                    <select class="domain-list">
+                        <option value="" disabled selected>Select a domain to promote</option>
+                        <option value="<%= user.domain1 %>"><%= user.domain1 %></option>
+                        <option value="<%= user.domain2 %>"><%= user.domain2 %></option>
+                    </select>
                     <button class="promoteBtn">Promote to member</button>
+                    <button class="deleteBtn">Delete user</button>
+                    <a href="/admin/viewprofile/<%= user._id %>">View More</a>
                 </td>
             </tr>
          <% } %>
@@ -85,12 +94,15 @@
         async function promoteUser(e) {
             let id = e.target.offsetParent.firstElementChild.value
 
+            let selectedDomain = e.target.offsetParent.childNodes[3].value
+            if(!selectedDomain) return alert('please choose a domain to promote to')
+
             let response = await fetch(`/admin/promote`,{
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
                 },
-                body:JSON.stringify({id})
+                body:JSON.stringify({id,domain:selectedDomain})
             })
     
             let data = await response.json()

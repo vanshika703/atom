@@ -142,7 +142,7 @@ Router.get('/viewMembers', (req,res) => {
     let db = req.app.locals.db
     let dbo= db.db('atom')
 
-    dbo.collection('users').find({ userType: 1 },{projection:{password:0}}).toArray((dbErr, tdians) => {
+    dbo.collection('users').find({ userType: 1,registered:1 },{projection:{password:0}}).toArray((dbErr, tdians) => {
         if (dbErr) return res.render('error')
         
         res.render('admin/adminviewmembers',{data:tdians,user:req.session.user})
@@ -151,13 +151,30 @@ Router.get('/viewMembers', (req,res) => {
 
 Router.get('/viewUsers', (req,res) => {
     let db = req.app.locals.db
-    db.db('atom').collection('users').find({userType:0},{projection:{password:0}}).toArray((dbErr,ntdians) => {
+    db.db('atom').collection('users').find({userType:0,registered:1},{projection:{password:0}}).toArray((dbErr,ntdians) => {
         if(dbErr) return res.render('error')
 
         res.render('admin/adminviewusers',{data:ntdians,user:req.session.user})
     })
 })
 
+Router.get('/viewprofile/:id', (req,res) => {
+    let db = req.app.locals.db
+    db.db('atom').collection('users').findOne({_id:new ObjectId(req.params.id)},{projection:{password:0}},(dbErr,user) => {
+        if(dbErr) return res.render('error')
+
+        res.render('admin/adminviewprofile',{user})
+    })
+})
+
+Router.get('/viewmemberprofile/:id', (req,res) => {
+    let db = req.app.locals.db
+    db.db('atom').collection('users').findOne({_id:new ObjectId(req.params.id)},{projection:{password:0}},(dbErr,user) => {
+        if(dbErr) return res.render('error')
+
+        res.render('admin/adminviewmemberprofile',{user})
+    })
+})
 Router.post('/delete', (req,res) => {
     let id = req.body.id
     let from = req.query.from
@@ -179,10 +196,10 @@ Router.post('/delete', (req,res) => {
 })
 
 Router.post('/promote', (req,res) => {
-    let id = req.body.id
+    let {id,domain} = req.body
 
     let db = req.app.locals.db
-    db.db('atom').collection('users').updateOne({_id:new ObjectId(id)},{$set:{userType:1}},(dbErr,result) => {
+    db.db('atom').collection('users').updateOne({_id:new ObjectId(id)},{$set:{userType:1,domain}},(dbErr,result) => {
         if(dbErr) return res.render('error')
         
         console.log(result.modifiedCount)

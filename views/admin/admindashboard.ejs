@@ -9,11 +9,13 @@
 <body>
     <h2>Welcome <%= user.name %></h2>
     <a href="/admin/logout">Logout</a>
+    <a href="/admin/dashboard">Dashboard</a>
     <a href="/admin/changePassword">Change Password</a>
     <a href="/admin/viewEvents">View Events</a>
     <a href="/admin/viewUsers">View Users</a>
     <a href="/admin/viewMembers">View Members</a>
     <a href="/admin/addTask">Add Task</a>
+    <a href="/admin/viewTasks">View Tasks</a>
     <hr>
 
     <div style="width: 50vw; float: left;">
@@ -31,6 +33,7 @@
             <input type="time" id="endTime" required>
             <textarea id="description" cols="30" rows="10" placeholder="Description" required></textarea>
             <select id="domain" style="margin-top: 1rem;">
+                <option value="" disabled selected>Select a domain</option>
                 <option value="web">Web</option>
                 <option value="app">App</option>
                 <option value="hr">HR</option>
