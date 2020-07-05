@@ -6,6 +6,17 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Document</title>
     <style>
+        .sidenav{
+          height: 100vh;
+          width: 100px;
+          position: fixed;
+          top: 0;
+          left: 0;
+
+        }
+        .nontdnav{
+          list
+        }
         .step{
             height: 50px;
             width: 50px;
@@ -70,8 +81,8 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+        <div class="collapse navbar-collapse sidenav" id="navbarNav">
+          <ul class="navbar-nav nontdnav">
             <li class="nav-item">
               <a class="nav-link dynamic-link" href="/user/profile">Profile<span class="sr-only">(current)</span></a>
             </li>
