@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <h3><%= event.title %> </h3>
+    <h5>Date : <%= event.date %> </h5>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Rating (out of 5)</th>
+            <th>Suggestion</th>
+        </tr>
+        <% event.feedback.forEach(entry => { %>
+            <tr>
+                <td>Name: <%= entry.name %> </td>
+                <td>Email: <%= entry.email %> </td>
+                <td>
+                    <p>Environment: <%= entry.environment %> </p>
+                    <p>Speaker: <%= entry.speaker %> </p>
+                    <p>Understanding: <%= entry.understanding %> </p>
+                </td>
+                <td><%= entry.suggestion %> </td>
+            </tr>
+        <% }) %>
+    </table>
+</body>
+</html>

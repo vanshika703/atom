@@ -137,6 +137,32 @@ Router.get('/viewEvents', (req,res) => {
     })
 })
 
+Router.get('/viewFeedback/:id',async(req,res) => {
+    
+    let db = req.app.locals.db
+    try {
+        let event = await db.db('atom').collection('events').findOne({_id:new ObjectId(req.params.id)})
+        res.render('admin/viewfeedback',{event})
+        
+    } catch (error) {
+        console.error(error)
+        res.render('error')
+    }
+})
+
+Router.get('/viewAttendance/:id',async(req,res) => {
+    
+    let db = req.app.locals.db
+    try {
+        let event = await db.db('atom').collection('events').findOne({_id:new ObjectId(req.params.id)})
+        res.render('admin/viewattendance',{event})
+        
+    } catch (error) {
+        console.error(error)
+        res.render('error')
+    }
+})
+
 Router.get('/viewProjects', async(req,res) => {
     let db = req.app.locals.db
     

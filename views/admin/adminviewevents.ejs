@@ -39,7 +39,13 @@
                <input type="hidden" value="<%= data[i]._id %>" name="id">
                <button class="deleteEvent">Delete</button>
                <input type="submit" value="Edit">
-           </form>
+            </form>
+            <% if (data[i].feedback) { %>
+             <a href="/admin/viewFeedback/<%= data[i]._id %>">View Feedback</a>
+            <% } %>
+            <% if (data[i].attendance) { %>
+             <a href="/admin/viewAttendance/<%= data[i]._id %>">View Attendance</a>
+            <% } %>
        </ul>
     <% } %>
 
