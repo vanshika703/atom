@@ -3,122 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-signin-client_id" content="523384873779-e29ttamvfnbfkhb650ppufoas5qmr328.apps.googleusercontent.com">
-    
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <title>Login</title>
-    <style>
-        body{
-            background-color: #ffffff;
-            overflow: hidden;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .login-container{
-            height: 100vh;
-            width: 100vw;
-        }
-        .login-row{
-            height: 100vh;
-        }
-        .login-animation{
-            background-color: #BFEFFF;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .login-form{
-            z-index: 1;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
-        }
-        .login-form h1{
-            color:#26A4E2;
-        }
-        .login-form span{
-            color:#218EC4;
-        }
-        .login-form h3{
-            color:#BFEFFF;
-        }
-        .login-form p{
-            color:#A9A9A9;
-        }
-        .login-form a{
-            color:#26A4E2;
-        }
-        #login-form{
-            height: 30vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
-            margin-top: 8%;
-        }
-        #login-form input{
-            border: none;
-            border-bottom: 2px solid #BFEFFF ;
-        }
-        #login-form input::placeholder{
-            color:#A9A9A9;
-        }
-        .login-btn{
-            background-color: #BFEFFF;
-            color: #ffffff;
-            border-radius: 24px;
-            padding: 4px 12px;
-        }
-    </style>
 </head>
 <body>
-    <div class="login-container">
-
-        <div class="row login-row">
-            <div class="col-lg-6 login-animation">
-                <lottie-player src="/img/animation.json"  background="transparent"  speed="1"  style="width: 400px; height: 400px;"  loop autoplay></lottie-player>
-                <h1 class="mt-4" style="color: #26A4E2;">Think <span>Digital</span></h1>
-            </div>
-            
-            <div class="col-lg-6 login-form">
-                <h3 class="mt-5">Welcome to TD</h3>
-                
-                <form id="login-form">
-                    <input type="email" placeholder="email" id="email">
-                    <input type="password" placeholder="password" id="password">
-                    <input class="login-btn" type="submit" value="Login">
-                </form>
-                
-                <form action="/user/userRegister" method="POST" style="display: none;">
-                    <input type="text" id="register-token" name="token">
-                    <input type="submit" id="register-btn">
-                </form>
-                <form action="/user/dashboard" method="POST" style="display: none;">
-                    <input type="text" id="member-token" name="token">
-                    <input type="submit" id="member-btn">
-                </form>
-                <form action="/user/primaryDash" method="POST" style="display: none;">
-                    <input type="text" id="user-token" name="token">
-                    <input type="submit" id="user-btn">
-                </form>
-                <p id="msg" style="color:red"></p>
-                <a href="/user/forgotpassword">forgot password?</a>
-                
-                <p>or</p>
-                <div class="g-signin2" data-onsuccess="onSignIn" data-onfailure="onSignInFailure"></div>
-
-                
-                
-                <p>Not regsitered? Register<a href="/user"> Here</a></p>
-            </div>
-        </div>
-    </div>
-    
+    <h4 style="margin:5px">Not regsitered?</h4>
+    <a href="/user">Register Here</a>
+    <form id="login-form" style="margin-top: 10px;">
+        <input type="email" placeholder="email" id="email">
+        <input type="password" placeholder="password" id="password">
+        <input type="submit" value="Login">
+    </form>
+    <form action="/user/userRegister" method="POST" style="display: none;">
+        <input type="text" id="register-token" name="token">
+        <input type="submit" id="register-btn">
+    </form>
+    <form action="/user/dashboard" method="POST" style="display: none;">
+        <input type="text" id="member-token" name="token">
+        <input type="submit" id="member-btn">
+    </form>
+    <form action="/user/primaryDash" method="POST" style="display: none;">
+        <input type="text" id="user-token" name="token">
+        <input type="submit" id="user-btn">
+    </form>
+    <p id="msg" style="color:red"></p>
+    <a href="/user/forgotpassword">forgot password?</a>
 
     <script>
         document.getElementById('login-form').addEventListener('submit', submitForm)
