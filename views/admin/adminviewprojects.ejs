@@ -44,11 +44,11 @@
            </ul>
            <li>Added by: <%= task.addedBy %></li>
            <li>Added on: <%= task.addedOn %></li>
-           <!-- <form action="/admin/editProject" method="GET">
+           <form action="/admin/editProject" method="GET">
                <input type="hidden" value="<%= task._id %>" name="id">
                <button class="deleteTask">Delete</button>
                <input type="submit" value="Edit">
-           </form> -->
+           </form>
        </ul>
        <hr>
     <% } %>
@@ -56,7 +56,7 @@
     <script>
 
         //delete
-        document.querySelectorAll('.deleteEvent').forEach(btn => btn.addEventListener('click',deleteEvent))
+        document.querySelectorAll('.deleteTask').forEach(btn => btn.addEventListener('click',deleteEvent))
 
         async function deleteEvent(e) {
             e.preventDefault()

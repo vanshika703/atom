@@ -534,15 +534,24 @@ Router.get('/project/:id/:token', authParams, async(req,res) => {
 
         //subtasks of the user in that task
         let subtasks = await db.db('atom').collection('subtasks').find({project:id,member:req.userId}).toArray()
-
+        
+        //bugs of the user in that task
+        let bugs = await db.db('atom').collection('bugs').find({project:id,member:req.userId}).toArray()
+        
         let completed = 0
+        let total = subtasks.length+bugs.length
 
         subtasks.forEach(subtask => {
             if(subtask.complete) completed++
         })
+        
+        bugs.forEach(bug => {
+            if(bug.complete) completed++
+        })
 
         task.subtasks = subtasks
-        task.percentage = Math.round((completed/subtasks.length)*100)
+        task.bugs = bugs
+        task.percentage = Math.round((completed/total)*100)
 
         res.render('user/memberproject',{task,user})
 
@@ -563,6 +572,24 @@ Router.put('/update/:id',authHeader,async(req,res) => {
         if(subtask.member !== req.userId) return res.send('Not authorised!')
 
         await db.db('atom').collection('subtasks').updateOne({_id:new ObjectId(id)},{$set:{complete:true}})
+        res.json({msg:'Updated'})
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({msg:'Server Error!'})
+    }
+})
+
+Router.put('/updateBug/:id',authHeader,async(req,res) => {
+    let { id } = req.params
+
+    let db = req.app.locals.db
+
+    try {
+        let bug = await db.db('atom').collection('bugs').findOne({_id:new ObjectId(id)})
+        if(!bug) return res.render('error')
+        if(bug.member !== req.userId) return res.send('Not authorised!')
+
+        await db.db('atom').collection('bugs').updateOne({_id:new ObjectId(id)},{$set:{complete:true}})
         res.json({msg:'Updated'})
     } catch (error) {
         console.error(error)
