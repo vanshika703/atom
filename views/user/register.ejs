@@ -5,41 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-signin-client_id" content="523384873779-e29ttamvfnbfkhb650ppufoas5qmr328.apps.googleusercontent.com">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    
     <title>Registeration Page</title>
+
+    <style>
+        body{
+            background-color: #ffffff;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .reg-container{
+            height: 100vh;
+            width: 100vw;
+        }
+        .reg-row{
+            height: 100vh;
+        }
+        .reg-animation{
+            background-color: #BFEFFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .reg-form{
+            z-index: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .reg-form h6{
+            color:#26A4E2;
+        }
+        .reg-form span{
+            color:#218EC4;
+        }
+        .reg-form h3{
+            color:#BFEFFF;
+        }
+        .reg-form p{
+            color:#A9A9A9;
+        }
+        .reg-form a{
+            color:#26A4E2;
+        }
+        #reg-form{
+            height: 40vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 8%;
+        }
+        #reg-form input{
+            border: none;
+            border-bottom: 2px solid #BFEFFF ;
+        }
+        #reg-form input::placeholder{
+            color:#A9A9A9;
+        }
+        .reg-btn{
+            background-color: #BFEFFF;
+            color: #ffffff;
+            border-radius: 24px;
+            padding: 4px 12px;
+        }
+    </style>
+
 </head>
-<body style="text-align: center; height: 100vh;">
-    <h4>Already regsitered in?</h4>
-    <a href="/user/login">Login Here</a>
-    <h2>Register with email</h2>
-    <form id="reg-form" style="display: flex; flex-direction: column; justify-content: space-around; align-items: center; height: 60%;">
-        
-        <input type="email" name="email" id="email" placeholder="Email">
-        
-        <input type="password" name="password" id="password" placeholder="Password">
+<body>
+    <div class="reg-container">
+        <div class="row reg-row">
+            <div class="col-lg-6 reg-animation">
+                <lottie-player src="/img/animation.json"  background="transparent"  speed="1"  style="width: 400px; height: 400px;"  loop autoplay></lottie-player>
+                <h1 class="mt-4" style="color: #26A4E2;">Think <span>Digital</span></h1>
+            </div>
 
-        <div class="g-recaptcha" data-sitekey="6Lfie_kUAAAAACG2c9bShoCfR7ov1Setigc9Q6BH"></div>
-        <p id="captcha-msg"></p>
-        <input type="submit">
-    </form>
-    <h2>Or Sign In with Google</h2>
-    <div class="g-signin2" data-onsuccess="onSignIn" data-onfailure="onSignInFailure"></div>
-    <p id="msg" style="color:red"></p>
-    <a href="#" id="sign-out" onclick="signOut();">Sign out</a>
+            <div class="col-lg-6 reg-form">
+                <h3 class="mt-5">Welcome to TD</h3>
+                
+                <h6>Register with email</h6>
+                <form id="reg-form">
+                    
+                    <input type="email" name="email" id="email" placeholder="Email">
+                    
+                    <input type="password" name="password" id="password" placeholder="Password">
 
-    <form action="/user/userRegister" method="POST" style="display: none;">
-        <input type="text" id="register-token" name="token">
-        <input type="submit" id="register-btn">
-    </form>
-    <form action="/user/dashboard" method="POST" style="display: none;">
-        <input type="text" id="member-token" name="token">
-        <input type="submit" id="member-btn">
-    </form>
-    <form action="/user/primaryDash" method="POST" style="display: none;">
-        <input type="text" id="user-token" name="token">
-        <input type="submit" id="user-btn">
-    </form>
+                    <div class="g-recaptcha" data-sitekey="6Lfie_kUAAAAACG2c9bShoCfR7ov1Setigc9Q6BH"></div>
+                    <p id="captcha-msg"></p>
+                    <input class="reg-btn" type="submit">
+                </form>
+                <h6>Or Sign In with Google</h6>
+                <div class="g-signin2" data-onsuccess="onSignIn" data-onfailure="onSignInFailure"></div>
+                <p id="msg" style="color:red"></p>
+                <!-- <a href="#" id="sign-out" onclick="signOut();">Sign out</a> -->
+
+                <p>Already regsitered in?<a href="/user/login">Login Here</a></p>
+
+                <form action="/user/userRegister" method="POST" style="display: none;">
+                    <input type="text" id="register-token" name="token">
+                    <input type="submit" id="register-btn">
+                </form>
+                <form action="/user/dashboard" method="POST" style="display: none;">
+                    <input type="text" id="member-token" name="token">
+                    <input type="submit" id="member-btn">
+                </form>
+                <form action="/user/primaryDash" method="POST" style="display: none;">
+                    <input type="text" id="user-token" name="token">
+                    <input type="submit" id="user-btn">
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script>
         document.getElementById('reg-form').addEventListener('submit', submitForm)
