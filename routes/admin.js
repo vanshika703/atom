@@ -137,6 +137,32 @@ Router.get('/viewEvents', (req,res) => {
     })
 })
 
+Router.get('/viewFeedback/:id',async(req,res) => {
+    
+    let db = req.app.locals.db
+    try {
+        let event = await db.db('atom').collection('events').findOne({_id:new ObjectId(req.params.id)})
+        res.render('admin/viewfeedback',{event})
+        
+    } catch (error) {
+        console.error(error)
+        res.render('error')
+    }
+})
+
+Router.get('/viewAttendance/:id',async(req,res) => {
+    
+    let db = req.app.locals.db
+    try {
+        let event = await db.db('atom').collection('events').findOne({_id:new ObjectId(req.params.id)})
+        res.render('admin/viewattendance',{event})
+        
+    } catch (error) {
+        console.error(error)
+        res.render('error')
+    }
+})
+
 Router.get('/viewProjects', async(req,res) => {
     let db = req.app.locals.db
     
@@ -145,7 +171,6 @@ Router.get('/viewProjects', async(req,res) => {
         let tasks = await db.db('atom').collection('tasks').find({}).toArray()
         tasks = tasks.reverse()
         
-
         res.render('admin/adminviewprojects',{data:tasks,user:req.session.user})
     } catch (error) {
         console.error(error)
@@ -285,7 +310,7 @@ Router.post('/editEvent',(req,res) => {
     let date = new Date().toString().substring(4,15)
     req.body.editedOn = date
     let db = req.app.locals.db
-    let id = req.body.id
+    let {id} = req.body
     delete req.body.id
 
     db.db('atom').collection('events').updateOne({_id:new ObjectId(id)},{$set:req.body},(err,result) => {
@@ -294,6 +319,39 @@ Router.post('/editEvent',(req,res) => {
         console.log(result)
         res.json({msg:'updated'})
     })
+})
+
+Router.get('/editProject',async(req,res) => {
+    let db = req.app.locals.db
+
+    try {
+        let project = await db.db('atom').collection('tasks').findOne({_id:new ObjectId(req.query.id)})
+        res.render('admin/editproject',{project,user:req.session.user})
+    } catch (error) {
+        console.error(error)
+        return res.render('error')
+    }
+})
+
+Router.post('/editProject',async(req,res) => {
+    req.body.editedBy = req.session.user.name
+    let date = new Date().toString().substring(4,15)
+    req.body.editedOn = date
+    let db = req.app.locals.db
+    let {id,bugs} = req.body
+    if(bugs.length > 0) bugs.forEach(bug => bug.project = id)
+    delete req.body.id
+    delete req.body.bugs
+
+    try {
+        await db.db('atom').collection('tasks').updateOne({_id:new ObjectId(id)},{$set:req.body})
+        if(bugs.length === 0) return res.json({msg:'updated'})
+        await db.db('atom').collection('bugs').insertMany(bugs)
+        return res.json({msg:'updated'})
+    } catch (error) {
+        console.error(error)
+        return res.render('error')
+    }
 })
 
 

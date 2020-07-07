@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Edit Project</title>
+</head>
+<body>
+    <h2>Welcome <%= user.name %></h2>
+    <a href="/admin/logout">Logout</a>
+    <a href="/admin/dashboard">Dashboard</a>
+    <a href="/admin/changePassword">Change Password</a>
+    <a href="/admin/viewEvents">View Events</a>
+    <a href="/admin/viewUsers">View Users</a>
+    <a href="/admin/viewMembers">View Members</a>
+    <a href="/admin/addTask">Add Task</a>
+    <a href="/admin/viewProjects">View Projects</a>
+    <hr>
+    
+    <div>
+        <p id="taskMsg"></p>
+        <h2 style="text-align: center;">Task for members</h2>
+
+        <form id="editProject">
+            <input type="hidden" id="id" value="<%= project._id %>">
+            <input type="text" placeholder="Task title" id="taskTitle" value="<%= project.title %>" required>
+            <label for="startDate">Start Date:</label>
+            <% let date = new Date(project.startDate) %>
+            <% let day = date.getDate().toString() %>
+            <% if(day < 10) day = `0${day}` %>
+            <% let mon = (date.getMonth()+1).toString() %>
+            <% if(mon < 10) mon = `0${mon}` %>
+            <% let year = date.getFullYear().toString() %>
+            <% let fullDate = `${year}-${mon}-${day}` %>
+            <input type="date" id="startDate" value="<%= fullDate %>" required>
+            <label for="deadline">Deadline:</label>
+            <%  date = new Date(project.deadline) %>
+            <%  day = date.getDate().toString() %>
+            <% if(day < 10) day = `0${day}` %>
+            <%  mon = (date.getMonth()+1).toString() %>
+            <% if(mon < 10) mon = `0${mon}` %>
+            <%  year = date.getFullYear().toString() %>
+            <%  fullDate = `${year}-${mon}-${day}` %>
+            <input type="date" id="deadline" value="<%= fullDate %>" required>
+            <div class="phase-group">
+                <% project.phases.forEach(phase => { %>
+                <div class="phase">
+                    <input type="text" class="phaseTitle" value="<%= phase.title %>" required>
+                    <label for="deadline">Till:</label>
+                    <%  date = new Date(phase.deadline) %>
+                    <%  day = date.getDate().toString() %>
+                    <% if(day < 10) day = `0${day}` %>
+                    <%  mon = (date.getMonth()+1).toString() %>
+                    <% if(mon < 10) mon = `0${mon}` %>
+                    <%  year = date.getFullYear().toString() %>
+                    <%  fullDate = `${year}-${mon}-${day}` %>
+                    <input type="date" class="till" value="<%= fullDate %>" required>
+                </div>
+                <% }) %>
+                <button id="add-phase">Add another phase</button>
+            </div>
+            <textarea id="taskDescription" placeholder="Enter description here" required><%= project.description %></textarea>
+            <div id="res-group">
+                <% project.resources.forEach(resource => { %>
+                    <input type="text" placeholder="Resource" class="resource" value="<%= resource %>" required>
+                <% }) %>
+                <button id="add-res">Add another resource</button>
+            </div>
+            <div id="mem-group">
+                <div class="member">
+                    <select class="members">
+                        <option value="" disabled selected>Select a member</option>
+                        <% project.members.forEach(member => { %>
+                        <option value="<%= member.id %>"><%= member.name %></option>
+                        <% }) %>
+                    </select>
+                    <div class="bug-group">
+                    	<input type="text" placeholder="Bug" class="bug" required>
+                    	<label for="from">From:</label>
+                    	<input type="date" class="from" required>
+                    	<label for="to">To:</label>
+                    	<input type="date" class="to" required>
+                    </div>
+                    <button class="add-bug">Add another bug</button>
+                </div>
+                <button id="add-mem">Bug for another member</button>
+            </div>
+            <input type="submit">
+        </form>
+    </div>
+
+    <script>
+        //Adding fields to task form
+        document.querySelector('#add-res').addEventListener('click', addRes)
+        document.querySelector('#add-phase').addEventListener('click',addPhase)
+        document.querySelector('#add-mem').addEventListener('click', addMem)
+        document.querySelector('.add-bug').addEventListener('click', addBug)
+
+        function addRes(e){
+            e.preventDefault()
+            let field = document.createElement('input')
+            field.setAttribute('type','text')
+            field.setAttribute('class','resource')
+            field.setAttribute('placeholder','Resource')
+            e.target.parentNode.insertBefore(field,e.target)
+        }
+
+        function addMem(e){
+            e.preventDefault()
+            let field = document.querySelector('.members').cloneNode(true)
+            let bug = getBug()
+            let bugBtn = getBugBtn()
+            let memDiv = document.createElement('div')
+            memDiv.classList.add('member')
+            memDiv.appendChild(field)
+            memDiv.appendChild(bug)
+            memDiv.appendChild(bugBtn)
+            e.target.parentNode.insertBefore(memDiv,e.target)
+        }
+        
+        function addBug(e){
+            e.preventDefault()
+            let bug = getBug()
+            e.target.parentNode.insertBefore(bug,e.target)
+        }
+        
+        function getBug(){
+            let div = document.createElement('div')
+            div.classList.add('bug-group')
+            div.innerHTML = `<input type="text" placeholder="Bug" class="bug">
+                    	<label for="from">From:</label>
+                    	<input type="date" class="from">
+                    	<label for="to">To:</label>
+                    	<input type="date" class="to">`
+            return div
+        }
+
+        function getBugBtn(){
+            let btn = document.querySelector('.add-bug').cloneNode(true)
+            btn.addEventListener('click',addBug)
+            return btn
+        }
+
+        var phase_count = 1
+        function addPhase(e){
+            e.preventDefault()
+            let phase = getPhase()
+            e.target.parentNode.insertBefore(phase,e.target)
+        }
+
+        function getPhase(){
+            let div = document.createElement('div')
+            div.classList.add('phase')
+            div.innerHTML = `<input type="text" placeholder="Phase ${++phase_count}" class="phaseTitle">
+                    <label for="deadline">Till:</label>
+                    <input type="date" class="till">`
+            return div
+        }
+
+        //formatting dates
+        function getDate(date){
+            return new Date(date).toString().substring(4,15)
+        }
+        
+        //Adding tasks
+        document.querySelector('#editProject').addEventListener('submit',editProject)
+
+        async function editProject(e){
+            e.preventDefault()
+
+            let members = document.querySelectorAll('.members')
+            let resources = document.querySelectorAll('.resource')
+            let phases = document.querySelectorAll('.phase')
+            let res_list = []
+            let phase_list = []
+            let bug_list = []
+
+            members.forEach(member => {
+                let bugs = member.parentNode.querySelectorAll('.bug-group')
+                bugs.forEach(bug => {
+                    let object = {
+                        title: bug.querySelector('.bug').value,
+                        startDate:getDate(bug.querySelector('.from').value),
+                        endDate:getDate(bug.querySelector('.to').value),
+                        complete:false,
+                        member:member.value
+                    }
+                    bug_list.push(object)
+                })
+            })
+
+            resources.forEach(resource => res_list.push(resource.value))
+
+            phases.forEach(phase => {
+                let obj = {
+                    title: phase.querySelector('.phaseTitle').value,
+                    deadline: getDate(phase.querySelector('.till').value)
+                }
+                phase_list.push(obj)
+            })
+
+            let project = {
+                id:document.querySelector('#id').value,
+                title:document.querySelector('#taskTitle').value,
+                startDate:getDate(document.querySelector('#startDate').value),
+                deadline:getDate(document.querySelector('#deadline').value),
+                description:document.querySelector('#taskDescription').value,
+                phases:phase_list,
+                resources:res_list,
+                bugs:bug_list
+            }
+
+            let response = await fetch('/admin/editProject',{
+                method:'POST',
+                headers:{
+                    'content-type': 'application/json'
+                },
+                body:JSON.stringify(project)
+            })
+
+            let data = await response.json()
+
+            if(response.status === 200){
+                window.location = '/admin/viewProjects'
+            }
+        }
+    </script>
+</body>
+</html>

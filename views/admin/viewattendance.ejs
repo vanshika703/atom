@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <h3><%= event.title %> </h3>
+    <h5>Date : <%= event.date %> </h5>
+
+    <h4>Attending</h4>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+        <% event.attendance.forEach(entry => { %>
+            <% if (entry.willAttend) { %>
+                <tr>
+                    <td>Name: <%= entry.name %> </td>
+                    <td>Email: <%= entry.email %> </td>
+                </tr>
+            <% } %>
+        <% }) %>
+    </table>
+
+    <h4>Not Attending</h4>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+        <% event.attendance.forEach(entry => { %>
+            <% if (!entry.willAttend) { %>
+                <tr>
+                    <td>Name: <%= entry.name %> </td>
+                    <td>Email: <%= entry.email %> </td>
+                </tr>
+            <% } %>
+        <% }) %>
+    </table>
+</body>
+</html>

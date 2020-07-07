@@ -69,6 +69,20 @@
                     </li>
                 <%})%>
             </ul>
+            <ul>
+                <h4>Your Bugs:</h4>
+                <% task.bugs.forEach(bug => {%>
+                    <li>
+                        <h5><%= bug.title %> </h5>
+                        <h6>**<%= bug.complete?('done'):('not done') %></h6>
+                        <p>From <%= bug.startDate %></p>
+                        <p>To <%= bug.endDate %></p>
+                        <% if(!bug.complete) { %>
+                            <button id='<%= bug._id %>' class='bug-update btn-primary'>Done</button>
+                        <% } %>
+                    </li>
+                <%})%>
+            </ul>
         </div>
     </div>
 
@@ -100,6 +114,23 @@
                 location.reload()
             }
         }
-    </script>
+
+        document.querySelectorAll('.bug-update').forEach(btn => btn.addEventListener('click',updateBug))
+        async function updateBug(e){
+            let res = await fetch(`/user/updateBug/${e.target.id}`,{
+                method:'PUT',
+                headers:{
+                    'x-auth-token':token
+                }
+            })
+            if(res.status === 200){
+                let data = await res.json()
+                console.log(data.msg)
+                e.target.style.display = 'none'
+                e.target.parentElement.childNodes[3].innerHTML = '**done'
+                location.reload()
+            }
+        }
+        </script>
 </body>
 </html>
