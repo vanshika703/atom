@@ -8,6 +8,9 @@
     
     <title>Document</title>
     <style>
+        *{
+          outline: none;
+        }
         body{
             background-color: #ffffff;
             font-family: 'Montserrat', sans-serif;
@@ -19,6 +22,7 @@
           top: 0;
           left: 0;
           background-color: #BFEFFF!important;
+          z-index: 999;
         }
         .nontdnav{
           display: block;
@@ -70,14 +74,14 @@
           color:#A9A9A9;
         }
         .event-card a{
-          font-size: 16px;
+          font-size: 14px;
           color:#26A4E2;
         }
 
         #feedback-btn,
         .submit-btn{
           background-color: #BFEFFF;
-          font-size: 16px;
+          font-size: 14px;
           border:none;
           color:white;
           border-radius: 24px;
@@ -87,6 +91,13 @@
 
         @media (max-width: 600px)
         {
+          .sidenav{
+            height: auto;
+            width: 100vw;
+          }
+          .dash-container{
+            margin: 10vh 0 0 0;
+          }
           .timeline{
             width: 100%;
             margin: 0 auto;
@@ -96,7 +107,7 @@
           position: absolute;
             top: 25px;
             left: 25px;
-            height: 150px;
+            height: 200px;
             z-index: -1;
         }
         .step img{
@@ -128,37 +139,48 @@
           background: #d3d3d3;
           outline: none;
           opacity: 0.7;
+          color: black;
+          background-color: black;
         }
-        background: #d3d3d3;
-  outline: none;
-  opacity: 0.7;
+        .slider-label{
+          color:#A9A9A9;
+        }
+        #suggestion{
+          border: none;
+          border-bottom: 2px solid #BFEFFF ;
+          margin-bottom: 20px;
+          font-size: 16px;
+        }
+        #suggestion input::placeholder{
+            color:#A9A9A9;
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg sidenav">
+    <nav class="navbar navbar-expand-lg navbar-light sidenav">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav nontdnav">
             <li class="nav-item">
-              <a class="nav-link dynamic-link" href="/user/profile">Profile<span class="sr-only">(current)</span></a>
+              <a class="nav-link dynamic-link" data-toggle="collapse" aria-expanded="false" href="/user/profile">Profile<span class="sr-only">(current)</span></a>
             </li>
             <hr>
             <li class="nav-item">
-              <a class="nav-link dynamic-link" href="/user/primarydash">Primary Domain</a>
+              <a class="nav-link dynamic-link" data-toggle="collapse" aria-expanded="false" href="/user/primarydash">Primary Domain</a>
             </li>
             <hr>
             <li class="nav-item">
-              <a class="nav-link dynamic-link" href="/user/secondarydash">Secondary Domain</a>
+              <a class="nav-link dynamic-link" data-toggle="collapse" aria-expanded="false" href="/user/secondarydash">Secondary Domain</a>
             </li>
             <hr>
             <li class="nav-item">
-              <a class="nav-link" href="http://think-digital.in/">Our Website</a>
+              <a class="nav-link" data-toggle="collapse" aria-expanded="false" href="http://think-digital.in/">Our Website</a>
             </li>
             <hr>
             <li class="nav-item">
-              <button class="nav-link" id="logout-btn" style="cursor: pointer;">Logout</button>
+              <button class="nav-link" data-toggle="collapse" aria-expanded="false" id="logout-btn" style="cursor: pointer;">Logout</button>
             </li>
           </ul>
         </div>
@@ -214,14 +236,14 @@
                               <div id="<%=result[i]._id%>" >
                                 <form class="feedback">
                                     <input id="env" class="slider" type="range" min="1" max="5" value="5" name="env">
-                                    <label for="env">Environment</label><br>
+                                    <label class="slider-label" for="env">Environment</label><br>
                                     
-                                    <input id="speaker" type="range" min="1" max="5" value="5" name="speaker">
-                                    <label for="speaker">Speakers</label><br>
+                                    <input id="speaker" class="slider" type="range" min="1" max="5" value="5" name="speaker">
+                                    <label class="slider-label" for="speaker">Speakers</label><br>
                                     
-                                    <input id="understanding" type="range" min="1" max="5" value="5" name="understanding">
-                                    <label for="understanding">Understanding</label><br>
-                                    <input type="text" placeholder="Any Suggestions" name="suggestion"><br>
+                                    <input id="understanding" class="slider" type="range" min="1" max="5" value="5" name="understanding">
+                                    <label class="slider-label" for="understanding">Understanding</label><br>
+                                    <input id="suggestion" type="text" placeholder="Any Suggestions" name="suggestion"><br>
                                     <button class="submit-btn" type="submit">Submit</button>
                                 </form>
                               </div>
