@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin-Register</title>
+</head>
+<body>
+    <form id="adminRegister">
+        <input type="text" name="name" id="name" placeholder="name" required>
+        <input type="email" name="email" id="email" placeholder="email" required>
+        <input type="password" name="password" id="password" placeholder="password" required>
+        <input type="submit" value="submit">
+    </form>
+    <p id="msg"></p>
+
+    <script>
+
+        var form = document.querySelector('#adminRegister')
+        form.addEventListener('submit',adminRegister)
+
+        function adminRegister(e){
+            e.preventDefault()
+            var xhr = new XMLHttpRequest()
+            
+            let data = JSON.stringify({
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            })
+            xhr.open('POST','/admin/register',true)
+            xhr.setRequestHeader('content-type','application/json')
+
+            xhr.onload = function() {
+                if(this.status === 200){
+                    document.querySelector('#msg').innerHTML = "Registered"
+                    document.getElementById('name').value = ''
+                    document.getElementById('email').value = ''
+                    document.getElementById('password').value = ''
+                }    
+            }
+            xhr.send(data) 
+        }  
+    </script>
+
+</body>
+</html>

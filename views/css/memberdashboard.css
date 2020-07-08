@@ -1,0 +1,77 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
+
+  }
+  
+  /* Float four columns side by side */
+  .column {
+    float: left;
+    width: 25%;
+    padding: 0 10px;
+  }
+  
+  /* Remove extra left and right margins, due to padding */
+  .row {margin: 0 -5px;}
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* Responsive columns */
+  @media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+    }
+  }
+  .card {
+    box-shadow: 0 4px 8px 0 #ddf3f5;
+    transition: 0.3s;
+  }
+  
+  .card:hover {
+    box-shadow: 16px 16px 16px 16px #ddf3f5;
+  }
+  /* readmore button */
+  .stage {
+    padding:40px;
+    text-align:center;}
+    .readmore {
+      line-height:1em;
+      letter-spacing:0.06em;
+      font-family: 'Lato', sans-serif;
+      font-weight:normal;
+      font-size:16px;
+      text-decoration:none;
+      color:#fff;
+      background:#5fdde5;
+      display:inline-block;
+      padding:15px 12px 15px 15px;
+      transition:background 200ms;
+      border-radius:4px;
+    }
+    .readmore:hover {
+      background:#87dfd6;
+    }
+    .readmore:after {
+      font-family: 'FontAwesome', sans-serif;
+      font-weight:300;
+      content: "\f105";
+      margin-left:20px;
+      color:#87dfd6;
+      font-size:18px;
+      vertical-align:middle;
+      transition:color 200ms;
+    }
+    
+    .readmore:hover:after {
+      color:#231f20;
+    }

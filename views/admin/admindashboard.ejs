@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Welcome <%= user.name %></h2>
+    <a href="/admin/logout">Logout</a>
+    <a href="/admin/dashboard">Dashboard</a>
+    <a href="/admin/changePassword">Change Password</a>
+    <a href="/admin/viewEvents">View Events</a>
+    <a href="/admin/viewUsers">View Users</a>
+    <a href="/admin/viewMembers">View Members</a>
+    <a href="/admin/addTask">Add Task</a>
+    <a href="/admin/viewProjects">View Projects</a>
+    <hr>
+
+    <div style="width: 50vw; float: left;">
+        <p id="infoMsg"></p>
+        <h2 style="text-align: center;">Recruitment Event</h2>
+
+        <form id="addEvent">
+            <input type="text" placeholder="Event title" id="title" required>
+            <label for="date">Date</label>
+            <input type="date" id="date" required>
+            <input type="text" id="venue" placeholder="Venue" required>
+            <label for="startTime">Start time</label>
+            <input type="time" id="startTime" required>
+            <label for="endTime">End time</label>
+            <input type="time" id="endTime" required>
+            <textarea id="description" cols="30" rows="10" placeholder="Description" required></textarea>
+            <select id="domain" style="margin-top: 1rem;">
+                <option value="" disabled selected>Select a domain</option>
+                <option value="web">Web</option>
+                <option value="app">App</option>
+                <option value="hr">HR</option>
+                <option value="iot">IOT</option>
+                <option value="game">Game</option>
+                <option value="gd">Graphic Design</option>
+            </select>
+            <input type="submit" value="Submit">
+        </form>
+    </div>    
+
+    <script>
+
+        // Adding recruitment info
+        document.querySelector('#addEvent').addEventListener('submit',addEvent)
+        
+        async function addEvent(e) {
+            e.preventDefault()
+
+            let date = new Date(document.querySelector('#date').value).toString().substring(4,15)
+            
+            let info = {
+                title:document.querySelector('#title').value,
+                date,
+                venue:document.querySelector('#venue').value,
+                startTime:document.querySelector('#startTime').value,
+                endTime:document.querySelector('#endTime').value,
+                description:document.querySelector('#description').value,
+                domain:document.querySelector('#domain').value,
+            }
+            
+            const response = await fetch('/admin/addEvent',{
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body:JSON.stringify(info)
+            })
+
+            const data = await response.json()
+            
+            document.querySelector('#infoMsg').innerHTML = data.msg
+            if(response.status === 200){
+                document.querySelector('#title').value = ""
+                document.querySelector('#date').value = ""
+                document.querySelector('#venue').value = ""
+                document.querySelector('#startTime').value = ""
+                document.querySelector('#endTime').value = ""
+                document.querySelector('#domain').value = ""
+                document.querySelector('#description').value = ""
+            }
+        }
+
+    </script>
+</body>
+</html>

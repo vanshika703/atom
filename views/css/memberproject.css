@@ -1,0 +1,126 @@
+.all
+{
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-left: 3%;
+}
+body {
+  font-family: 'Montserrat', sans-serif;
+  overflow: hidden;
+}
+/* first card */
+/* Float four columns side by side */
+.column1 {
+  width: 25%;
+  padding: 0 10px;
+}
+
+/* Remove extra left and right margins, due to padding */
+.row1 {margin: 0 -5px;}
+
+/* Clear floats after the columns */
+.row1:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive columns */
+@media screen and (max-width: 600px) {
+  .column1 {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+/* next 3 cards */
+.card1{
+  box-shadow: 0 4px 8px 0 #ddf3f5;
+  transition: 0.3s;
+}
+
+.card1:hover {
+  box-shadow: 16px 16px 16px 16px #ddf3f5;
+}
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  /* Float four columns side by side */
+  .column {
+    float: left;
+    width: 33.3%;
+    padding: 0 10px;
+    height: 50%;
+    
+  }
+  
+  /* Remove extra left and right margins, due to padding */
+  .row {margin: 0 -5px;}
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* Responsive columns */
+  @media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+
+    }
+  }
+  
+  /* Style the counter cards */
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    background-color: #f1f1f1;
+    min-height: 30vh;
+    transition: 0.5s ease;
+    cursor: pointer;
+    width: 80%;
+    border-radius: 18px;
+  }
+
+  /* *{
+    box-sizing: border-box;
+  } */
+   
+  /* Create two equal columns that floats next to each other */
+  .column-inner {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    height: 10% /* Should be removed. Only for demonstration */
+  }
+  .column-innertext {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    height: 40% /* Should be removed. Only for demonstration */
+  }
+  /* Clear floats after the columns */
+  .row-inner:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  .card:hover
+  {
+    transform: scale(1.1);
+    box-shadow:5px 5px 15px #5fdde5;
+  }
+  .progress
+  {
+    margin-bottom: 5%;
+  }

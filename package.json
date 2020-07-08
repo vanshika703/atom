@@ -1,0 +1,30 @@
+{
+  "name": "atom",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "engines": {
+    "node": "10.x"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "google-auth-library": "^6.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.5.5",
+    "node-fetch": "^2.6.0",
+    "nodemailer": "^6.4.10",
+    "request": "^2.88.2"
+  }
+}

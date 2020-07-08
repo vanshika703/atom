@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h4 style="margin:5px">Not regsitered?</h4>
+    <a href="/user">Register Here</a>
+    <form id="login-form" style="margin-top: 10px;">
+        <input type="email" placeholder="email" id="email">
+        <input type="password" placeholder="password" id="password">
+        <input type="submit" value="Login">
+    </form>
+    <form action="/user/userRegister" method="POST" style="display: none;">
+        <input type="text" id="register-token" name="token">
+        <input type="submit" id="register-btn">
+    </form>
+    <form action="/user/dashboard" method="POST" style="display: none;">
+        <input type="text" id="member-token" name="token">
+        <input type="submit" id="member-btn">
+    </form>
+    <form action="/user/primaryDash" method="POST" style="display: none;">
+        <input type="text" id="user-token" name="token">
+        <input type="submit" id="user-btn">
+    </form>
+    <p id="msg" style="color:red"></p>
+    <a href="/user/forgotpassword">forgot password?</a>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', submitForm)
+
+        async function submitForm(e){
+            e.preventDefault()
+            document.querySelector('#msg').innerHTML = ''
+
+            const email = document.querySelector('#email').value
+            const password = document.querySelector('#password').value
+
+            let response = await fetch('/user/login', {
+                method : 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body:JSON.stringify({email, password})
+            })
+
+            let data = await response.json()
+            if(response.status === 200){
+                localStorage.setItem('token',data.token)
+                document.querySelector('#register-token').value = data.token
+                document.querySelector('#register-btn').click()
+            } else if(response.status === 201){
+                localStorage.setItem('token',data.token)
+                document.querySelector('#member-token').value = data.token
+                document.querySelector('#member-btn').click()
+            } else if(response.status === 202){
+                localStorage.setItem('token',data.token)
+                document.querySelector('#user-token').value = data.token
+                document.querySelector('#user-btn').click()
+            } else {
+                document.querySelector('#msg').innerHTML = data.msg
+            }
+        }
+    </script>
+</body>
+</html>

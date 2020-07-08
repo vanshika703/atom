@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+    <title>Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/memberdashboard.css">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Hello <%=user.name%> <i class="fas fa-user"></i></a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/user/memberprofile" class="dynamic-link">Profile</a></li>
+                <li><a href="/user/dashboard" class="dynamic-link">Dashboard</a></li>
+                <li><a href="http://think-digital.in/">Our Website</a></li>
+                <li><button id="logout-btn">Logout</button></li>
+            </ul>
+        </div>
+    </nav>
+    <ul>
+        <% tasks.forEach(task => { %>
+            <div class="row">
+               
+                <div class="column">
+                <div class="card">
+                    <div class="content">
+                    <div class="card-header">
+                        <p>Title:<%= task.title %></p>
+                        <p>From:<%= task.startDate %></p>
+                        <p> Deadline:<%= task.deadline %></p>
+                        <p> Description:<%= task.description %></p>
+                        <div class="stage readmore">
+                        <a class="project-link" href='/user/project/<%= task._id %>'>Know More</a>
+                    </div>
+                  
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <%})%>
+    </ul>
+
+    <script>
+        let token = localStorage.getItem('token')
+        let links = document.querySelectorAll('.project-link')
+        links.forEach(link => link.href+=`/${token}`)
+
+        //adding the token to all links
+        document.querySelectorAll('.dynamic-link').forEach(link => link.href+=`/${token}`)
+
+        //logout functionality
+        document.querySelector('#logout-btn').addEventListener('click',() => {
+            localStorage.removeItem('token')
+            window.location = '/user/login'
+        })
+    </script>
+</body>
+
+</html>

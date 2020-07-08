@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Members</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        table{
+            width: 80%;
+        }
+        th,td {
+            height:2rem;
+        }
+        td{
+            padding-left: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome <%= user.name %></h2>
+    <a href="/admin/logout">Logout</a>
+    <a href="/admin/dashboard">Dashboard</a>
+    <a href="/admin/changePassword">Change Password</a>
+    <a href="/admin/viewEvents">View Events</a>
+    <a href="/admin/viewUsers">View Users</a>
+    <a href="/admin/viewMembers">View Members</a>
+    <a href="/admin/addTask">Add Task</a>
+    <a href="/admin/viewProjects">View Projects</a>
+    <hr>
+    
+    <h1>Members</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Domain</th>
+            <th>Year</th>
+            <th>Department</th>
+        </tr>
+        <% for(let member of data){ %>
+            <tr>
+                <td><%= member.name %></td>
+                <td><%= member.domain %></td>
+                <td><%= member.year %></td>
+                <td><%= member.dept %></td>
+                <td>
+                    <input type="hidden" class="id" value="<%= member._id %>">
+                    <button class="deleteBtn">Delete member</button>
+                    <a href="/admin/viewmemberprofile/<%= member._id %>">View More</a>
+                </td>
+            </tr>
+         <% } %>
+    </table>
+
+    <script>
+        var deleteBtns = document.querySelectorAll('.deleteBtn')
+
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click',deleteMember)
+        })
+
+        async function deleteMember(e) {
+            let id = e.target.offsetParent.firstElementChild.value
+
+            let response = await fetch(`/admin/delete?from=users`,{
+                method: 'POST',
+                headers:{'content-type':'application/json'},
+                body:JSON.stringify({id})
+            })
+
+            let data = await response.json()
+
+            if(response.status === 200){
+                e.target.offsetParent.innerHTML = `Member deleted`
+            }
+            console.log(data)
+        }
+    </script>
+</body>
+</html>

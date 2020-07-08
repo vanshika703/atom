@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Info</title>
+</head>
+<body>
+    <h2>Welcome <%= user.name %></h2>
+    <a href="/admin/logout">Logout</a>
+    <a href="/admin/dashboard">Dashboard</a>
+    <a href="/admin/changePassword">Change Password</a>
+    <a href="/admin/viewEvents">View Events</a>
+    <a href="/admin/viewUsers">View Users</a>
+    <a href="/admin/viewMembers">View Members</a>
+    <a href="/admin/addTask">Add Task</a>
+    <a href="/admin/viewProjects">View Projects</a>
+    <hr>
+
+    <h2>Recruitment Events</h2>
+    <button class="filter" value="web">Web</button>
+    <button class="filter" value="app">App</button>
+    <button class="filter" value="iot">IOT</button>
+    <button class="filter" value="game">Game</button>
+    <button class="filter" value="gd">GD</button>
+    <button class="filter" value="hr">HR</button>
+    <button class="filter" value="all">Show all</button>
+    <% for(let i = data.length-1; i>=0; i--){ %>
+       <ul>
+           <li>Title: <%= data[i].title %></li>
+           <li class="domain">Domain: <%= data[i].domain %></li>
+           <li>Date: <%= data[i].date %></li>
+           <li>Time: From <%= data[i].startTime %> To <%= data[i].endTime %></li>
+           <li>Venue: <%= data[i].venue %></li>
+           <li>Description: <%= data[i].description %></li>
+           <li>Added by: <%= data[i].addedBy %></li>
+           <li>Added on: <%= data[i].addedOn %></li>
+           <form action="/admin/editEvent" method="GET">
+               <input type="hidden" value="<%= data[i]._id %>" name="id">
+               <button class="deleteEvent">Delete</button>
+               <input type="submit" value="Edit">
+            </form>
+            <% if (data[i].feedback) { %>
+             <a href="/admin/viewFeedback/<%= data[i]._id %>">View Feedback</a>
+            <% } %>
+            <% if (data[i].attendance) { %>
+             <a href="/admin/viewAttendance/<%= data[i]._id %>">View Attendance</a>
+            <% } %>
+       </ul>
+    <% } %>
+
+    <script>
+        //filter
+        var buttons = document.querySelectorAll('.filter')
+
+        buttons.forEach(button => {
+            button.addEventListener('click',filterItems)
+        })
+
+        function filterItems(e) {
+            var c = e.target.value
+            var items = document.querySelectorAll('.domain')
+            items.forEach(item => {
+                if(c=='all') item.parentNode.style.display = 'block'
+                else if(item.innerHTML !== 'Domain: '+c) item.parentNode.style.display='none'
+                else item.parentNode.style.display='block'
+            })
+        }
+
+        //delete
+        document.querySelectorAll('.deleteEvent').forEach(btn => btn.addEventListener('click',deleteEvent))
+
+        async function deleteEvent(e) {
+            e.preventDefault()
+            let id = e.target.previousElementSibling.value
+
+            let response = await fetch(`/admin/delete?from=events`,{
+                method: 'POST',
+                headers:{'content-type':'application/json'},
+                body:JSON.stringify({id})
+            })
+
+            let data = await response.json()
+
+            if(response.status === 200){
+                e.target.parentNode.innerHTML = `<p style="color:red">Event deleted</p>`
+                console.log(data.msg)
+            }
+            else{
+                e.target.parentNode.innerHTML = `<p style="color:red">Some error occured, please reload the page and try again</p>`
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<!-- Lottie File cdn -->
+
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<!-- progress bar -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="/css/memberproject.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+    <title>Project Details</title>
+</head>
+<!-- <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Hello <%=user.name%> <i class="fas fa-user"></i></a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/user/memberprofile" class="dynamic-link">Profile</a></li>
+                <li><a href="/user/dashboard" class="dynamic-link">Dashboard</a></li>
+                <li><a href="http://think-digital.in/">Our Website</a></li>
+                <li><button id="logout-btn">Logout</button></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="card">
+        <div class="card-header">
+            <p>Title:<%= task.title %></p>
+            <p>From:<%= task.startDate %></p>
+            <p> Deadline:<%= task.deadline %></p>
+            <p> Description:<%= task.description %></p>
+        </div>
+        <div class="card-body">
+            <div class="w3-grey w3-round-xlarge" style="width:50%">
+                <div class="w3-container w3-blue w3-round-xlarge w3-center" style="width:<%= task.percentage %>%"><%= task.percentage %>%</div>
+            </div>
+            <ul>
+                <h4>Resources:</h4>
+                <% task.resources.forEach(resource => {%>
+                <li>
+                    <p><%= resource %></p>
+                </li>
+                <%})%>
+            </ul>
+            <ul>
+                <h4>Phases:</h4>
+                <% task.phases.forEach(phase => {%>
+                <li>
+                    <p><%= phase.title %> till <%= phase.deadline %></p>
+                </li>
+                <%})%>
+            </ul>
+            <ul>
+                <h4>Your Tasks:</h4>
+                <% task.subtasks.forEach(subtask => {%>
+                    <li>
+                        <h5><%= subtask.title %> </h5>
+                        <h6>**<%= subtask.complete?('done'):('not done') %></h6>
+                        <p>From <%= subtask.startDate %></p>
+                        <p>To <%= subtask.endDate %></p>
+                        <% if(!subtask.complete) { %>
+                            <button id='<%= subtask._id %>' class='subtask-update btn-primary'>Done</button>
+                        <% } %>
+                    </li>
+                <%})%>
+            </ul>
+            <ul>
+                <h4>Your Bugs:</h4>
+                <% task.bugs.forEach(bug => {%>
+                    <li>
+                        <h5><%= bug.title %> </h5>
+                        <h6>**<%= bug.complete?('done'):('not done') %></h6>
+                        <p>From <%= bug.startDate %></p>
+                        <p>To <%= bug.endDate %></p>
+                        <% if(!bug.complete) { %>
+                            <button id='<%= bug._id %>' class='bug-update btn-primary'>Done</button>
+                        <% } %>
+                    </li>
+                <%})%>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let token = localStorage.getItem('token')
+
+        //adding the token to all links
+        document.querySelectorAll('.dynamic-link').forEach(link => link.href+=`/${token}`)
+
+        //logout functionality
+        document.querySelector('#logout-btn').addEventListener('click',() => {
+            localStorage.removeItem('token')
+            window.location = '/user/login'
+        })
+
+        document.querySelectorAll('.subtask-update').forEach(btn => btn.addEventListener('click',updateSubtask))
+        async function updateSubtask(e){
+            let res = await fetch(`/user/update/${e.target.id}`,{
+                method:'PUT',
+                headers:{
+                    'x-auth-token':token
+                }
+            })
+            if(res.status === 200){
+                let data = await res.json()
+                console.log(data.msg)
+                e.target.style.display = 'none'
+                e.target.parentElement.childNodes[3].innerHTML = '**done'
+                location.reload()
+            }
+        }
+
+        document.querySelectorAll('.bug-update').forEach(btn => btn.addEventListener('click',updateBug))
+        async function updateBug(e){
+            let res = await fetch(`/user/updateBug/${e.target.id}`,{
+                method:'PUT',
+                headers:{
+                    'x-auth-token':token
+                }
+            })
+            if(res.status === 200){
+                let data = await res.json()
+                console.log(data.msg)
+                e.target.style.display = 'none'
+                e.target.parentElement.childNodes[3].innerHTML = '**done'
+                location.reload()
+            }
+        }
+        </script>
+</body> -->
+<body>
+    <div class="all">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Hello <%=user.name%> <i class="fas fa-user"></i></a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="#">Chat</a></li>
+                <li><a href="#">Change password</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="row1">
+        <div class="column1">
+        <div class="card1">
+            <div class="content">
+            <div class="card-header">
+            <p>Title:<%= task.title %></p>
+            <p>From:<%= task.startDate %></p>
+            <p> Deadline:<%= task.deadline %></p>
+            <p> Description:<%= task.description %></p>
+        </div>
+        </div>
+    </div>
+</div>
+</div>
+        <div class="card-body">
+            <div class="progress">
+            <div class="w3-grey w3-round-xlarge" style="width:50%">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width:<%= task.percentage %>%"><%= task.percentage %>%</div>
+            </div>
+        </div>
+            <div class="container1"> 
+                <div class="row"></div>
+                <div class="column">
+                    <div class="card">
+                       
+            
+                <div class="row-inner">
+                    <div class="column-innertext">   <h4>Resources:</h4></div>
+                    <div class="column-inner"><lottie-player src="https://assets2.lottiefiles.com/packages/lf20_Z1bEvl.json" background="transparent"  speed="1"  style="width: 100px; height: 100px;" autoplay></lottie-player>
+                    </div>
+                 </div>
+                
+             
+                <% task.resources.forEach(resource => {%>
+               
+                    <p><%= resource %></p>
+                
+                <%})%>
+            
+        
+    </div>
+        </div>
+        
+        <div class="column">
+            <div class="card">
+                
+            
+                <div class="row-inner">
+                    <div class="column-innertext"> <h4>Phases:</h4></div>
+                    <div class="column-inner"><lottie-player src="https://assets6.lottiefiles.com/packages/lf20_EMuzoz.json" background="transparent"  speed="1"  style="width: 200px; height: 200px;" autoplay></lottie-player></div>
+                 </div>
+
+                
+                <% task.phases.forEach(phase => {%>
+               
+                    <p><%= phase.title %> till <%= phase.deadline %></p>
+                
+                <%})%>
+            
+        </div>
+    </div>
+            <div class="column">
+                <div class="card">
+                   
+           
+                <div class="row-inner">
+           <div class="column-innertext"><h4>Your Tasks:</h4></div>
+           <div class="column-inner"><lottie-player src="https://assets2.lottiefiles.com/packages/lf20_ZXBZ0q.json" background="transparent"  speed="1"  style="width: 200px; height: 200px;" autoplay></lottie-player></div>
+        </div>
+           
+                <% task.subtasks.forEach(subtask => {%>
+                  
+                        <h5><%= subtask.title %> </h5>
+                        <h6>**<%= subtask.complete?('done'):('not done') %></h6>
+                        <p>From <%= subtask.startDate %></p>
+                        <p>To <%= subtask.endDate %></p>
+                        <% if(!subtask.complete) { %>
+                            <button id='<%= subtask._id %>' class='subtask-update btn-primary'>Done</button>
+                        <% } %>
+                    
+                <%})%>
+            
+        </div>
+ 
+</div>
+</div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+        document.querySelectorAll('.subtask-update').forEach(btn => btn.addEventListener('click',updateSubtask))
+        let token = localStorage.getItem('token')
+        async function updateSubtask(e){
+            let res = await fetch(`/user/update/${e.target.id}`,{
+                method:'PUT',
+                headers:{
+                    'x-auth-token':token
+                }
+            })
+            if(res.status === 200){
+                let data = await res.json()
+                console.log(data.msg)
+                e.target.style.display = 'none'
+                e.target.parentElement.childNodes[3].innerHTML = '**done'
+                location.reload()
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+*{
+    outline: none;
+  }
+  body{
+      background-color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+  }
+  .sidenav{
+    height: 100vh;
+    width:200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #72E4FE!important;
+    z-index: 999;
+  }
+  .nontdnav{
+    display: block;
+  }
+  .nontdnav a{
+    color:white!important;
+  }
+  .nontdnav a:hover{
+    color:#eee!important;
+  }
+  #logout-btn{
+      background-color: white;
+      border:none;
+      color:#72E4FE;
+      border-radius: 24px;
+      padding: 4px 12px;
+  }
+  #logout-btn:hover{
+    background-color: #eee;
+  }
+  .dash-container{
+    margin-left: 200px;
+  }
+  .dash-container h2{
+    color: #218EC4;
+  }
+  .step{
+      height: 50px;
+      width: 50px;
+      line-height: 46px;
+      text-align: center;
+      border-radius: 50%;
+      position: relative;
+      color: white;
+  }
+  .timeline{
+    width: 60%;
+    margin: 0 auto;
+  }
+  .event-card{
+    width: 80%!important;
+    margin: 5%!important;
+  }
+  .event-card h5{
+    color: #72E4FE;
+  }
+  .event-card p{
+    color:#A9A9A9;
+  }
+  .event-card a{
+    font-size: 14px;
+    color:#26A4E2;
+  }
+  #feedback-btn,
+  .submit-btn{
+    background-color: #72E4FE;
+    font-size: 14px;
+    border:none;
+    color:white;
+    border-radius: 24px;
+    padding: 4px 12px;
+    cursor: pointer;
+  }
+  @media (max-width: 600px)
+  {
+    .sidenav{
+      height: auto;
+      width: 100vw;
+    }
+    .dash-container{
+      margin: 10vh 0 0 0;
+    }
+    .timeline{
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+  .line{
+    position: absolute;
+      top: 25px;
+      left: 25px;
+      height: 200px;
+      z-index: -1;
+  }
+  .step img{
+      height: 20px;
+      width: 20px;
+      z-index: 1;
+  }
+  .red{
+    border: 2px solid grey;
+    color: white;
+    background-color: grey;
+  }
+  .yellow{
+      border: 2px solid #02c39a;
+      color: #02c39a;
+      background-color: white;
+  }
+  .green{
+      border: 2px solid #02c39a;
+      background-color: #02c39a;
+  }
+  .green-line{
+    border-left: 2px solid #02c39a;
+  }
+  .grey-line{
+    border-left: 2px dashed grey;
+  }
+  .slider{
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    color: black;
+    background-color: black;
+  }
+  .slider-label{
+    color:#A9A9A9;
+  }
+  #suggestion{
+    border: none;
+    border-bottom: 2px solid #72E4FE ;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  #suggestion input::placeholder{
+      color:#A9A9A9;
+  }
