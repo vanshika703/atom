@@ -4,48 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    
     <title>Document</title>
+    <style>
+      *{
+        outline: none;
+      }
+      body{
+          background-color: #ffffff;
+          font-family: 'Montserrat', sans-serif;
+      }
+      .sidenav{
+        height: 100vh;
+        width:200px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #72E4FE!important;
+        z-index: 999;
+      }
+      .nontdnav{
+        display: block;
+      }
+      .nontdnav a{
+        color:white!important;
+      }
+
+      .nontdnav a:hover{
+        color:#eee!important;
+      }
+      #logout-btn{
+          background-color: white;
+          border:none;
+          color:#72E4FE;
+          border-radius: 24px;
+          padding: 4px 12px;
+      }
+      #logout-btn:hover{
+        background-color: #eee;
+      }
+      .profile-container h2{
+        color: #218EC4;
+      }
+      .profile-container{
+        margin-left: 250px;
+      }
+      .profile-container p{
+        color: #72E4FE;
+        font-weight: 400;
+      }
+      .profile-container span{
+        color: #A9A9A9;
+        font-weight: 200;
+      }
+      @media (max-width: 600px)
+        {
+          .sidenav{
+            height: auto;
+            width: 100vw;
+          }
+          .profile-container{
+            margin: 10vh 0 0 0;
+          }
+        }
+    </style>
+    
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">TD</a>
+  <nav class="navbar navbar-expand-lg navbar-light sidenav">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav nontdnav">
           <li class="nav-item">
             <a class="nav-link dynamic-link" href="/user/profile">Profile<span class="sr-only">(current)</span></a>
           </li>
+          <hr>
           <li class="nav-item">
             <a class="nav-link dynamic-link" href="/user/primarydash">Primary Domain</a>
           </li>
+          <hr>
           <li class="nav-item">
             <a class="nav-link dynamic-link" href="/user/secondarydash">Secondary Domain</a>
           </li>
+          <hr>
           <li class="nav-item">
             <a class="nav-link" href="http://think-digital.in/">Our Website</a>
           </li>
+          <hr>
           <li class="nav-item">
             <button class="nav-link" id="logout-btn" style="cursor: pointer;">Logout</button>
           </li>
         </ul>
       </div>
     </nav>
-    <div class="container">
+    
+    <div class="container profile-container">
+      <h2>Profile</h2>
       <% if (user.registered == 0) { %>
         <p>Please complete registeration to view profile</p>
       <% } else { %>
-        <p>Name : <%= user.name %></p>
-        <p>Register Number : <%= user.regno %></p>
-        <p>Department : <%= user.dept %></p>
+        <p style="margin-top: 5%;">Name : <span><%= user.name %></span></p>
+        <p>Register Number : <span><%= user.regno %></span></p>
+        <p>Department : <span><%= user.dept %></span></p>
         
-        <p>Batch : <%= user.batch %></p>
-        <p>Contact Number : <%= user.contactno %></p>
-        <p>Whatsapp Number : <%= user.whatsappno %></p>
-        <p>Primary Domain : <%= user.domain1 %></p>
-        <p>Secondary Domain : <%= user.domain2 %></p> 
-        <p>Year : <%= user.year %></p>  
+        <p>Batch : <span><%= user.batch %></span></p>
+        <p>Contact Number : <span><%= user.contactno %></span></p>
+        <p>Whatsapp Number : <span><%= user.whatsappno %></span></p>
+        <p>Primary Domain : <span><%= user.domain1 %></span></p>
+        <p>Secondary Domain : <span><%= user.domain2 %></span></p> 
+        <p>Year : <span><%= user.year %></span></p>  
       <% } %>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
