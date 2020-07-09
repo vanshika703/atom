@@ -2,23 +2,106 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body{
+            background-color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+        }
+        @media (min-width: 990px) {
+            body{
+                overflow: hidden;
+            }
+        }
+        .login-container{
+            height: 100vh;
+            width: 100vw;
+        }
+        .login-row{
+            height: 100vh;
+        }
+        .login-animation{
+            background-color: #72E4FE;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        @media (max-width:768px) {
+            #animation{
+                width:200px !important;
+                height: 200px !important;
+            }
+        }
+        .login-form{
+            z-index: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+        #msg {
+            color:#26A4E2;
+        }
+        .login-form h3{
+            color:#26A4E2;
+        }
+        .login-btn{
+            background-color: #26A4E2;
+            color: #ffffff;
+            border-radius: 24px;
+            padding: 8px 12px;
+        }
+    </style>
     <title>Admin-Login</title>
 </head>
 <body>
-    <form id="adminLogin">
-        <input type="email" name="email" id="email" placeholder="email" required>
-        <input type="password" name="password" id="password" placeholder="password" required>
-        <input type="submit" value="submit">
-    </form>
-    <p id="msg"><%= msg %></p>
+    <div class="login-container">
+        <div class="row login-row">
+            <div class="col-lg-6 login-animation">
+                <lottie-player src="/img/animation.json" id="animation"  background="transparent"  speed="1"  style="width: 400px; height: 400px;" loop autoplay></lottie-player>
+                <h1 class="mt-4" style="color: #26A4E2;">Think Digital</h1>
+            </div>
+
+            <div class="col-lg-6 login-form">
+                <h3 class="mt-5">Admin Portal</h3>
+
+                <form id="adminLogin">
+                    <div class="form-group">
+                        <label for="email">Email address:</label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Minimum 8 characters" required>
+                    </div>
+                    <button type="submit" class="btn login-btn">Submit</button>
+                </form>
+                <div class="spinner-border" style="color: #26A4E2;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <p id="msg"><%= msg %></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <script>
+
+        var spinner = document.querySelector('.spinner-border')
+        spinner.style.display = 'none'
 
         var form = document.querySelector('#adminLogin')
         form.addEventListener('submit',adminLogin)
 
         function adminLogin(e){
+            spinner.style.display = 'block'
             e.preventDefault()
             document.querySelector('#msg').innerHTML = ''
             var xhr = new XMLHttpRequest()
@@ -32,9 +115,12 @@
 
             xhr.onload = function() {
                 if(this.status === 200){
+                    spinner.style.display = 'none'
                     window.location = '/admin/dashboard'
                 }
                 else{
+                    spinner.style.display = 'none'
+                    document.querySelector('#msg').style.color = 'red'
                     document.querySelector('#msg').innerHTML = this.responseText
                 }
             }

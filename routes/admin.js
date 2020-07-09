@@ -357,7 +357,7 @@ Router.post('/editProject',async(req,res) => {
 
 Router.all('/logout', (req,res) => {
     req.session.destroy()
-    res.render('admin/adminlogin',{msg : 'you have been logged out'})
+    res.render('admin/adminlogin',{msg : 'You have been logged out!'})
 })
 
 module.exports = Router
