@@ -4,7 +4,7 @@ const ObjectId = mongodb.ObjectId
 const bcrypt = require('bcryptjs')
 const {adminloginValidation,changePasswordValidation} = require('../validation')
 
-Router.get('/login', (req,res) => {
+Router.get('/', (req,res) => {
     res.render('admin/adminlogin',{msg:''})
 })
 
