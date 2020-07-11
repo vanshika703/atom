@@ -3,61 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="/css/style.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
     <title>Admin Dashboard</title>
 </head>
 <body>
-    <h2>Welcome <%= user.name %></h2>
-    <a href="/admin/logout">Logout</a>
-    <a href="/admin/dashboard">Dashboard</a>
-    <a href="/admin/changePassword">Change Password</a>
-    <a href="/admin/viewEvents">View Events</a>
-    <a href="/admin/viewUsers">View Users</a>
-    <a href="/admin/viewMembers">View Members</a>
-    <a href="/admin/addTask">Add Task</a>
-    <a href="/admin/viewProjects">View Projects</a>
-    <hr>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Think Digital</h3>
+            </div>
+    
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+                <li>
+                    <a href="/admin/viewEvents">View Events</a>
+                </li>
+                <li>
+                    <a href="/admin/viewProjects">View Projects</a>
+                </li>
+                <li>
+                    <a href="/admin/viewUsers">View Users</a>
+                </li>
+                <li>
+                    <a href="/admin/viewMembers">View Members</a>
+                </li>
 
-    <div style="width: 50vw; float: left;">
-        <p id="infoMsg"></p>
-        <h2 style="text-align: center;">Recruitment Event</h2>
+            </ul>
+    
+        </nav>
+        <!-- Page Content -->
+        <div id="content">
+    
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+    
+                    <button type="button" id="sidebarCollapse" class="btn btn-colour">
+                        <i class="fas fa-align-left"></i>
+                    </button>
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Welcome <%= user.name %></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/logout"><i class="fa fa-sign-out"></i>Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="card-deck mt-5">
+                <div class="card">
+                  <div class="card-body">
+                    <p class="card-text">Change your account password.</p>
+                    <button class="btn btn-colour" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
+                </div>
+                </div>
+                <div class="card">
+                  <div class="card-body">
+                    <p class="card-text">Add an event related to recruitment process.</p>
+                    <button class="btn btn-colour" data-toggle="modal" data-target="#addEventModal">Add Event</button>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-body">
+                    <p class="card-text">Add a project for the members.</p>
+                    <button class="btn btn-colour">Add Project</button>
+                  </div>
+                </div>
+            </div>
 
-        <form id="addEvent">
-            <input type="text" placeholder="Event title" id="title" required>
-            <label for="date">Date</label>
-            <input type="date" id="date" required>
-            <input type="text" id="venue" placeholder="Venue" required>
-            <label for="startTime">Start time</label>
-            <input type="time" id="startTime" required>
-            <label for="endTime">End time</label>
-            <input type="time" id="endTime" required>
-            <textarea id="description" cols="30" rows="10" placeholder="Description" required></textarea>
-            <select id="domain" style="margin-top: 1rem;">
-                <option value="" disabled selected>Select a domain</option>
-                <option value="web">Web</option>
-                <option value="app">App</option>
-                <option value="hr">HR</option>
-                <option value="iot">IOT</option>
-                <option value="game">Game</option>
-                <option value="gd">Graphic Design</option>
-            </select>
-            <input type="submit" value="Submit">
-        </form>
-    </div>    
+            <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">Change Password</h5>
+                      <button type="button" class="close" id="changePasswordModalBtn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="changepassword">
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="cpassword" placeholder="Current password" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="npassword" placeholder="New password" required>
+                            </div>
+                            <button class="btn btn-colour">Submit</button>
+                            <div class="spinner-border mt-2" id="changePasswordSpinner" style="color: #26A4E2;" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <p id="changePasswordMsg" class="mt-2"></p>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">Add Event</h5>
+                      <button type="button" class="close" id="addEventModalBtn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addEvent">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Event title" id="title" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="venue" placeholder="Venue" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Date:</label>
+                                <input type="date" class="form-control" id="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="startTime">Start time:</label>
+                                <input type="time" class="form-control" id="startTime" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="endTime">End time</label>
+                                <input type="time" class="form-control" id="endTime" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="description" class="form-control" placeholder="Description" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <select class="custom-select" id="domain">
+                                    <option value="" disabled selected>Select a domain</option>
+                                    <option value="web">Web</option>
+                                    <option value="app">App</option>
+                                    <option value="hr">HR</option>
+                                    <option value="iot">IOT</option>
+                                    <option value="game">Game</option>
+                                    <option value="gd">Graphic Design</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-colour">Submit</button>
+                            <div class="spinner-border mt-2" id="addEventSpinner" style="color: #26A4E2;" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <p id="addEventMsg" class="mt-2"></p>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <a href="/admin/addTask">Add Task</a> -->
+    
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
     <script>
 
-        // Adding recruitment info
+        $(document).ready(function () {
+
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+            });
+
+        });
+
+        //Hiding all spinners
+        document.querySelectorAll('.spinner-border').forEach(spinner => spinner.style.display = 'none')
+
+        //Clearing the form on closing the modal
+        $('#changePasswordModal').on('hide.bs.modal', function (e) {
+            document.querySelector('#cpassword').value = ''
+            document.querySelector('#npassword').value = ''
+            document.querySelector('#changePasswordMsg').innerHTML = ''
+        })
+
+        //Change password form
+        document.querySelector('#changepassword').addEventListener('submit',changePassword)
+
+        function changePassword(e){
+            e.preventDefault()
+            document.querySelector('#changePasswordSpinner').style.display = 'block'
+            document.querySelector('#changePasswordMsg').innerHTML = ''
+            var xhr = new XMLHttpRequest
+            
+            xhr.open('POST', '/admin/changePassword',true)
+            xhr.setRequestHeader('content-type','application/json')
+            
+            let data = JSON.stringify({
+                currentPassword : document.querySelector('#cpassword').value,
+                newPassword : document.querySelector('#npassword').value
+            })
+            
+            xhr.onload = function() {
+                document.querySelector('#changePasswordSpinner').style.display = 'none'
+                if(this.status === 200) {
+                    document.querySelector('#cpassword').value = ''
+                    document.querySelector('#npassword').value = ''
+                    document.querySelector('#changePasswordMsg').style.color = '#26A4E2'
+                    document.querySelector('#changePasswordMsg').innerHTML = this.responseText
+                    document.querySelector('#changePasswordModalBtn').click()
+                } else {
+                    document.querySelector('#changePasswordMsg').style.color = 'red'
+                    document.querySelector('#changePasswordMsg').innerHTML = this.responseText
+                }
+            }
+            xhr.send(data)
+        }
+        
+        // Adding recruitment event
         document.querySelector('#addEvent').addEventListener('submit',addEvent)
         
         async function addEvent(e) {
             e.preventDefault()
-
+            document.querySelector('#addEventSpinner').style.display = 'block'
+            document.querySelector('#addEventMsg').innerHTML = ''
+            
             let date = new Date(document.querySelector('#date').value).toString().substring(4,15)
             
             let info = {
@@ -80,7 +263,6 @@
 
             const data = await response.json()
             
-            document.querySelector('#infoMsg').innerHTML = data.msg
             if(response.status === 200){
                 document.querySelector('#title').value = ""
                 document.querySelector('#date').value = ""
@@ -89,8 +271,26 @@
                 document.querySelector('#endTime').value = ""
                 document.querySelector('#domain').value = ""
                 document.querySelector('#description').value = ""
+                document.querySelector('#addEventMsg').style.color = '#26A4E2'
+                document.querySelector('#addEventMsg').innerHTML = data.msg
+                document.querySelector('#addEventModalBtn').click()
+            } else {
+                document.querySelector('#addEventMsg').style.color = 'red'
+                document.querySelector('#addEventMsg').innerHTML = data.msg
             }
         }
+
+        //Clearing the form on closing the modal
+        $('#addEventModal').on('hide.bs.modal', function (e) {
+            document.querySelector('#title').value = ""
+            document.querySelector('#date').value = ""
+            document.querySelector('#venue').value = ""
+            document.querySelector('#startTime').value = ""
+            document.querySelector('#endTime').value = ""
+            document.querySelector('#domain').value = ""
+            document.querySelector('#description').value = ""
+            document.querySelector('#addEventMsg').innerHTML = ''
+        })
 
     </script>
 </body>

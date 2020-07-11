@@ -118,10 +118,10 @@ Router.post('/addEvent',(req,res) => {
     let dbo = db.db('atom')
 
     dbo.collection('events').insertOne(req.body,(dbErr,result) => {
-        if(dbErr) return res.render('error')
+        if(dbErr) return res.status(500).json({msg:'Server Error! Please try again later.'})
         
         console.log(result.insertedCount)
-        res.send({msg:'Info added'})
+        res.json({msg:'Event added'})
     })
 })
 
