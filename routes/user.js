@@ -84,8 +84,8 @@ Router.post('/register', async(req,res)=>{
             let mailOptions = {
                 from: process.env.EMAIL,
                 to: email,
-                subject: 'Confirmation email for Tdian register',
-                html: "<p>link is...<a href="+link+">Click here to verify....</a></p>"
+                subject: 'Think Digital Registeration Email',
+                html: "<h2>Welcome to Think Digital</h2><br><p>Click<a href="+link+">here</a>to verify your email</p>"
             };
             
             transporter.sendMail(mailOptions, function(error, info){

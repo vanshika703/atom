@@ -11,49 +11,21 @@
         *{
           outline: none;
         }
-        body{
-            background-color: #292929;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .sidenav{
-          height: 100vh;
-          width:200px;
-          position: fixed;
-          top: 0;
-          left: 0;
-          background-color: #72E4FE!important;
-          z-index: 999;
-        }
-        .nontdnav{
-          display: block;
-        }
-        .nontdnav a{
-          color:white!important;
-        }
 
-        .nontdnav a:hover{
-          color:#eee!important;
-        }
-        #logout-btn{
-            background-color: white;
-            border:none;
-            color:#72E4FE;
-            border-radius: 24px;
-            padding: 4px 12px;
-        }
-        #logout-btn:hover{
-          background-color: #eee;
-        }
-        .reg-container{
-          margin-left: 200px;
-        }
+        body{
+          background-color: #ffffff;
+          height: 100vh;
+          width: 100vw;
+          font-family: 'Montserrat', sans-serif;
+      }
+        
         .reg-container h2{
           color: #218EC4;
         }
 
         #regForm {
-        background-color: #ffffff;
         border-radius: 12px;
+        box-shadow: grey 0 0 10px;
         opacity: 0.9;
         margin: 100px auto;
         padding: 40px;
@@ -105,42 +77,30 @@
         background-color:#A9A9A9;
         }
 
+        .step {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbbbbb;
+        border: none;  
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.5;
+        }
+
+        .step.active {
+        opacity: 1;
+        }
+
+        /* Mark the steps that are finished and valid: */
+        .step.finish {
+        background-color: #218EC4;
+        }
+
 
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light sidenav">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav nontdnav">
-                <li class="nav-item">
-                <a class="nav-link" href="/userRegister">Registeration Form<span class="sr-only">(current)</span></a>
-                </li>
-                <hr>
-                <li class="nav-item">
-                <a class="nav-link" href="/profile">Profile<span class="sr-only">(current)</span></a>
-                </li>
-                <hr>
-                <li class="nav-item">
-                <a class="nav-link" href="/primarydash">Primary Domain</a>
-                </li>
-                <hr>
-                <li class="nav-item">
-                <a class="nav-link" href="/secondarydash">Secondary Domain</a>
-                </li>
-                <hr>
-                <li class="nav-item">
-                <a class="nav-link" href="http://think-digital.in/">Our Website</a>
-                </li>
-                <hr>
-                <li class="nav-item">
-                  <button class="nav-link" id="logout-btn" style="cursor: pointer;">Logout</button>
-                </li>
-            </ul>
-        </div>
-    </nav>
     <div class="container reg-container">
       <h2>Fill in Your Registeration Details</h2>
       
