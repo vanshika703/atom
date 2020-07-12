@@ -50,65 +50,53 @@ body {
     font-family: 'Montserrat', sans-serif;
   }
   
-  /* Float four columns side by side */
-  .column {
-    float: left;
-    width: 33.3%;
-    padding: 0 10px;
-    height: 50%;
-    
-  }
   
-  /* Remove extra left and right margins, due to padding */
-  .row {margin: 0 -5px;}
-  
-  /* Clear floats after the columns */
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  
-  /* Responsive columns */
-  @media screen and (max-width: 600px) {
-    .column {
-      width: 100%;
-      display: block;
-      margin-bottom: 20px;
+/* Float four columns side by side */
+.column {
+  width: 25%;
+  padding: 0 10px;
+  height: 400px;
+}
 
-    }
-  }
-  
-  /* Style the counter cards */
-  .card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    text-align: center;
-    background-color: #f1f1f1;
-    min-height: 30vh;
-    transition: 0.5s ease;
-    cursor: pointer;
-    width: 80%;
-    border-radius: 18px;
-  }
+/* Remove extra left and right margins, due to padding */
+.row {margin: 0 -5px;}
 
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive columns */
+
+
+/* Style the counter cards */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+  min-height: 50%;
+}
   /* *{
     box-sizing: border-box;
   } */
    
   /* Create two equal columns that floats next to each other */
-  .column-inner {
-    float: left;
+  .column-innertext {
+    text-align: center;
+    font-size: x-large;
+    color: #72E4FE;
     width: 50%;
     padding: 10px;
     height: 10% /* Should be removed. Only for demonstration */
   }
-  .column-innertext {
-    float: left;
-    width: 50%;
-    padding: 10px;
-    height: 40% /* Should be removed. Only for demonstration */
+  .column-inner{
+    font-size: large;
+    color: gray;
   }
+  
   /* Clear floats after the columns */
   .row-inner:after {
     content: "";
@@ -123,4 +111,91 @@ body {
   .progress
   {
     margin-bottom: 5%;
+  }
+  
+  /* navbar */
+  
+  .side-nav{
+    height:100%;
+    width:0;
+    position:fixed;
+    z-index:1;
+    top:0;
+    left:0;
+    background-color:#72E4FE;
+    opacity:0.9;
+    overflow-x:hidden;
+    padding-top:60px;
+    transition:0.5s;
+  }
+  
+  .side-nav a{
+    padding:10px 10px 10px 30px;
+    text-decoration:none;
+    font-size:22px;
+    color:#f1f1f1;
+    display:block;
+    transition:0.3s;
+  }
+  
+  .side-nav a:hover{
+    color:#f1f1f1;
+  }
+  
+  .side-nav .btn-close{
+    position:absolute;
+    top:0;
+    right:22px;
+    font-size:36px;
+    margin-left:50px;
+  }
+  
+
+  .nav-item
+  {
+    margin-top: 15%;
+    color: white;
+  }
+  .nav-button
+  {
+    margin-top: 18%;
+    border-radius: 8px;
+  background-color: white; 
+  border: none;
+  color: #72E4FE;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  }
+  .title
+  {
+    font-size: x-large;
+  color: #72E4FE;
+  }
+  .other-text
+  {
+    font-size: large;
+    color: gray;
+  }
+  #main{
+    transition:margin-left 0.5s;
+    padding:20px;
+    overflow:hidden;
+    width:100%;
+  }
+  
+  @media(max-width:568px){
+    .navbar-nav{display:none}
+  }
+  
+  @media (max-width: 600px) {
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+    }
   }

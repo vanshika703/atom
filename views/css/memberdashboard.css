@@ -1,20 +1,142 @@
-* {
-    box-sizing: border-box;
-  }
-  
-  body {
+body {
     font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+  }
 
+  body{
+    font-family:"Arial", Serif;
+    background-color:#f4f4f4;
+    overflow-x:hidden;
+  }
+  .side-nav{
+    height:100%;
+    width:0;
+    position:fixed;
+    z-index:1;
+    top:0;
+    left:0;
+    background-color:#111;
+    opacity:0.9;
+    overflow-x:hidden;
+    padding-top:60px;
+    transition:0.5s;
   }
   
-  /* Float four columns side by side */
-  .column {
+  .side-nav a{
+    padding:10px 10px 10px 30px;
+    text-decoration:none;
+    font-size:22px;
+    color:#ccc;
+    /* display:block; */
+    transition:0.3s;
+  }
+  
+  .side-nav a:hover{
+    color:#fff;
+  }
+  @media(max-width:568px){
+    .navbar-nav{display:none}
+  }
+  
+  /* navbar */
+  .nav-item
+  {
+    margin-top: 15%;
+    color: white;
+  }
+  .wrapper{
+    display: flex;
+    position: relative;
+  }
+  
+  .wrapper .sidebar{
+    width: 200px;
+    height: 100%;
+    background: #72E4FE;
+    padding: 30px 0px;
+    position: fixed;
+  }
+  
+  .wrapper .sidebar h2{
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .wrapper .sidebar ul li{
+    padding: 15px;
+    border-bottom: 1px solid #72bff3;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-bottom: 30px;
+  }    
+  
+  .wrapper .sidebar ul li a{
+    color: #fff;
+    display: block;
+    font-size: 20px;
+  }
+  
+  .wrapper .sidebar ul li a .fas{
+    width: 20px;
+  }
+  
+  .wrapper .sidebar ul li:hover{
+    background-color: #72E4FE;
+  }
+      
+  .wrapper .sidebar ul li:hover a{
+    color: #fff;
+  }
+   
+  .nav-button
+  {
+    margin-top: 18%;
+    border-radius: 8px;
+  background-color: white; 
+  border: none;
+  color: #72E4FE;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  }
+  /* .button
+  {
+    background-color: white; 
+    border: none;
+    color: #72E4FE;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+  } */
+  .name
+  {
+    font-size: 27px;
+    color: grey;
+  }
+  .nav-link:hover
+  {
+     background-color: #72bff3;
+  }
+  
+  @media(max-width:568px){
+    .navbar-nav{display:none}
+  }
+
+  
+  .column{
     float: left;
-    width: 25%;
+    width: 50%;
     padding: 0 10px;
   }
-  
-  /* Remove extra left and right margins, due to padding */
   .row {margin: 0 -5px;}
   
   /* Clear floats after the columns */
@@ -23,23 +145,46 @@
     display: table;
     clear: both;
   }
-  
-  /* Responsive columns */
-  @media screen and (max-width: 600px) {
-    .column {
+   .card {
+    min-height: 200px;
+    box-shadow: 0 4px 8px 0 #72E4FE;
+    transition: 0.3s;
+    margin-bottom: 18px;
+    margin-left: 250px;
+    margin-top: 20px;
+  } 
+   .name
+   {
+     margin-left: 250px;
+   }
+  @media  (max-width: 600px) {
+    .card {
       width: 100%;
-      display: block;
-      margin-bottom: 20px;
+      min-height: 200px;
+      box-shadow: 0 4px 8px 0 #72E4FE;
+      transition: 0.3s;
+     margin-top: 20px;
     }
   }
-  .card {
-    box-shadow: 0 4px 8px 0 #ddf3f5;
-    transition: 0.3s;
-  }
-  
   .card:hover {
     box-shadow: 16px 16px 16px 16px #ddf3f5;
   }
+.project-link
+{
+  color: #fff;
+}
+
+  .title
+  {
+    font-size: x-large;
+  color: #72E4FE;
+  }
+  .other-text
+  {
+    font-size: large;
+    color: gray;
+  }
+
   /* readmore button */
   .stage {
     padding:40px;
@@ -75,3 +220,36 @@
     .readmore:hover:after {
       color:#231f20;
     }
+
+
+  /* Responsive columns */
+  @media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+    }
+   
+    #main{
+      margin-left: 0px;
+    }
+  }
+  a.icon
+  {
+    visibility: collapse;
+  }
+  @media (min-width:568px)
+  {
+    .icon{
+    visibility: visible;
+    color: #fff;
+    }
+  }
+
+  @media (max-width:568px)
+{
+.topnav
+{
+  color: red;
+}
+}
