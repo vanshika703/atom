@@ -1,235 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+        integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<!-- Lottie File cdn -->
+    <!-- Lottie File cdn -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;600&display=swap" rel="stylesheet">
 
-<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-<!-- progress bar -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <!-- progress bar -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <!-- bootstrap -->
     <link rel="stylesheet" href="/css/memberproject.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <title>Project Details</title>
 </head>
+
 <body>
     <div class="all">
-    <nav class="navbar">
-        <span class="open-slide">
-          <a href="#" onclick="openSlideMenu()">
-            <svg width="30" height="30">
-                <path d="M0,5 30,5" stroke="#72E4FE" stroke-width="5"/>
-                <path d="M0,14 30,14" stroke="#72E4FE" stroke-width="5"/>
-                <path d="M0,23 30,23" stroke="#72E4FE" stroke-width="5"/>
-            </svg>
-          </a>
-        </span>
-      </nav>
-       <div class="navbar-header">
-</div>
-
-    <div id="side-menu" class="side-nav">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid"> 
-           
-            <ul class="nav navbar-nav"> 
-                <a class="nav-item" href="#" class="btn-close" onclick="closeSlideMenu()">&times;</a>
-                <a class="nav-item dynamic-link" href="/user/memberprofile" >Profile</a>
-                <a class="nav-item dynamic-link" href="/user/dashboard">Dashboard</a>
-                <a class="nav-item" href="http://think-digital.in/">Our Website</a>
-                <button class=" nav-button" id="logout-btn">Logout</button>
-                
-            
-            </ul> 
+        <nav class="navbar">
+            <span class="open-slide">
+                <a href="#" onclick="openSlideMenu()">
+                    <svg width="30" height="30">
+                        <path d="M0,5 30,5" stroke="#72E4FE" stroke-width="5" />
+                        <path d="M0,14 30,14" stroke="#72E4FE" stroke-width="5" />
+                        <path d="M0,23 30,23" stroke="#72E4FE" stroke-width="5" />
+                    </svg>
+                </a>
+            </span>
+        </nav>
+        <div class="navbar-header">
         </div>
-        </nav> 
 
- </div>
+        <div id="side-menu" class="side-nav">
+            <nav class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container-fluid">
+
+                    <ul class="nav navbar-nav">
+                        <a class="nav-item" href="#" class="btn-close" onclick="closeSlideMenu()">&times;</a>
+                        <a class="nav-item dynamic-link" href="/user/memberprofile">Profile</a>
+                        <a class="nav-item dynamic-link" href="/user/dashboard">Dashboard</a>
+                        <a class="nav-item" href="http://think-digital.in/">Our Website</a>
+                        <button class=" nav-button" id="logout-btn">Logout</button>
 
 
+                    </ul>
+                </div>
+            </nav>
 
-    <div id="main">
-    <div class="row1">
-        <div class="column1">
-        <div class="card1">
-            <div class="content">
-            <div class="card-header">
-                <div class="title"> <p><%= task.title %></p></div>
-                    <div class="other-text"><p>From:<%= task.startDate %></p></div>
-                        <div class="other-text"><p> Deadline:<%= task.deadline %></p></div>
-                            <div class="other-text"><p> Description:<%= task.description %></p></div>
         </div>
-        </div>
-    </div>
-</div>
-</div>
-        <div class="card-body">
-            <div class="progress">
-            <div class="w3-grey w3-round-xlarge" style="width:50%">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width:<%= task.percentage %>%"><%= task.percentage %>%</div>
+
+
+
+        <div id="main">
+            <div class="row1">
+                <div class="column1">
+                    <div class="card1">
+                        <div class="content">
+                            <div class="card-header">
+                                <div class="title">
+                                    <p><%= task.title %></p>
+                                </div>
+                                <div class="other-text">
+                                    <p>From:<%= task.startDate %></p>
+                                </div>
+                                <div class="other-text">
+                                    <p> Deadline:<%= task.deadline %></p>
+                                </div>
+                                <div class="other-text">
+                                    <p> Description:<%= task.description %></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-            <div class="container1"> 
-                <div class="row">
-                <div class="column">
-                    <div class="card h-100">
-                    <div class="column-innertext">   <h4>Resources</h4></div>
-                    <div class="column-inner">
+            <div class="card-body">
+                <div class="progress">
+                    <div class="w3-grey w3-round-xmedium" style="width:50%">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated"
+                            style="width:<%= task.percentage %>%"><%= task.percentage %>%</div>
+                    </div>
+                </div>
+
+
+
+                <div class="row" id="row">
+                    <div class="column ">
+                        <div class="card">
+                            
+                            <div class="title">   <h3 >Resources</h3></div>
+                           
+                                <div class="other-text">
                                 <% task.resources.forEach(resource => {%>
-                    <p><%= resource %></p>
+                                <p><%= resource %></p>
 
-                <%})%>
+                                <%})%>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="column ">
+                        <div class="card">
+                          
+                            <div class="title">     <h3>Phases</h3></div> 
+                                <div class="other-text">
+                                <% task.phases.forEach(phase => {%>
+                                <p><%= phase.title %> till <%= phase.deadline %></p>
+                                <%})%>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="column ">
+                        <div class="card">
+
+                                <h3 class="title">Your Tasks</h3>
+                                <div class="other-text">
+
+                                <% task.subtasks.forEach(subtask => {%>
+                                <h5><%= subtask.title %> </h5>
+                                <h6>**<%= subtask.complete?('done'):('not done') %></h6>
+                                <p>From <%= subtask.startDate %></p>
+                                <p>To <%= subtask.endDate %></p>
+                                <% if(!subtask.complete) { %>
+                                <button id='<%= subtask._id %>' class='subtask-update btn-primary'>Done</button>
+                                <% } %>
+                                <%})%>
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="column ">
+                        <div class="card">
+
+                            
+                            <div class="title">      <h3>Your Bugs</h3></div>
+                                <div class="other-text">
+                                <% task.bugs.forEach(bug => {%>
+                                <h5><%= bug.title %> </h5>
+                                <h6>**<%= bug.complete?('done'):('not done') %></h6>
+                                <p>From <%= bug.startDate %></p>
+                                <p>To <%= bug.endDate %></p>
+                                <% if(!bug.complete) { %>
+                                <button id='<%= bug._id %>' class='bug-update btn-primary'>Done</button>
+                                <% } %>
+                                <%})%>
+                                </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-        <div class="column">
-                           <div class="card">
-                    <div class="column-innertext"> <h4>Phases</h4></div>
-                    <div class="column-inner">
-                <% task.phases.forEach(phase => {%>
-                    <p><%= phase.title %> till <%= phase.deadline %></p>
-                <%})%>
-            </div>
-        </div>
-    </div>
-            <div class="column">
-                <div class="card">
-                  
-           <div class="column-innertext"><h4>Your Tasks</h4></div>
-           <div class="column-inner">
-      
-                <% task.subtasks.forEach(subtask => {%>
-                        <h5><%= subtask.title %> </h5>
-                        <h6>**<%= subtask.complete?('done'):('not done') %></h6>
-                        <p>From <%= subtask.startDate %></p>
-                        <p>To <%= subtask.endDate %></p>
-                        <% if(!subtask.complete) { %>
-                            <button id='<%= subtask._id %>' class='subtask-update btn-primary'>Done</button>
-                        <% } %>
-                <%})%>
-            </div>
-     </div> 
-</div>
-
-
-<div class="column">
-    <div class="card">
-       
-        <div class="column-innertext"><h4>Your Bugs</h4></div>
-        <div class="column-inner">
-
-    <% task.bugs.forEach(bug => {%>
-            <h5><%= bug.title %> </h5>
-            <h6>**<%= bug.complete?('done'):('not done') %></h6>
-            <p>From <%= bug.startDate %></p>
-            <p>To <%= bug.endDate %></p>
-            <% if(!bug.complete) { %>
-                <button id='<%= bug._id %>' class='bug-update btn-primary'>Done</button>
-            <% } %> 
-    <%})%>
-</div>
-
-</div>
-</div>
-
-</div>
-</div>
-            </div>
-        </div>
-    </div>
-</div>
     <script>
+        function openSlideMenu() {
+            document.getElementById('side-menu').style.width = '250px';
+            document.getElementById('main').style.marginLeft = '250px';
+             var x = window.matchMedia("(max-width: 600px)")
+            myFunction(x) // Call listener function at run time
+            x.addListener(myFunction) // Attach listener function on state changes
 
-function openSlideMenu(){
-      document.getElementById('side-menu').style.width = '250px';
-      document.getElementById('main').style.marginLeft = '250px';
-      var x = window.matchMedia("(max-width: 600px)")
-myFunction(x) // Call listener function at run time
-x.addListener(myFunction) // Attach listener function on state changes
-     
-    }
-    function myFunction(x) {
-  if (x.matches) { // If media query matches
-    document.getElementsByClassName('column')[0].style.width = '100%';
-      document.getElementsByClassName('column')[1].style.width = '100%';
-      document.getElementsByClassName('column')[2].style.width = '100%';
-      document.getElementsByClassName('column')[3].style.width = '100%';
-}
-else
-{
-     document.getElementsByClassName('column')[0].style.width = '20%';
-      document.getElementsByClassName('column')[1].style.width = '20%';
-      document.getElementsByClassName('column')[2].style.width = '20%';
-      document.getElementsByClassName('column')[3].style.width = '20%';
-}
-    }
-var x = window.matchMedia("(max-width: 600px)")
-myFunction(x) // Call listener function at run time
-x.addListener(myFunction) // Attach listener function on state changes
-
-
-    function closeSlideMenu(){
-      document.getElementById('side-menu').style.width = '0';
-      document.getElementById('main').style.marginLeft = '0';
-      document.getElementsByClassName('column')[0].style.width = '25%';
-      document.getElementsByClassName('column')[1].style.width = '25%';
-      document.getElementsByClassName('column')[2].style.width = '25%';
-      document.getElementsByClassName('column')[3].style.width = '25%';
-    }
-
-    let token = localStorage.getItem('token')
-
-//adding the token to all links
-document.querySelectorAll('.dynamic-link').forEach(link => link.href+=`/${token}`)
-
-//logout functionality
-document.querySelector('#logout-btn').addEventListener('click',() => {
-    localStorage.removeItem('token')
-    window.location = '/user/login'
-})
-
-document.querySelectorAll('.subtask-update').forEach(btn => btn.addEventListener('click',updateSubtask))
-async function updateSubtask(e){
-    let res = await fetch(`/user/update/${e.target.id}`,{
-        method:'PUT',
-        headers:{
-            'x-auth-token':token
         }
-    })
-    if(res.status === 200){
-        let data = await res.json()
-        console.log(data.msg)
-        e.target.style.display = 'none'
-        e.target.parentElement.childNodes[3].innerHTML = '**done'
-        location.reload()
-    }
-}
 
-document.querySelectorAll('.bug-update').forEach(btn => btn.addEventListener('click',updateBug))
-async function updateBug(e){
-    let res = await fetch(`/user/updateBug/${e.target.id}`,{
-        method:'PUT',
-        headers:{
-            'x-auth-token':token
+        function myFunction(x) {
+            if (x.matches) { // If media query matches
+            
+                document.getElementsByClassName('column')[0].style.width = '100%';
+                document.getElementsByClassName('column')[1].style.width = '100%';
+                document.getElementsByClassName('column')[2].style.width = '100%';
+                document.getElementsByClassName('column')[3].style.width = '100%';
+            } else {
+                document.getElementsByClassName('column')[0].style.width = '20%';
+                document.getElementsByClassName('column')[1].style.width = '20%';
+                document.getElementsByClassName('column')[2].style.width = '20%';
+                document.getElementsByClassName('column')[3].style.width = '20%';
+            }
         }
-    })
-    if(res.status === 200){
-        let data = await res.json()
-        console.log(data.msg)
-        e.target.style.display = 'none'
-        e.target.parentElement.childNodes[3].innerHTML = '**done'
-        location.reload()
-    }
-}
+        var x = window.matchMedia("(max-width: 600px)")
+        myFunction(x) // Call listener function at run time
+        x.addListener(myFunction) // Attach listener function on state changes
+
+
+        function closeSlideMenu() {
+            document.getElementById('side-menu').style.width = '0';
+            document.getElementById('main').style.marginLeft = '0';
+            document.getElementsByClassName('column')[0].style.width = '25%';
+            document.getElementsByClassName('column')[1].style.width = '25%';
+            document.getElementsByClassName('column')[2].style.width = '25%';
+            document.getElementsByClassName('column')[3].style.width = '25%';
+        }
+
+        let token = localStorage.getItem('token')
+
+        //adding the token to all links
+        document.querySelectorAll('.dynamic-link').forEach(link => link.href += `/${token}`)
+
+        //logout functionality
+        document.querySelector('#logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('token')
+            window.location = '/user/login'
+        })
+
+        document.querySelectorAll('.subtask-update').forEach(btn => btn.addEventListener('click', updateSubtask))
+        async function updateSubtask(e) {
+            let res = await fetch(`/user/update/${e.target.id}`, {
+                method: 'PUT',
+                headers: {
+                    'x-auth-token': token
+                }
+            })
+            if (res.status === 200) {
+                let data = await res.json()
+                console.log(data.msg)
+                e.target.style.display = 'none'
+                e.target.parentElement.childNodes[3].innerHTML = '**done'
+                location.reload()
+            }
+        }
+
+        document.querySelectorAll('.bug-update').forEach(btn => btn.addEventListener('click', updateBug))
+        async function updateBug(e) {
+            let res = await fetch(`/user/updateBug/${e.target.id}`, {
+                method: 'PUT',
+                headers: {
+                    'x-auth-token': token
+                }
+            })
+            if (res.status === 200) {
+                let data = await res.json()
+                console.log(data.msg)
+                e.target.style.display = 'none'
+                e.target.parentElement.childNodes[3].innerHTML = '**done'
+                location.reload()
+            }
+        }
     </script>
 </body>
+
 </html>
