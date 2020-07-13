@@ -75,8 +75,17 @@ Router.use(function (req, res, next) {
     next()
 });
 
-Router.get('/dashboard', (req,res) => {
-    res.render('admin/admindashboard',{user:req.session.user})
+Router.get('/dashboard', async(req,res) => {
+    let db = req.app.locals.db
+
+    try {
+        let dbo = db.db('atom')
+        let members = await dbo.collection('users').find({ userType: 1 },{projection:{password:0}}).toArray()
+        res.render('admin/admindashboard',{user:req.session.user, data:members })
+    } catch (error) {
+        console.error(error)
+        return res.render('error')
+    }
 })
 
 
@@ -279,7 +288,7 @@ Router.post('/addTask',async(req,res) => {
 
     let db = req.app.locals.db
     db.db('atom').collection('tasks').insertOne(project,(dbErr,result) => {
-        if(dbErr) return res.render('error')
+        if(dbErr) return res.json({msg:'Server error'})
 
         console.log('Project: '+result.insertedCount)
         subtasks.forEach(subtask => {
@@ -287,10 +296,10 @@ Router.post('/addTask',async(req,res) => {
         })
 
         db.db('atom').collection('subtasks').insertMany(subtasks, (err,output) => {
-            if(err) return res.render('error')
+            if(err) return res.json({msg:'Server error'})
 
             console.log(output.insertedCount)
-            res.send({msg:'Task added. Page reloading in 2 seconds'})
+            res.send({msg:'Project added. Refresh the page to clear out the form'})
         })
     })
 })

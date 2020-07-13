@@ -17,8 +17,8 @@ textarea{
 }
 
 .member {
-    border: 2px solid black;
-    margin-top: 2px;
+    border: 2px solid #26A4E2;
+    padding: 0.2em;
 }
 
 .wrapper {

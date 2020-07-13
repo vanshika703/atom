@@ -119,8 +119,8 @@
 
             xhr.onload = function() {
                 if(this.status === 200){
-                    spinner.style.display = 'none'
                     window.location = '/admin/dashboard'
+                    spinner.style.display = 'none'
                 }
                 else{
                     spinner.style.display = 'none'
