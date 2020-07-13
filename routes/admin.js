@@ -213,7 +213,7 @@ Router.get('/viewprofile/:id', (req,res) => {
     db.db('atom').collection('users').findOne({_id:new ObjectId(req.params.id)},{projection:{password:0}},(dbErr,user) => {
         if(dbErr) return res.render('error')
 
-        res.render('admin/adminviewprofile',{user})
+        res.render('admin/adminviewprofile',{user,admin:req.session.user})
     })
 })
 
@@ -222,7 +222,7 @@ Router.get('/viewmemberprofile/:id', (req,res) => {
     db.db('atom').collection('users').findOne({_id:new ObjectId(req.params.id)},{projection:{password:0}},(dbErr,user) => {
         if(dbErr) return res.render('error')
 
-        res.render('admin/adminviewmemberprofile',{user})
+        res.render('admin/adminviewmemberprofile',{user,admin:req.session.user})
     })
 })
 Router.post('/delete', (req,res) => {

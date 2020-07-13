@@ -117,3 +117,13 @@ ul ul a {
     color: #ffffff;
     padding: 8px 12px;
 }
+
+.text-color {
+    color: #26A4E2;
+}
+
+.line {
+    background-color: #72E4FE;
+    width:120px;
+    height: 3px;
+}
