@@ -1,66 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <title>Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+    integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="/css/memberdashboard.css">
+
 </head>
+
 <body>
-    <div class="container">
-        <div class="card-deck">
-            <div class="card mb-4">
-                    <h4 class="card-title">Resources</h4>
-                    <% task.resources.forEach(resource => {%>
-                        <p class="card-text"><%= resource %></p>
-    
-                    <%})%>
-                </div>
-            </div>
-            <div class="card mb-4">
-                <img class="card-img-top img-fluid" src="//placehold.it/500x280" alt="Card image cap">
-                <div class="card-body">
-                    <h4 class="card-title">Phases</h4>
-                    <% task.phases.forEach(phase => {%>
-                        <p class="card-text"><%= phase.title %> till <%= phase.deadline %></p>
-                    <%})%>
-                </div>
-            </div>
-            <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
-            <div class="card mb-4">
-                <img class="card-img-top img-fluid" src="//placehold.it/500x280" alt="Card image cap">
-                <div class="card-body">
-                    <h4 class="card-title">Your Tasks</h4>
-                    <% task.subtasks.forEach(subtask => {%>
-                        <h5 class="card-text"><%= subtask.title %> </h5>
-                        <h6class="card-text">**<%= subtask.complete?('done'):('not done') %></h6>
-                        <p class="card-text">From <%= subtask.startDate %></p>
-                        <p class="card-text">To <%= subtask.endDate %></p>
-                        <% if(!subtask.complete) { %>
-                            <button id='<%= subtask._id %>' class='subtask-update btn-primary'>Done</button>
-                        <% } %>
-                <%})%>
-                </div>
-            </div>
-            <div class="w-100 d-none d-md-block d-lg-none"><!-- wrap every 3 on md--></div>
-            <div class="card mb-4">
-                <img class="card-img-top img-fluid" src="//placehold.it/500x280" alt="Card image cap">
-                <div class="card-body">
-                    <h4 class="card-title">Bugs</h4>
-                    <% task.bugs.forEach(bug => {%>
-                        <h5 class="card-text"><%= bug.title %> </h5>
-                        <h6  class="card-text"></h6> >**<%= bug.complete?('done'):('not done') %></h6>
-                        <p  class="card-text"></p> >From <%= bug.startDate %></p>
-                        <p  class="card-text"></p> >To <%= bug.endDate %></p>
-                        <% if(!bug.complete) { %>
-                            <button id='<%= bug._id %>' class='bug-update btn-primary'>Done</button>
-                        <% } %> 
-                <%})%>
-                </div>
-            </div>
-            
-            
-       
+
+
+  <div class="all">
+    <nav class="navbar">
+      <span class="open-slide">
+        <a href="#" class="icon" onclick="openSlideMenu()">
+          <svg width="30" height="30">
+            <path d="M0,5 30,5" stroke="#72E4FE" stroke-width="5" />
+            <path d="M0,14 30,14" stroke="#72E4FE" stroke-width="5" />
+            <path d="M0,23 30,23" stroke="#72E4FE" stroke-width="5" />
+          </svg>
+        </a>
+      </span>
+    </nav>
+
+    <div id="side-menu" class="side-nav">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+
+          <ul class="nav navbar-nav">
+            <a class="nav-item dynamic-link" style="color: #fff;" href="/user/memberprofile">Profile</a>
+            <a class="nav-item dynamic-link" style="color: #fff;" href="/user/dashboard">Dashboard</a>
+            <a class="nav-item" style="color: #fff;" href="http://think-digital.in/">Our Website</a>
+            <button class=" nav-button" id="logout-btn">Logout</button>
+          </ul>
         </div>
+      </nav>
     </div>
+
+    <div id="main">
+      <div id="main2">
+        <a class="name navbar-brand" href="#">Hello <%=user.name%> <i class="fas fa-user"></i></a>
+      </div>
+       
+      <% tasks.forEach(task => { %>
+        <div class="row">
+       
+        <div class="column  w-50" >
+        <div class="card">
+
+            <div class="card-header">
+              <div class="title">
+                <p><%= task.title %></p>
+              </div>
+              <div class="other-text">
+                <p>From:<%= task.startDate %></p>
+              </div>
+              <div class="other-text">
+                <p> Deadline:<%= task.deadline %></p>
+              </div>
+              <div class="other-text">
+                <p> Description:<%= task.description %></p>
+              </div>
+              <div class="stage readmore">
+                <a class="project-link" href='/user/project/<%= task._id %>'>Know More</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%})%>
+ 
+
+</div>
+  </div>
+  <script>
+     var y = window.matchMedia("(max-width: 600px)") 
+          openSlideMenu(y) // Call listener function at run time
+            y.addListener(openSlideMenu) // Attach listener function on state changes
+    function openSlideMenu(y) {
+      if(y.matches) {
+      var x = document.getElementById("side-menu");
+      if (x.className === "side-nav") {
+        x.className += " responsive";
+      } else {
+        x.className = "side-nav";
+      }
+    }}
+    
+    let token = localStorage.getItem('token')
+    let links = document.querySelectorAll('.project-link')
+    links.forEach(link => link.href += `/${token}`)
+    //adding the token to all links
+    document.querySelectorAll('.dynamic-link').forEach(link => link.href += `/${token}`)
+    //logout functionality
+    document.querySelector('#logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('token')
+      window.location = '/user/login'
+    })
+  </script>
 </body>
+
 </html>

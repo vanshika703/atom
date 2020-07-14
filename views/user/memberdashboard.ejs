@@ -4,101 +4,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <title>Dashboard</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
-    integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+      integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
 
-  <!-- bootstrap -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <!-- Lottie File cdn -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <!-- progress bar -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <!-- bootstrap -->
   <link rel="stylesheet" href="/css/memberdashboard.css">
-
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 
 <body>
-
-
-  <div class="all">
-    <nav class="navbar">
-      <span class="open-slide">
-        <a href="#" class="icon" onclick="openSlideMenu()">
-          <svg width="30" height="30">
-            <path d="M0,5 30,5" stroke="#72E4FE" stroke-width="5" />
-            <path d="M0,14 30,14" stroke="#72E4FE" stroke-width="5" />
-            <path d="M0,23 30,23" stroke="#72E4FE" stroke-width="5" />
-          </svg>
-        </a>
-      </span>
-    </nav>
-
-    <div id="side-menu" class="side-nav">
-      <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-
-          <ul class="nav navbar-nav">
-            <a class="nav-item dynamic-link" style="color: #fff;" href="/user/memberprofile">Profile</a>
-            <a class="nav-item dynamic-link" style="color: #fff;" href="/user/dashboard">Dashboard</a>
-            <a class="nav-item" style="color: #fff;" href="http://think-digital.in/">Our Website</a>
-            <button class=" nav-button" id="logout-btn">Logout</button>
-          </ul>
+    <div class="all">
+        <nav class="navbar">
+            <span class="open-slide">
+                <a href="#" onclick="openSlideMenu()">
+                    <svg width="30" height="30">
+                        <path d="M0,5 30,5" stroke="#72E4FE" stroke-width="5" />
+                        <path d="M0,14 30,14" stroke="#72E4FE" stroke-width="5" />
+                        <path d="M0,23 30,23" stroke="#72E4FE" stroke-width="5" />
+                    </svg>
+                </a>
+            </span>
+        </nav>
+        <div class="navbar-header">
         </div>
-      </nav>
-    </div>
 
-    <div id="main">
-      <div id="main2">
+        <div id="side-menu" class="side-nav">
+            <nav class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container-fluid">
+                    <ul class="nav navbar-nav">
+                        <a class="nav-item" href="#" class="btn-close" onclick="closeSlideMenu()">&times;</a>
+                        <a class="nav-item dynamic-link" href="/user/memberprofile">Profile</a>
+                        <a class="nav-item dynamic-link" href="/user/dashboard">Dashboard</a>
+                        <a class="nav-item" href="http://think-digital.in/">Our Website</a>
+                        <button class="nav-button" id="logout-btn">Logout</button>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div id="main">
+  
         <a class="name navbar-brand" href="#">Hello <%=user.name%> <i class="fas fa-user"></i></a>
-      </div>
-       
-      <% tasks.forEach(task => { %>
-        <div class="row">
-       
-        <div class="column  w-50" >
-        <div class="card">
+      
+            <div class="row1">
+              <% tasks.forEach(task => { %>
+                <div class="column1">
+                    <div class="card1">
+                        <div class="content">
+                            <div class="card-header">
+                                <div class="title">
+                                    <p><%= task.title %></p>
+                                </div>
+                                <div class="other-text">
+                                    <p>From:<%= task.startDate %></p>
+                                </div>
+                                <div class="other-text">
+                                    <p> Deadline:<%= task.deadline %></p>
+                                </div>
+                                <div class="other-text">
+                                    <p> Description:<%= task.description %></p>
+                                </div>
+                                <div class="stage readmore">
+                                  <a class="project-link" href='/user/project/<%= task._id %>'>Know More</a></div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <%})%>
+                </div>            
+              </div>
+    </div>
+    <script>
 
-            <div class="card-header">
-              <div class="title">
-                <p><%= task.title %></p>
-              </div>
-              <div class="other-text">
-                <p>From:<%= task.startDate %></p>
-              </div>
-              <div class="other-text">
-                <p> Deadline:<%= task.deadline %></p>
-              </div>
-              <div class="other-text">
-                <p> Description:<%= task.description %></p>
-              </div>
-              <div class="stage readmore">
-                <a class="project-link" href='/user/project/<%= task._id %>'>Know More</a></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <%})%>
- 
-
-</div>
-  </div>
-  <script>
-    function openSlideMenu() {
-      var x = document.getElementById("side-menu");
-      if (x.className === "side-nav") {
-        x.className += " responsive";
-      } else {
-        x.className = "side-nav";
-      }
-    }
-    
-    let token = localStorage.getItem('token')
+let token = localStorage.getItem('token')
     let links = document.querySelectorAll('.project-link')
     links.forEach(link => link.href += `/${token}`)
     //adding the token to all links
@@ -108,7 +98,22 @@
       localStorage.removeItem('token')
       window.location = '/user/login'
     })
-  </script>
+    function openSlideMenu() {
+            document.getElementById('side-menu').style.width = '250px';
+            document.getElementById('main').style.marginLeft = '250px';
+           
+        }
+
+      
+        function closeSlideMenu() {
+            document.getElementById('side-menu').style.width = '0';
+            document.getElementById('main').style.marginLeft = '0';
+          
+        }
+
+        
+    
+    </script>
 </body>
 
 </html>
