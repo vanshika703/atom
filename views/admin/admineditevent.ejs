@@ -3,80 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Event</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
+    <title>Edit Event</title>
 </head>
 <body>
-    <div style="width: 50vw; float: left;">
-        <p id="infoMsg"></p>
-        <h2 style="text-align: center;">Recruitment Event</h2>
 
-        <form id="editEvent">
-            <input type="hidden" id="id" value="<%= event._id %>">
-            <input type="text" placeholder="Event title" id="title" value="<%= event.title %>" required>
-            <label for="date">Date</label>
-            <% let date = new Date(event.date) %>
-            <% let day = date.getDate().toString() %>
-            <% if(day < 10) day = `0${day}` %>
-            <% let mon = (date.getMonth()+1).toString() %>
-            <% if(mon < 10) mon = `0${mon}` %>
-            <% let year = date.getFullYear().toString() %>
-            <% let fullDate = `${year}-${mon}-${day}` %>
-            <input type="date" id="date" value="<%= fullDate %>" required>
-            <input type="text" id="venue" placeholder="Venue" value="<%= event.venue %>" required>
-            <label for="startTime">Start time</label>
-            <input type="time" id="startTime" value="<%= event.startTime %>" required>
-            <label for="endTime">End time</label>
-            <input type="time" id="endTime" value="<%= event.endTime %>" required>
-            <textarea id="description" cols="30" rows="10" placeholder="Description" required><%= event.description %></textarea>
-            <select id="domain" style="margin-top: 1rem;">
-                <% if(event.domain == 'web') { %> 
-                    <option value="web" selected>Web</option>
-                <% } else { %> 
-                    <option value="web">Web</option>
-                <% } %> 
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Think Digital</h3>
+            </div>
+    
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="/admin/dashboard">Dashboard</a>
+                </li>
+                <li>
+                    <a href="/admin/viewEvents">View Events</a>
+                </li>
+                <li>
+                    <a href="/admin/viewProjects">View Projects</a>
+                </li>
+                <li>
+                    <a href="/admin/viewUsers">View Users</a>
+                </li>
+                <li>
+                    <a href="/admin/viewMembers">View Members</a>
+                </li>
 
-                <% if(event.domain == 'app') { %> 
-                    <option value="app" selected>App</option>
-                <% } else { %> 
-                    <option value="app">App</option>
-                <% } %> 
-
-                <% if(event.domain == 'hr') { %> 
-                    <option value="hr" selected>HR</option>
-                <% } else { %> 
-                    <option value="hr">HR</option>
-                <% } %> 
-
-                <% if(event.domain == 'iot') { %> 
-                    <option value="iot" selected>IOT</option>
-                <% } else { %> 
-                    <option value="iot">IOT</option>
-                <% } %> 
-
-                <% if(event.domain == 'game') { %> 
-                    <option value="game" selected>Game</option>
-                <% } else { %> 
-                    <option value="game">Game</option>
-                <% } %> 
-                
-                <% if(event.domain == 'gd') { %> 
-                    <option value="gd" selected>Graphic Design</option>
-                <% } else { %> 
-                    <option value="gd">Graphic Design</option>
-                <% } %>
-            </select>
-            <input type="submit" value="Update">
-        </form>
+            </ul>
+    
+        </nav>
+        <!-- Page Content -->
+        <div id="content">
+    
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+    
+                    <button type="button" id="sidebarCollapse" class="btn btn-colour">
+                        <i class="fa fa-align-left"></i>
+                    </button>
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fa fa-align-justify"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Welcome <%= user.name %></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/logout"><i class="fa fa-sign-out"></i>Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            
+            <h3 class="mt-5 text-center">Recruitment Event</h3>
+        
+            <form id="editEvent" class="mt-3">
+                <input type="hidden" id="id" value="<%= event._id %>">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" class="form-control" placeholder="Event title" id="title" value="<%= event.title %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <% let date = new Date(event.date) %>
+                    <% let day = date.getDate().toString() %>
+                    <% if(day < 10) day = `0${day}` %>
+                    <% let mon = (date.getMonth()+1).toString() %>
+                    <% if(mon < 10) mon = `0${mon}` %>
+                    <% let year = date.getFullYear().toString() %>
+                    <% let fullDate = `${year}-${mon}-${day}` %>
+                    <input type="date" class="form-control" id="date" value="<%= fullDate %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="venue">Venue:</label>
+                    <input type="text" class="form-control" id="venue" placeholder="Venue" value="<%= event.venue %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="startTime">Start time</label>
+                    <input type="time" class="form-control" id="startTime" value="<%= event.startTime %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="endTime">End time</label>
+                    <input type="time" class="form-control" id="endTime" value="<%= event.endTime %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" class="form-control" placeholder="Description" required><%= event.description %></textarea>
+                </div>
+                <div class="form-group">
+                    <select id="domain" class="custom-select">
+                        <% if(event.domain == 'web') { %> 
+                            <option value="web" selected>Web</option>
+                        <% } else { %> 
+                            <option value="web">Web</option>
+                        <% } %> 
+            
+                        <% if(event.domain == 'app') { %> 
+                            <option value="app" selected>App</option>
+                        <% } else { %> 
+                            <option value="app">App</option>
+                        <% } %> 
+            
+                        <% if(event.domain == 'hr') { %> 
+                            <option value="hr" selected>HR</option>
+                        <% } else { %> 
+                            <option value="hr">HR</option>
+                        <% } %> 
+            
+                        <% if(event.domain == 'iot') { %> 
+                            <option value="iot" selected>IOT</option>
+                        <% } else { %> 
+                            <option value="iot">IOT</option>
+                        <% } %> 
+            
+                        <% if(event.domain == 'game') { %> 
+                            <option value="game" selected>Game</option>
+                        <% } else { %> 
+                            <option value="game">Game</option>
+                        <% } %> 
+                        
+                        <% if(event.domain == 'gd') { %> 
+                            <option value="gd" selected>Graphic Design</option>
+                        <% } else { %> 
+                            <option value="gd">Graphic Design</option>
+                        <% } %>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-colour">Update</button>
+                <div class="spinner-border mt-2" style="color: #26A4E2;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <p id="editEventMsg" class="mt-2"></p>
+            </form>
+            
+            
+        </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
     <script>
+
+        $(document).ready(function () {
+
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+            });
+
+        });
+
+        document.querySelector('.spinner-border').style.display = 'none'
 
         // Adding recruitment info
         document.querySelector('#editEvent').addEventListener('submit',editEvent)
         
         async function editEvent(e) {
             e.preventDefault()
+            document.querySelector('.spinner-border').style.display = 'block'
+            document.querySelector('#editEventMsg').innerHTML = ''
+
 
             let date = new Date(document.querySelector('#date').value).toString().substring(4,15)
             
@@ -101,7 +204,6 @@
 
             const data = await response.json()
             
-            document.querySelector('#infoMsg').innerHTML = data.msg
             if(response.status === 200){
                 document.querySelector('#title').value = ""
                 document.querySelector('#date').value = ""
@@ -110,6 +212,11 @@
                 document.querySelector('#endTime').value = ""
                 document.querySelector('#domain').value = ""
                 document.querySelector('#description').value = ""
+                document.querySelector('.spinner-border').style.display = 'none'
+                document.querySelector('#editEventMsg').innerHTML = data.msg
+            } else {
+                document.querySelector('.spinner-border').style.display = 'none'
+                document.querySelector('#editEventMsg').innerHTML = data.msg
             }
         }
 

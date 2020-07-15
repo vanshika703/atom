@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .progress{
+            width:50%;
+        }
+        @media (max-width:768px){
+            .progress{
+                width:100%;
+            }
+        }
+        .card{
+            border-radius: 8%;
+        }
+    </style>
+    <title>Project</title>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Think Digital</h3>
+            </div>
+    
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="/admin/dashboard">Dashboard</a>
+                </li>
+                <li>
+                    <a href="/admin/viewEvents">View Events</a>
+                </li>
+                <li>
+                    <a href="/admin/viewProjects">View Projects</a>
+                </li>
+                <li>
+                    <a href="/admin/viewUsers">View Users</a>
+                </li>
+                <li>
+                    <a href="/admin/viewMembers">View Members</a>
+                </li>
+
+            </ul>
+    
+        </nav>
+        <!-- Page Content -->
+        <div id="content">
+    
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+    
+                    <button type="button" id="sidebarCollapse" class="btn btn-colour">
+                        <i class="fa fa-align-left"></i>
+                    </button>
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fa fa-align-justify"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Welcome <%= user.name %></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/logout"><i class="fa fa-sign-out"></i>Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <h3 class="mt-5">Project Details</h3>
+            <div class="line mt-3"></div>
+            <div class="card-deck mt-3">
+                <div class="card shadow">
+                  <div class="card-body">
+                    <p><span class="text-color">Title</span> : <%= project.title %></p>
+                    <p><span class="text-color">From</span> : <%= project.startDate %></p>
+                    <p><span class="text-color">Deadline</span> : <%= project.deadline %></p> 
+                    <p><span class="text-color">Description</span> : <%= project.description %></p>
+                  </div>
+                </div>
+                <div class="card shadow">
+                  <div class="card-body">
+                    <p class="text-color">Phases:</p>
+                    <ul style="list-style-type: circle;">
+                    <% project.phases.forEach(({title,deadline}) => { %>
+                        <li><strong><%= title %></strong> <span class="text-color">till</span> <%= deadline %></li>
+                    <% }) %>
+                    </ul>
+                    <p class="text-color">Resources:</p>
+                    <ul style="list-style-type: circle;">
+                    <% project.resources.forEach(res => { %>
+                        <li><strong><%= res %></strong></li>
+                    <% }) %>
+                    </ul>
+                  </div>
+                </div>
+                <div class="card shadow">
+                  <div class="card-body">
+                    <p><span class="text-color">Added by:</span> : <%= project.addedBy %></p> 
+                    <p><span class="text-color">Added on:</span> : <%= project.addedOn %></p>
+                    <% if (project.editedBy) { %>
+                    <p><span class="text-color">Edited by:</span> : <%= project.editedBy %></p> 
+                    <% } %>
+                    <% if (project.editedOn) { %>
+                    <p><span class="text-color">Edited on:</span> : <%= project.editedOn %></p> 
+                    <% } %>
+                  </div>
+                </div>
+            </div>
+
+            <h3 class="mt-5">Member progress</h3>
+            <div class="line"></div>
+            <% project.members.forEach(member => { %>
+             
+            <h5 class="mt-5"><strong><%= member.name %></strong></h5>
+            <div class="progress my-4" style="height: 25px;">
+                <div class="progress-bar text-body" role="progressbar" style="background-color: #72E4FE;width: <%= member.percentage %>%;"><%= member.percentage %>%</div>
+            </div>
+            <div class="card-deck">
+                <div class="card shadow">
+                  <div class="card-body">
+                    <h5 class="card-title">Pending Tasks</h5>
+                    <ul style="list-style-type: circle;margin: 0;padding: 0;">
+                    <% member.subtasks.forEach(({title,startDate,endDate,complete}) => { %>
+                    <% if (!complete) { %>
+                        <li><strong><%= title %></strong> <span class="text-color">from</span> <%= startDate %> <span class="text-color">till</span> <%= endDate %></li>
+                    <% } %>
+                    <% }) %>
+                    </ul>
+                  </div>
+                </div>
+                <div class="card shadow">
+                  <div class="card-body">
+                    <h5 class="card-title">Pending Bugs</h5>
+                    <ul style="list-style-type: circle;margin: 0;padding: 0;">
+                    <% member.bugs.forEach(({title,startDate,endDate,complete}) => { %>
+                    <% if (!complete) { %>
+                        <li><strong><%= title %></strong> <span class="text-color">from</span> <%= startDate %> <span class="text-color">till</span> <%= endDate %></li>
+                    <% } %>
+                    <% }) %>
+                    </ul>
+                  </div>
+                </div>
+                <div class="card shadow">
+                  <div class="card-body">
+                    <h5 class="card-title">Completed Tasks</h5>
+                    <ul style="list-style-type: circle;margin: 0;padding: 0;">
+                    <% member.subtasks.forEach(({title,startDate,endDate,complete}) => { %>
+                    <% if (complete) { %>
+                        <li><strong><%= title %></strong> <span class="text-color">from</span> <%= startDate %> <span class="text-color">till</span> <%= endDate %></li>
+                    <% } %>
+                    <% }) %>
+                    </ul>
+                  </div>
+                </div>
+                <div class="card shadow">
+                  <div class="card-body">
+                    <h5 class="card-title">Fixed Bugs</h5>
+                    <ul style="list-style-type: circle;margin: 0;padding: 0;">
+                    <% member.bugs.forEach(({title,startDate,endDate,complete}) => { %>
+                    <% if (complete) { %>
+                        <li><strong><%= title %></strong> <span class="text-color">from</span> <%= startDate %> <span class="text-color">till</span> <%= endDate %></li>
+                    <% } %>
+                    <% }) %>
+                    </ul>
+                  </div>
+                </div>
+            </div>
+
+            <% }) %>
+            
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    
+    <script>
+        $(document).ready(function () {
+
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+            });
+
+        });
+    </script>
+
+    
+</body>
+</html>

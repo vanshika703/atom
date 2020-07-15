@@ -3,56 +3,311 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
-    <title>Dashboard</title>
+    <title>Admin Dashboard</title>
 </head>
 <body>
-    <h2>Welcome <%= user.name %></h2>
-    <a href="/admin/logout">Logout</a>
-    <a href="/admin/dashboard">Dashboard</a>
-    <a href="/admin/changePassword">Change Password</a>
-    <a href="/admin/viewEvents">View Events</a>
-    <a href="/admin/viewUsers">View Users</a>
-    <a href="/admin/viewMembers">View Members</a>
-    <a href="/admin/addTask">Add Task</a>
-    <a href="/admin/viewProjects">View Projects</a>
-    <hr>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Think Digital</h3>
+            </div>
+    
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+                <li>
+                    <a href="/admin/viewEvents">View Events</a>
+                </li>
+                <li>
+                    <a href="/admin/viewProjects">View Projects</a>
+                </li>
+                <li>
+                    <a href="/admin/viewUsers">View Users</a>
+                </li>
+                <li>
+                    <a href="/admin/viewMembers">View Members</a>
+                </li>
 
-    <div style="width: 50vw; float: left;">
-        <p id="infoMsg"></p>
-        <h2 style="text-align: center;">Recruitment Event</h2>
+            </ul>
+    
+        </nav>
+        <!-- Page Content -->
+        <div id="content">
+    
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+    
+                    <button type="button" id="sidebarCollapse" class="btn btn-colour">
+                        <i class="fa fa-align-left"></i>
+                    </button>
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fa fa-align-justify"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Welcome <%= user.name %></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/logout"><i class="fa fa-sign-out"></i>Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="card-deck mt-5">
+                <div class="card shadow">
+                  <div class="card-body">
+                    <p class="card-text">Change your account password.</p>
+                    <button class="btn btn-colour" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
+                </div>
+                </div>
+                <div class="card shadow">
+                  <div class="card-body">
+                    <p class="card-text">Add an event related to recruitment process.</p>
+                    <button class="btn btn-colour" data-toggle="modal" data-target="#addEventModal">Add Event</button>
+                  </div>
+                </div>
+                <div class="card shadow">
+                  <div class="card-body">
+                    <p class="card-text">Add a project for the members.</p>
+                    <button class="btn btn-colour" data-toggle="modal" data-target="#addProjectModal">Add Project</button>
+                  </div>
+                </div>
+            </div>
 
-        <form id="addEvent">
-            <input type="text" placeholder="Event title" id="title" required>
-            <label for="date">Date</label>
-            <input type="date" id="date" required>
-            <input type="text" id="venue" placeholder="Venue" required>
-            <label for="startTime">Start time</label>
-            <input type="time" id="startTime" required>
-            <label for="endTime">End time</label>
-            <input type="time" id="endTime" required>
-            <textarea id="description" cols="30" rows="10" placeholder="Description" required></textarea>
-            <select id="domain" style="margin-top: 1rem;">
-                <option value="" disabled selected>Select a domain</option>
-                <option value="web">Web</option>
-                <option value="app">App</option>
-                <option value="hr">HR</option>
-                <option value="iot">IOT</option>
-                <option value="game">Game</option>
-                <option value="gd">Graphic Design</option>
-            </select>
-            <input type="submit" value="Submit">
-        </form>
-    </div>    
+            <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">Change Password</h5>
+                      <button type="button" class="close" id="changePasswordModalBtn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="changepassword">
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="cpassword" placeholder="Current password" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="npassword" placeholder="New password" required>
+                            </div>
+                            <button class="btn btn-colour">Submit</button>
+                            <div class="spinner-border mt-2" id="changePasswordSpinner" style="color: #26A4E2;" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <p id="changePasswordMsg" class="mt-2"></p>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+            </div>
 
+            <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">Add Event</h5>
+                      <button type="button" class="close" id="addEventModalBtn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addEvent">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Event title" id="title" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="venue" placeholder="Venue" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Date:</label>
+                                <input type="date" class="form-control" id="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="startTime">Start time:</label>
+                                <input type="time" class="form-control" id="startTime" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="endTime">End time</label>
+                                <input type="time" class="form-control" id="endTime" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="description" class="form-control" placeholder="Description" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <select class="custom-select" id="domain">
+                                    <option value="" disabled selected>Select a domain</option>
+                                    <option value="web">Web</option>
+                                    <option value="app">App</option>
+                                    <option value="hr">HR</option>
+                                    <option value="iot">IOT</option>
+                                    <option value="game">Game</option>
+                                    <option value="gd">Graphic Design</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-colour">Submit</button>
+                            <div class="spinner-border mt-2" id="addEventSpinner" style="color: #26A4E2;" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <p id="addEventMsg" class="mt-2"></p>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="addProjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">Add Project</h5>
+                      <button type="button" class="close" id="addProjectModalBtn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addTask">
+                            <div class="form-group">
+                                <input type="text" placeholder="Task title" id="taskTitle" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="startDate">Start Date:</label>
+                                <input type="date" id="startDate" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="deadline">Deadline:</label>
+                                <input type="date" id="deadline" class="form-control" required>
+                            </div>
+                            <div class="phase-group">
+                                <div class="phase form-group">
+                                    <input type="text" placeholder="Phase 1" class="phaseTitle form-control" required>
+                                    <label for="deadline">Till:</label>
+                                    <input type="date" class="till form-control" required>
+                                </div>
+                                <button id="add-phase" class="btn btn-colour my-2">Add another phase</button>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="taskDescription" class="form-control" placeholder="Enter description here" required></textarea>
+                            </div>
+                            <div id="res-group">
+                                <input type="text" placeholder="Resource" class="resource form-control" required>
+                                <button id="add-res" class="btn btn-colour my-1">Add another resource</button>
+                            </div>
+                            <div id="mem-group">
+                                <div class="member form-group">
+                                    <select class="members custom-select">
+                                        <option value="" disabled selected>Select a member</option>
+
+                                        <% for(let tdian of data) { %>
+                                            <option value="<%= tdian._id %>"><%= tdian.name %></option>
+                                            <% } %>
+                                    </select>
+                                    <div class="sub-group form-group">
+                                        <input type="text" placeholder="Subtask" class="subtask form-control mt-1" required>
+                                        <label for="from">From:</label>
+                                        <input type="date" class="from form-control mt-1" required>
+                                        <label for="to">To:</label>
+                                        <input type="date" class="to form-control mt-1" required>
+                                    </div>
+                                    <button class="add-sub btn btn-colour m-2">Add another subtask</button>
+                                </div>
+                                <button id="add-mem" class="btn btn-colour mt-2">Add another member</button>
+                            </div>
+                            <button type="submit" class="btn btn-colour mt-2">Submit</button>
+                            <div class="spinner-border mt-2" id="addProjectSpinner" style="color: #26A4E2;" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <p id="addProjectMsg" class="mt-2"></p>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
     <script>
 
-        // Adding recruitment info
+        $(document).ready(function () {
+
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+            });
+
+        });
+
+        //Hiding all spinners
+        document.querySelectorAll('.spinner-border').forEach(spinner => spinner.style.display = 'none')
+
+        //Clearing the form on closing the modal
+        $('#changePasswordModal').on('hide.bs.modal', function (e) {
+            document.querySelector('#cpassword').value = ''
+            document.querySelector('#npassword').value = ''
+            document.querySelector('#changePasswordMsg').innerHTML = ''
+        })
+
+        //Change password form
+        document.querySelector('#changepassword').addEventListener('submit',changePassword)
+
+        function changePassword(e){
+            e.preventDefault()
+            document.querySelector('#changePasswordSpinner').style.display = 'block'
+            document.querySelector('#changePasswordMsg').innerHTML = ''
+            var xhr = new XMLHttpRequest
+            
+            xhr.open('POST', '/admin/changePassword',true)
+            xhr.setRequestHeader('content-type','application/json')
+            
+            let data = JSON.stringify({
+                currentPassword : document.querySelector('#cpassword').value,
+                newPassword : document.querySelector('#npassword').value
+            })
+            
+            xhr.onload = function() {
+                document.querySelector('#changePasswordSpinner').style.display = 'none'
+                if(this.status === 200) {
+                    document.querySelector('#cpassword').value = ''
+                    document.querySelector('#npassword').value = ''
+                    document.querySelector('#changePasswordMsg').style.color = '#26A4E2'
+                    document.querySelector('#changePasswordMsg').innerHTML = this.responseText
+                    document.querySelector('#changePasswordModalBtn').click()
+                } else {
+                    document.querySelector('#changePasswordMsg').style.color = 'red'
+                    document.querySelector('#changePasswordMsg').innerHTML = this.responseText
+                }
+            }
+            xhr.send(data)
+        }
+        
+        // Adding recruitment event
         document.querySelector('#addEvent').addEventListener('submit',addEvent)
         
         async function addEvent(e) {
             e.preventDefault()
-
+            document.querySelector('#addEventSpinner').style.display = 'block'
+            document.querySelector('#addEventMsg').innerHTML = ''
+            
             let date = new Date(document.querySelector('#date').value).toString().substring(4,15)
             
             let info = {
@@ -75,7 +330,6 @@
 
             const data = await response.json()
             
-            document.querySelector('#infoMsg').innerHTML = data.msg
             if(response.status === 200){
                 document.querySelector('#title').value = ""
                 document.querySelector('#date').value = ""
@@ -84,6 +338,178 @@
                 document.querySelector('#endTime').value = ""
                 document.querySelector('#domain').value = ""
                 document.querySelector('#description').value = ""
+                document.querySelector('#addEventSpinner').style.display = 'none'
+                document.querySelector('#addEventMsg').style.color = '#26A4E2'
+                document.querySelector('#addEventMsg').innerHTML = data.msg
+                document.querySelector('#addEventModalBtn').click()
+            } else {
+                document.querySelector('#addEventSpinner').style.display = 'none'
+                document.querySelector('#addEventMsg').style.color = 'red'
+                document.querySelector('#addEventMsg').innerHTML = data.msg
+            }
+        }
+
+        //Clearing the form on closing the modal
+        $('#addEventModal').on('hide.bs.modal', function (e) {
+            document.querySelector('#title').value = ""
+            document.querySelector('#date').value = ""
+            document.querySelector('#venue').value = ""
+            document.querySelector('#startTime').value = ""
+            document.querySelector('#endTime').value = ""
+            document.querySelector('#domain').value = ""
+            document.querySelector('#description').value = ""
+            document.querySelector('#addEventMsg').innerHTML = ''
+        })
+
+        
+        //Adding fields to task form
+        document.querySelector('#add-res').addEventListener('click', addRes)
+        document.querySelector('#add-phase').addEventListener('click',addPhase)
+        document.querySelector('#add-mem').addEventListener('click', addMem)
+        document.querySelector('.add-sub').addEventListener('click', addSub)
+
+        function addRes(e){
+            e.preventDefault()
+            let field = document.createElement('input')
+            field.setAttribute('type','text')
+            field.classList.add('resource','form-control','mt-1')
+            field.setAttribute('placeholder','Resource')
+            e.target.parentNode.insertBefore(field,e.target)
+        }
+
+        function addMem(e){
+            e.preventDefault()
+            let field = document.querySelector('.members').cloneNode(true)
+            let sub = getSub()
+            let subBtn = getSubBtn()
+            let memDiv = document.createElement('div')
+            memDiv.classList.add('member','form-group')
+            memDiv.appendChild(field)
+            memDiv.appendChild(sub)
+            memDiv.appendChild(subBtn)
+            e.target.parentNode.insertBefore(memDiv,e.target)
+        }
+        
+        function addSub(e){
+            e.preventDefault()
+            let sub = getSub()
+            e.target.parentNode.insertBefore(sub,e.target)
+        }
+        
+        function getSub(){
+            let div = document.createElement('div')
+            div.classList.add('sub-group','form-group')
+            div.innerHTML = `<input type="text" placeholder="Subtask" class="subtask form-control mt-1">
+                    	<label for="from">From:</label>
+                    	<input type="date" class="from form-control mt-1">
+                    	<label for="to">To:</label>
+                    	<input type="date" class="to form-control mt-1">`
+            return div
+        }
+
+        function getSubBtn(){
+            let btn = document.querySelector('.add-sub').cloneNode(true)
+            btn.addEventListener('click',addSub)
+            return btn
+        }
+
+        var phase_count = 1
+        function addPhase(e){
+            e.preventDefault()
+            let phase = getPhase()
+            e.target.parentNode.insertBefore(phase,e.target)
+        }
+
+        function getPhase(){
+            let div = document.createElement('div')
+            div.classList.add('phase','form-group')
+            div.innerHTML = `<input type="text" placeholder="Phase ${++phase_count}" class="phaseTitle form-control">
+                    <label for="deadline">Till:</label>
+                    <input type="date" class="till form-control">`
+            return div
+        }
+
+        //formatting dates
+        function getDate(date){
+            return new Date(date).toString().substring(4,15)
+        }
+        
+        //Adding tasks
+        document.querySelector('#addTask').addEventListener('submit',addTask)
+
+        async function addTask(e){
+            e.preventDefault()
+            document.querySelector('#addProjectSpinner').style.display = 'block'
+            document.querySelector('#addProjectMsg').innerHTML = ''
+
+            let members = document.querySelectorAll('.members')
+            let resources = document.querySelectorAll('.resource')
+            let phases = document.querySelectorAll('.phase')
+            let mem_list = []
+            let res_list = []
+            let phase_list = []
+            let subtasks = []
+
+            members.forEach(member => {
+                let subs = member.parentNode.querySelectorAll('.sub-group')
+                subs.forEach(subtask => {
+                    let object = {
+                        title: subtask.querySelector('.subtask').value,
+                        startDate:getDate(subtask.querySelector('.from').value),
+                        endDate:getDate(subtask.querySelector('.to').value),
+                        complete:false,
+                        member:member.value
+                    }
+                    subtasks.push(object)
+                })
+                let obj = {
+                    name: member.selectedOptions[0].innerText,
+                    id: member.value
+                }
+                mem_list.push(obj)
+            })
+
+            resources.forEach(resource => res_list.push(resource.value))
+
+            phases.forEach(phase => {
+                let obj = {
+                    title: phase.querySelector('.phaseTitle').value,
+                    deadline: getDate(phase.querySelector('.till').value)
+                }
+                phase_list.push(obj)
+            })
+
+            let task = {
+                title:document.querySelector('#taskTitle').value,
+                startDate:getDate(document.querySelector('#startDate').value),
+                deadline:getDate(document.querySelector('#deadline').value),
+                description:document.querySelector('#taskDescription').value,
+                phases:phase_list,
+                members:mem_list,
+                resources:res_list,
+                subtasks
+            }
+
+            let response = await fetch('/admin/addTask',{
+                method:'POST',
+                headers:{
+                    'content-type': 'application/json'
+                },
+                body:JSON.stringify(task)
+            })
+
+            let data = await response.json()
+
+            if(response.status === 200){
+                document.querySelector('#addProjectSpinner').style.display = 'none'
+                document.querySelector('#addProjectMsg').style.color = '#26A4E2'
+                document.querySelector('#addProjectMsg').innerHTML = data.msg
+                document.querySelector('#addProjectModalBtn').click()
+                console.log(task)
+            } else {
+                document.querySelector('#addProjectSpinner').style.display = 'none'
+                document.querySelector('#addProjectMsg').style.color = 'red'
+                document.querySelector('#addProjectMsg').innerHTML = data.msg
             }
         }
 

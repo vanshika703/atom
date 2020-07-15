@@ -4,7 +4,7 @@ const ObjectId = mongodb.ObjectId
 const bcrypt = require('bcryptjs')
 const {adminloginValidation,changePasswordValidation} = require('../validation')
 
-Router.get('/login', (req,res) => {
+Router.get('/', (req,res) => {
     res.render('admin/adminlogin',{msg:''})
 })
 
@@ -75,8 +75,17 @@ Router.use(function (req, res, next) {
     next()
 });
 
-Router.get('/dashboard', (req,res) => {
-    res.render('admin/admindashboard',{user:req.session.user})
+Router.get('/dashboard', async(req,res) => {
+    let db = req.app.locals.db
+
+    try {
+        let dbo = db.db('atom')
+        let members = await dbo.collection('users').find({ userType: 1 },{projection:{password:0}}).toArray()
+        res.render('admin/admindashboard',{user:req.session.user, data:members })
+    } catch (error) {
+        console.error(error)
+        return res.render('error')
+    }
 })
 
 
@@ -118,10 +127,10 @@ Router.post('/addEvent',(req,res) => {
     let dbo = db.db('atom')
 
     dbo.collection('events').insertOne(req.body,(dbErr,result) => {
-        if(dbErr) return res.render('error')
+        if(dbErr) return res.status(500).json({msg:'Server Error! Please try again later.'})
         
         console.log(result.insertedCount)
-        res.send({msg:'Info added'})
+        res.json({msg:'Event added'})
     })
 })
 
@@ -142,7 +151,7 @@ Router.get('/viewFeedback/:id',async(req,res) => {
     let db = req.app.locals.db
     try {
         let event = await db.db('atom').collection('events').findOne({_id:new ObjectId(req.params.id)})
-        res.render('admin/viewfeedback',{event})
+        res.render('admin/viewfeedback',{event,user:req.session.user})
         
     } catch (error) {
         console.error(error)
@@ -155,7 +164,7 @@ Router.get('/viewAttendance/:id',async(req,res) => {
     let db = req.app.locals.db
     try {
         let event = await db.db('atom').collection('events').findOne({_id:new ObjectId(req.params.id)})
-        res.render('admin/viewattendance',{event})
+        res.render('admin/viewattendance',{event,user:req.session.user})
         
     } catch (error) {
         console.error(error)
@@ -175,6 +184,33 @@ Router.get('/viewProjects', async(req,res) => {
     } catch (error) {
         console.error(error)
         return res.render('error')
+    }
+})
+
+Router.get('/viewproject/:id',async(req,res) => {
+    let db = req.app.locals.db
+    let { id } = req.params
+
+    try {
+        let project = await db.db('atom').collection('tasks').findOne({_id:new ObjectId(id)})
+        if(!project) return res.render('error')
+
+        let subtasks = await db.db('atom').collection('subtasks').find({project:id}).toArray()
+        let bugs = await db.db('atom').collection('bugs').find({project:id}).toArray()
+
+        project.members.forEach(member => {
+            let current_subs = subtasks.filter(subtask => subtask.member===member.id)
+            let current_bugs = bugs.filter(bug => bug.member===member.id)
+            member.subtasks = current_subs
+            member.bugs = current_bugs
+            let completed_bugs = current_bugs.reduce((count,bug) => bug.complete?count+1:count,0)
+            let completed = current_subs.reduce((count,sub) => sub.complete?count+1:count,completed_bugs)
+            member.percentage = Math.round((completed/(current_subs.length+current_bugs.length))*100)
+        })
+        res.render('admin/viewproject',{project,user:req.session.user})
+    } catch (error) {
+        console.error(error)
+        res.render('error')
     }
 })
 
@@ -204,7 +240,7 @@ Router.get('/viewprofile/:id', (req,res) => {
     db.db('atom').collection('users').findOne({_id:new ObjectId(req.params.id)},{projection:{password:0}},(dbErr,user) => {
         if(dbErr) return res.render('error')
 
-        res.render('admin/adminviewprofile',{user})
+        res.render('admin/adminviewprofile',{user,admin:req.session.user})
     })
 })
 
@@ -213,7 +249,7 @@ Router.get('/viewmemberprofile/:id', (req,res) => {
     db.db('atom').collection('users').findOne({_id:new ObjectId(req.params.id)},{projection:{password:0}},(dbErr,user) => {
         if(dbErr) return res.render('error')
 
-        res.render('admin/adminviewmemberprofile',{user})
+        res.render('admin/adminviewmemberprofile',{user,admin:req.session.user})
     })
 })
 Router.post('/delete', (req,res) => {
@@ -279,7 +315,7 @@ Router.post('/addTask',async(req,res) => {
 
     let db = req.app.locals.db
     db.db('atom').collection('tasks').insertOne(project,(dbErr,result) => {
-        if(dbErr) return res.render('error')
+        if(dbErr) return res.json({msg:'Server error'})
 
         console.log('Project: '+result.insertedCount)
         subtasks.forEach(subtask => {
@@ -287,10 +323,10 @@ Router.post('/addTask',async(req,res) => {
         })
 
         db.db('atom').collection('subtasks').insertMany(subtasks, (err,output) => {
-            if(err) return res.render('error')
+            if(err) return res.json({msg:'Server error'})
 
             console.log(output.insertedCount)
-            res.send({msg:'Task added. Page reloading in 2 seconds'})
+            res.send({msg:'Project added. Refresh the page to clear out the form'})
         })
     })
 })
@@ -301,7 +337,7 @@ Router.get('/editEvent',(req,res) => {
     db.db('atom').collection('events').findOne({_id:new ObjectId(req.query.id)},(err,event) => {
         if(err) return res.render('error')
 
-        res.render('admin/admineditevent',{event})
+        res.render('admin/admineditevent',{event,user:req.session.user})
     })
 })
 
@@ -314,10 +350,10 @@ Router.post('/editEvent',(req,res) => {
     delete req.body.id
 
     db.db('atom').collection('events').updateOne({_id:new ObjectId(id)},{$set:req.body},(err,result) => {
-        if(err) return res.render('error')
+        if(err) return res.json({msg:'Server error!'})
 
         console.log(result)
-        res.json({msg:'updated'})
+        res.json({msg:'Updated!'})
     })
 })
 
