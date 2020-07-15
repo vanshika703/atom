@@ -151,7 +151,7 @@ Router.get('/viewFeedback/:id',async(req,res) => {
     let db = req.app.locals.db
     try {
         let event = await db.db('atom').collection('events').findOne({_id:new ObjectId(req.params.id)})
-        res.render('admin/viewfeedback',{event})
+        res.render('admin/viewfeedback',{event,user:req.session.user})
         
     } catch (error) {
         console.error(error)
@@ -164,7 +164,7 @@ Router.get('/viewAttendance/:id',async(req,res) => {
     let db = req.app.locals.db
     try {
         let event = await db.db('atom').collection('events').findOne({_id:new ObjectId(req.params.id)})
-        res.render('admin/viewattendance',{event})
+        res.render('admin/viewattendance',{event,user:req.session.user})
         
     } catch (error) {
         console.error(error)
@@ -310,7 +310,7 @@ Router.get('/editEvent',(req,res) => {
     db.db('atom').collection('events').findOne({_id:new ObjectId(req.query.id)},(err,event) => {
         if(err) return res.render('error')
 
-        res.render('admin/admineditevent',{event})
+        res.render('admin/admineditevent',{event,user:req.session.user})
     })
 })
 
@@ -323,10 +323,10 @@ Router.post('/editEvent',(req,res) => {
     delete req.body.id
 
     db.db('atom').collection('events').updateOne({_id:new ObjectId(id)},{$set:req.body},(err,result) => {
-        if(err) return res.render('error')
+        if(err) return res.json({msg:'Server error!'})
 
         console.log(result)
-        res.json({msg:'updated'})
+        res.json({msg:'Updated!'})
     })
 })
 

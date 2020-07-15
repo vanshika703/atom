@@ -21,7 +21,7 @@
     
             <ul class="list-unstyled components">
                 <li>
-                    <a href="#">Dashboard</a>
+                    <a href="/admin/dashboard">Dashboard</a>
                 </li>
                 <li>
                     <a href="/admin/viewEvents">View Events</a>
@@ -83,7 +83,7 @@
                             <td>
                                 <input type="hidden" class="id" value="<%= member._id %>">
                                 <button class="deleteBtn btn btn-sm btn-colour">Delete member</button>
-                                <a href="/admin/viewmemberprofile/<%= member._id %>">View More</a>
+                                <a class="btn btn-link" href="/admin/viewmemberprofile/<%= member._id %>">View More</a>
                             </td>
                         </tr>
                      <% } %>
