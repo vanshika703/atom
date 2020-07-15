@@ -187,6 +187,33 @@ Router.get('/viewProjects', async(req,res) => {
     }
 })
 
+Router.get('/viewproject/:id',async(req,res) => {
+    let db = req.app.locals.db
+    let { id } = req.params
+
+    try {
+        let project = await db.db('atom').collection('tasks').findOne({_id:new ObjectId(id)})
+        if(!project) return res.render('error')
+
+        let subtasks = await db.db('atom').collection('subtasks').find({project:id}).toArray()
+        let bugs = await db.db('atom').collection('bugs').find({project:id}).toArray()
+
+        project.members.forEach(member => {
+            let current_subs = subtasks.filter(subtask => subtask.member===member.id)
+            let current_bugs = bugs.filter(bug => bug.member===member.id)
+            member.subtasks = current_subs
+            member.bugs = current_bugs
+            let completed_bugs = current_bugs.reduce((count,bug) => bug.complete?count+1:count,0)
+            let completed = current_subs.reduce((count,sub) => sub.complete?count+1:count,completed_bugs)
+            member.percentage = Math.round((completed/(current_subs.length+current_bugs.length))*100)
+        })
+        res.render('admin/viewproject',{project,user:req.session.user})
+    } catch (error) {
+        console.error(error)
+        res.render('error')
+    }
+})
+
 Router.get('/viewMembers', (req,res) => {
     
     let db = req.app.locals.db

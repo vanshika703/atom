@@ -140,6 +140,10 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-colour">Update</button>
+                <div class="spinner-border mt-2" style="color: #26A4E2;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <p id="editEventMsg" class="mt-2"></p>
             </form>
             
             
@@ -166,11 +170,16 @@
 
         });
 
+        document.querySelector('.spinner-border').style.display = 'none'
+
         // Adding recruitment info
         document.querySelector('#editEvent').addEventListener('submit',editEvent)
         
         async function editEvent(e) {
             e.preventDefault()
+            document.querySelector('.spinner-border').style.display = 'block'
+            document.querySelector('#editEventMsg').innerHTML = ''
+
 
             let date = new Date(document.querySelector('#date').value).toString().substring(4,15)
             
@@ -195,7 +204,6 @@
 
             const data = await response.json()
             
-            document.querySelector('#infoMsg').innerHTML = data.msg
             if(response.status === 200){
                 document.querySelector('#title').value = ""
                 document.querySelector('#date').value = ""
@@ -204,6 +212,11 @@
                 document.querySelector('#endTime').value = ""
                 document.querySelector('#domain').value = ""
                 document.querySelector('#description').value = ""
+                document.querySelector('.spinner-border').style.display = 'none'
+                document.querySelector('#editEventMsg').innerHTML = data.msg
+            } else {
+                document.querySelector('.spinner-border').style.display = 'none'
+                document.querySelector('#editEventMsg').innerHTML = data.msg
             }
         }
 

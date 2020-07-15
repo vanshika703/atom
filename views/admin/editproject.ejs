@@ -3,94 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
     <title>Edit Project</title>
 </head>
 <body>
-    <h2>Welcome <%= user.name %></h2>
-    <a href="/admin/logout">Logout</a>
-    <a href="/admin/dashboard">Dashboard</a>
-    <a href="/admin/changePassword">Change Password</a>
-    <a href="/admin/viewEvents">View Events</a>
-    <a href="/admin/viewUsers">View Users</a>
-    <a href="/admin/viewMembers">View Members</a>
-    <a href="/admin/addTask">Add Task</a>
-    <a href="/admin/viewProjects">View Projects</a>
-    <hr>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Think Digital</h3>
+            </div>
     
-    <div>
-        <p id="taskMsg"></p>
-        <h2 style="text-align: center;">Task for members</h2>
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="/admin/dashboard">Dashboard</a>
+                </li>
+                <li>
+                    <a href="/admin/viewEvents">View Events</a>
+                </li>
+                <li>
+                    <a href="/admin/viewProjects">View Projects</a>
+                </li>
+                <li>
+                    <a href="/admin/viewUsers">View Users</a>
+                </li>
+                <li>
+                    <a href="/admin/viewMembers">View Members</a>
+                </li>
 
-        <form id="editProject">
-            <input type="hidden" id="id" value="<%= project._id %>">
-            <input type="text" placeholder="Task title" id="taskTitle" value="<%= project.title %>" required>
-            <label for="startDate">Start Date:</label>
-            <% let date = new Date(project.startDate) %>
-            <% let day = date.getDate().toString() %>
-            <% if(day < 10) day = `0${day}` %>
-            <% let mon = (date.getMonth()+1).toString() %>
-            <% if(mon < 10) mon = `0${mon}` %>
-            <% let year = date.getFullYear().toString() %>
-            <% let fullDate = `${year}-${mon}-${day}` %>
-            <input type="date" id="startDate" value="<%= fullDate %>" required>
-            <label for="deadline">Deadline:</label>
-            <%  date = new Date(project.deadline) %>
-            <%  day = date.getDate().toString() %>
-            <% if(day < 10) day = `0${day}` %>
-            <%  mon = (date.getMonth()+1).toString() %>
-            <% if(mon < 10) mon = `0${mon}` %>
-            <%  year = date.getFullYear().toString() %>
-            <%  fullDate = `${year}-${mon}-${day}` %>
-            <input type="date" id="deadline" value="<%= fullDate %>" required>
-            <div class="phase-group">
-                <% project.phases.forEach(phase => { %>
-                <div class="phase">
-                    <input type="text" class="phaseTitle" value="<%= phase.title %>" required>
-                    <label for="deadline">Till:</label>
-                    <%  date = new Date(phase.deadline) %>
+            </ul>
+    
+        </nav>
+        <!-- Page Content -->
+        <div id="content">
+    
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+    
+                    <button type="button" id="sidebarCollapse" class="btn btn-colour">
+                        <i class="fa fa-align-left"></i>
+                    </button>
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fa fa-align-justify"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Welcome <%= user.name %></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/logout"><i class="fa fa-sign-out"></i>Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            
+            <h3 class="mt-5 text-center">Member Project</h3>
+
+            <form id="editProject">
+                <input type="hidden" id="id" value="<%= project._id %>">
+                <div class="form-group">
+                    <label for="taskTitle">Title:</label>
+                    <input type="text" class="form-control" placeholder="Task title" id="taskTitle" value="<%= project.title %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="startDate">Start Date:</label>
+                    <% let date = new Date(project.startDate) %>
+                    <% let day = date.getDate().toString() %>
+                    <% if(day < 10) day = `0${day}` %>
+                    <% let mon = (date.getMonth()+1).toString() %>
+                    <% if(mon < 10) mon = `0${mon}` %>
+                    <% let year = date.getFullYear().toString() %>
+                    <% let fullDate = `${year}-${mon}-${day}` %>
+                    <input type="date" class="form-control" id="startDate" value="<%= fullDate %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="deadline">Deadline:</label>
+                    <%  date = new Date(project.deadline) %>
                     <%  day = date.getDate().toString() %>
                     <% if(day < 10) day = `0${day}` %>
                     <%  mon = (date.getMonth()+1).toString() %>
                     <% if(mon < 10) mon = `0${mon}` %>
                     <%  year = date.getFullYear().toString() %>
                     <%  fullDate = `${year}-${mon}-${day}` %>
-                    <input type="date" class="till" value="<%= fullDate %>" required>
+                    <input type="date" class="form-control" id="deadline" value="<%= fullDate %>" required>
                 </div>
-                <% }) %>
-                <button id="add-phase">Add another phase</button>
-            </div>
-            <textarea id="taskDescription" placeholder="Enter description here" required><%= project.description %></textarea>
-            <div id="res-group">
-                <% project.resources.forEach(resource => { %>
-                    <input type="text" placeholder="Resource" class="resource" value="<%= resource %>" required>
-                <% }) %>
-                <button id="add-res">Add another resource</button>
-            </div>
-            <div id="mem-group">
-                <div class="member">
-                    <select class="members">
-                        <option value="" disabled selected>Select a member</option>
-                        <% project.members.forEach(member => { %>
-                        <option value="<%= member.id %>"><%= member.name %></option>
-                        <% }) %>
-                    </select>
-                    <div class="bug-group">
-                    	<input type="text" placeholder="Bug" class="bug" required>
-                    	<label for="from">From:</label>
-                    	<input type="date" class="from" required>
-                    	<label for="to">To:</label>
-                    	<input type="date" class="to" required>
+                <div class="phase-group">
+                    <p>Phases:</p>
+                    <% project.phases.forEach(phase => { %>
+                    <div class="phase form-group">
+                        <input type="text" class="phaseTitle form-control" value="<%= phase.title %>" required>
+                        <label for="deadline">Till:</label>
+                        <%  date = new Date(phase.deadline) %>
+                        <%  day = date.getDate().toString() %>
+                        <% if(day < 10) day = `0${day}` %>
+                        <%  mon = (date.getMonth()+1).toString() %>
+                        <% if(mon < 10) mon = `0${mon}` %>
+                        <%  year = date.getFullYear().toString() %>
+                        <%  fullDate = `${year}-${mon}-${day}` %>
+                        <input type="date" class="till form-control" value="<%= fullDate %>" required>
                     </div>
-                    <button class="add-bug">Add another bug</button>
+                    <% }) %>
+                    <button id="add-phase" class="btn btn-colour my-2">Add another phase</button>
                 </div>
-                <button id="add-mem">Bug for another member</button>
-            </div>
-            <input type="submit">
-        </form>
+                <div class="form-group">
+                    <textarea id="taskDescription" class="form-control" placeholder="Enter description here" required><%= project.description %></textarea>
+                </div>
+                <div id="res-group">
+                    <% project.resources.forEach(resource => { %>
+                        <input type="text" placeholder="Resource" class="resource form-control" value="<%= resource %>" required>
+                    <% }) %>
+                    <button id="add-res" class="btn btn-colour my-1">Add another resource</button>
+                </div>
+                <div id="mem-group">
+                    <div class="member form-group">
+                        <select class="members custom-select">
+                            <option value="" disabled selected>Select a member</option>
+                            <% project.members.forEach(member => { %>
+                            <option value="<%= member.id %>"><%= member.name %></option>
+                            <% }) %>
+                        </select>
+                        <div class="bug-group form-group">
+                            <input type="text" placeholder="Bug" class="bug form-control mt-1" required>
+                            <label for="from">From:</label>
+                            <input type="date" class="from form-control mt-1" required>
+                            <label for="to">To:</label>
+                            <input type="date" class="to form-control mt-1" required>
+                        </div>
+                        <button class="add-bug btn btn-colour m-2">Add another bug</button>
+                    </div>
+                    <button id="add-mem" class="btn btn-colour mt-2">Bug for another member</button>
+                </div>
+                <button type="submit" class="btn btn-colour mt-2">Update</button>
+                <div class="spinner-border mt-2" style="color: #26A4E2;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <p id="editProjectMsg" class="mt-2"></p>
+            </form>
+        
+        </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
     <script>
+
+        $(document).ready(function () {
+
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+            });
+
+        });
+
+        document.querySelector('.spinner-border').style.display = 'none'
+
+
         //Adding fields to task form
         document.querySelector('#add-res').addEventListener('click', addRes)
         document.querySelector('#add-phase').addEventListener('click',addPhase)
@@ -101,7 +183,7 @@
             e.preventDefault()
             let field = document.createElement('input')
             field.setAttribute('type','text')
-            field.setAttribute('class','resource')
+            field.classList.add('resource','form-control','mt-1')
             field.setAttribute('placeholder','Resource')
             e.target.parentNode.insertBefore(field,e.target)
         }
@@ -112,7 +194,7 @@
             let bug = getBug()
             let bugBtn = getBugBtn()
             let memDiv = document.createElement('div')
-            memDiv.classList.add('member')
+            memDiv.classList.add('member','form-group')
             memDiv.appendChild(field)
             memDiv.appendChild(bug)
             memDiv.appendChild(bugBtn)
@@ -127,12 +209,12 @@
         
         function getBug(){
             let div = document.createElement('div')
-            div.classList.add('bug-group')
-            div.innerHTML = `<input type="text" placeholder="Bug" class="bug">
+            div.classList.add('bug-group','form-group')
+            div.innerHTML = `<input type="text" placeholder="Bug" class="bug form-control mt-1">
                     	<label for="from">From:</label>
-                    	<input type="date" class="from">
+                    	<input type="date" class="from form-control mt-1">
                     	<label for="to">To:</label>
-                    	<input type="date" class="to">`
+                    	<input type="date" class="to form-control mt-1">`
             return div
         }
 
@@ -142,7 +224,6 @@
             return btn
         }
 
-        var phase_count = 1
         function addPhase(e){
             e.preventDefault()
             let phase = getPhase()
@@ -151,10 +232,10 @@
 
         function getPhase(){
             let div = document.createElement('div')
-            div.classList.add('phase')
-            div.innerHTML = `<input type="text" placeholder="Phase ${++phase_count}" class="phaseTitle">
+            div.classList.add('phase','form-group')
+            div.innerHTML = `<input type="text" placeholder="Phase" class="phaseTitle form-control">
                     <label for="deadline">Till:</label>
-                    <input type="date" class="till">`
+                    <input type="date" class="till form-control">`
             return div
         }
 
@@ -168,6 +249,8 @@
 
         async function editProject(e){
             e.preventDefault()
+            document.querySelector('.spinner-border').style.display = 'block'
+            document.querySelector('#editProjectMsg').innerHTML = ''
 
             let members = document.querySelectorAll('.members')
             let resources = document.querySelectorAll('.resource')
@@ -223,6 +306,9 @@
 
             if(response.status === 200){
                 window.location = '/admin/viewProjects'
+            } else {
+                document.querySelector('.spinner-border').style.display = 'none'
+                document.querySelector('#editProjectMsg').innerHTML = data.msg
             }
         }
     </script>

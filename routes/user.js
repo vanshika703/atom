@@ -114,15 +114,16 @@ Router.get('/verify', (req,res) => {
         dbo.collection('users').findOne({_id : new ObjectId(req.query.id)}, (dbErr, user)=>{
             if(dbErr) return res.render('error')
             
-                if(!user) return res.send('No such user found')
+            if(!user) return res.send('No such user found')
 
-                dbo.collection('users').updateOne({_id : new ObjectId(req.query.id)}, { $set: {verified : 1} }, async(err, result)=>{
-                    if(err) return res.render('error')
+            dbo.collection('users').updateOne({_id : new ObjectId(req.query.id)}, { $set: {verified : 1} }, async(err, result)=>{
+                if(err) return res.render('error')
 
-                    console.log(result.modifiedCount)
-                    res.redirect('/user/login')
-                })
-            }) 
+                console.log(result.modifiedCount)
+                res.redirect('/user/login')
+            })
+            console.log('object')
+        }) 
     } 
     else {
         res.status(404).send('Error 404')
