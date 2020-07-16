@@ -1,0 +1,228 @@
+.all
+{
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-left: 3%;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Montserrat', sans-serif;
+
+  overflow: hidden;
+}
+/* first card */
+/* Float four columns side by side */
+.column1 {
+  width: 25%;
+  padding: 0 10px;
+}
+
+/* Remove extra left and right margins, due to padding */
+.row1 {margin: 0 -5px;}
+
+/* Clear floats after the columns */
+.row1:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive columns */
+@media screen and (max-width: 600px) {
+  .column1 {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+/* next 3 cards */
+.card1{
+  box-shadow: 0 4px 8px 0 #ddf3f5;
+  transition: 0.3s;
+}
+
+.card1:hover {
+  box-shadow: 16px 16px 16px 16px #ddf3f5;
+}
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+
+
+/* Responsive columns */
+
+/* Float four columns side by side */
+.column {
+  
+  padding: 0 10px;
+ 
+}
+
+/* Remove extra left and right margins, due to padding in columns */
+.row {
+
+width: 100%;}
+
+/* Clear floats after the columns */
+/* .row:after {
+  content: "";
+  display: table;
+  clear: both;
+} */
+
+/* Style the counter cards */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+
+/* Responsive columns - one column layout (vertical) on small screens */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+/* Style the counter cards */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+  min-height: 50%;
+}
+ 
+ 
+  .card:hover
+  {
+    transform: scale(1.1);
+    box-shadow:5px 5px 15px #5fdde5;
+  }
+  .progress
+  {
+    margin-bottom: 5%;
+  }
+  
+  /* navbar */
+  
+  .side-nav{
+    height:100%;
+    width:0;
+    position:fixed;
+    z-index:1;
+    top:0;
+    left:0;
+    background-color:#72E4FE;
+    opacity:0.9;
+    overflow-x:hidden;
+    padding-top:60px;
+    transition:0.5s;
+  }
+  
+  .side-nav a{
+    padding:10px 10px 10px 30px;
+    text-decoration:none;
+    font-size:22px;
+    color:#f1f1f1;
+    display:block;
+    transition:0.3s;
+  }
+  
+  .side-nav a:hover{
+    color:#f1f1f1;
+  }
+  
+  .side-nav .btn-close{
+    position:absolute;
+    top:0;
+    right:22px;
+    font-size:36px;
+    margin-left:50px;
+  }
+  
+
+  .nav-item
+  {
+    margin-top: 15%;
+    color: white;
+  }
+  .nav-button
+  {
+    margin-top: 18%;
+    border-radius: 8px;
+  background-color: white; 
+  border: none;
+  color: #72E4FE;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  }
+  .title
+  {
+    font-size: x-large;
+  color: #72E4FE;
+  }
+  .other-text
+  {
+    font-size: large;
+    color: gray;
+  }
+  #main{
+    transition:margin-left 0.5s;
+    padding:20px;
+    overflow:hidden;
+    width:100%;
+  }
+  .column.card.h3
+  {
+    color: #72E4FE;
+  }
+  
+  @media(max-width:568px){
+    .navbar-nav{display:none}
+  }
+  
+  @media (max-width: 600px) {
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+    }
+    .column-innertext
+    {
+      font-size:12px ;
+      text-align: center;
+    }
+  }
+
+  input[id=cb] {
+    display: none;
+  }
+  
+  input[id=cb]:checked~p.strikethrough {
+    text-decoration: line-through;
+    color: red;
+  }
+  
+  label {
+    border: thin solid darkgray;
+    border-radius: 5px;
+    padding: 10px;
+    display: inline-block;
+    margin-top: 5px;
+  }
