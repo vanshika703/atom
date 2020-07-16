@@ -2,23 +2,25 @@ const express = require('express')
 const app = express()
 const mongodb = require('mongodb')
 const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 const ejs = require('ejs')
 const dotenv = require('dotenv')
 dotenv.config()
+const mongoClient = mongodb.MongoClient
+const url = process.env.DB_URL
 
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 app.use(session({
     secret:"dsudbfusidncs",
     resave:true,
-    saveUninitialized:false
+    saveUninitialized:false,
+    store: new MongoStore({ url: process.env.DB_URL})
 }))
 
 app.use(express.static(__dirname + '/views'))
 app.set("view engine","ejs")
 
-const mongoClient = mongodb.MongoClient
-const url = process.env.DB_URL
 
 const adminRoute = require('./routes/admin')
 app.use('/admin',adminRoute)
