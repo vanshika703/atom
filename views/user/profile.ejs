@@ -58,6 +58,9 @@
         color: #A9A9A9;
         font-weight: 200;
       }
+      .profile-row{
+        height: 100vh;
+      }
       @media (max-width: 600px)
         {
           .sidenav{
@@ -102,21 +105,21 @@
     </nav>
     
     <div class="container profile-container">
-      <h2>Profile</h2>
-      <% if (user.registered == 0) { %>
-        <p>Please complete registeration to view profile</p>
-      <% } else { %>
-        <p style="margin-top: 5%;">Name : <span><%= user.name %></span></p>
-        <p>Register Number : <span><%= user.regno %></span></p>
-        <p>Department : <span><%= user.dept %></span></p>
-        
-        <p>Batch : <span><%= user.batch %></span></p>
-        <p>Contact Number : <span><%= user.contactno %></span></p>
-        <p>Whatsapp Number : <span><%= user.whatsappno %></span></p>
-        <p>Primary Domain : <span><%= user.domain1 %></span></p>
-        <p>Secondary Domain : <span><%= user.domain2 %></span></p> 
-        <p>Year : <span><%= user.year %></span></p>  
-      <% } %>
+          <h2>Profile</h2>
+          <% if (user.registered == 0) { %>
+            <p>Please complete registeration to view profile</p>
+          <% } else { %>
+            <p style="margin-top: 5%;">Name : <span><%= user.name %></span></p>
+            <p>Register Number : <span><%= user.regno %></span></p>
+            <p>Department : <span><%= user.dept %></span></p>
+            
+            <p>Batch : <span><%= user.batch %></span></p>
+            <p>Contact Number : <span><%= user.contactno %></span></p>
+            <p>Whatsapp Number : <span><%= user.whatsappno %></span></p>
+            <p>Primary Domain : <span><%= user.domain1 %></span></p>
+            <p>Secondary Domain : <span><%= user.domain2 %></span></p> 
+            <p>Year : <span><%= user.year %></span></p>  
+          <% } %>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

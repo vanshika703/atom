@@ -32,6 +32,20 @@
             justify-content: center;
             align-items: center;
         }
+        .lottie{
+            height: 400px;
+            width: 400px;
+        }
+         @media (max-width: 600px){
+            .reg-animation{
+                height: 30vh;
+                margin-bottom: -10%;
+            }
+            .lottie{
+                height: 100px;
+                width: 100px;
+            }
+        }
         .reg-form{
             z-index: 1;
             text-align: center;
@@ -83,7 +97,7 @@
     <div class="reg-container">
         <div class="row reg-row">
             <div class="col-lg-6 reg-animation">
-                <lottie-player src="/img/animation.json"  background="transparent"  speed="1"  style="width: 400px; height: 400px;"  loop autoplay></lottie-player>
+                <lottie-player class="lottie" src="/img/animation.json"  background="transparent"  speed="1"  loop autoplay></lottie-player>
                 <h1 class="mt-4" style="color: #26A4E2;">Think <span>Digital</span></h1>
             </div>
 

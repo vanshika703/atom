@@ -254,9 +254,8 @@ Router.post('/forgotpassword', async(req,res) => {
 Router.get('/verifypasswordlink', (req,res) => {
 
     if((req.protocol+"://"+req.get('host'))==("http://"+host))
-    {
         res.render('user/changepassword', {id: req.query.id})
-    } 
+     
     else {
         res.send("Some error occured. Please try again!")
     }
