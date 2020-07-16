@@ -168,12 +168,8 @@
 
         async function onSignIn(googleUser) {
             var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-            console.log('Name: ' + profile.getName());
-            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
     
             var id_token = googleUser.getAuthResponse().id_token;
-            console.log(id_token)
     
             let response = await fetch('/user/googleLogIn', {
                 method: 'POST',
@@ -184,7 +180,6 @@
             })
 
             let data = await response.json()
-            console.log(data)
 
             if(response.status === 200){
                 localStorage.setItem('token',data.token)

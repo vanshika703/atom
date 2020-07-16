@@ -169,6 +169,49 @@
                 document.querySelector('#msg').innerHTML = data.msg
             }
         }
+
+        async function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+    
+            var id_token = googleUser.getAuthResponse().id_token;
+    
+            let response = await fetch('/user/googleLogIn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id_token})
+            })
+
+            let data = await response.json()
+            console.log(data)
+
+            if(response.status === 200){
+                localStorage.setItem('token',data.token)
+                document.querySelector('#register-token').value = data.token
+                document.querySelector('#register-btn').click()
+            } else if(response.status === 201){
+                localStorage.setItem('token',data.token)
+                document.querySelector('#member-token').value = data.token
+                document.querySelector('#member-btn').click()
+            } else if(response.status === 202){
+                localStorage.setItem('token',data.token)
+                document.querySelector('#user-token').value = data.token
+                document.querySelector('#user-btn').click()
+            } else {
+                document.querySelector('#sign-out').click()
+                document.querySelector('#msg').innerHTML = data.msg
+            }
+        }
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+            console.log('User signed out.');
+            });
+        }
+        function onSignInFailure(){
+            document.getElementById('msg').innerHTML = "Sign in Failure"
+        }
     </script>
 </body>
 </html>
