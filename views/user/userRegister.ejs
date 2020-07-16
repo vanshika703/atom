@@ -4,35 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    
     <title>Document</title>
     <style>
-        * {
-        box-sizing: border-box;
+        *{
+          outline: none;
         }
 
-        body {
-        background-color: #a59898;
+        body{
+          background-color: #ffffff;
+          height: 100vh;
+          width: 100vw;
+          font-family: 'Montserrat', sans-serif;
+      }
+        
+        .reg-container h2{
+          color: #218EC4;
         }
 
         #regForm {
-        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: grey 0 0 10px;
+        opacity: 0.9;
         margin: 100px auto;
-        font-family: Raleway;
         padding: 40px;
-        width: 50%;
+        width: 60%;
         min-width: 300px;
         }
 
-        h1 {
+        h1{
         text-align: center;  
         }
 
         input {
         padding: 10px;
-        width: 80%;
-        font-size: 17px;
-        font-family: Raleway;
-        border: 1px solid #aaaaaa;
+        width: 50%;
+        font-size: 16px;
+        border: none;
+        border-bottom: 2px solid #72E4FE ;
+        }
+
+        @media (max-width: 600px){
+          input{
+            width: 100%;
+          }
+        }
+
+        input::placeholder{
+            color:#A9A9A9;
         }
 
         /* Mark input boxes that gets an error on validation: */
@@ -47,26 +67,22 @@
             justify-content: center; 
             align-items: center;
         }
-
-        button {
-        background-color: #4CAF50;
-        color: #ffffff;
-        border: none;
-        padding: 10px 20px;
-        font-size: 17px;
-        font-family: Raleway;
-        cursor: pointer;
+        label,p{
+          color:#A9A9A9;
         }
 
-        button:hover {
-        opacity: 0.8;
+        button {
+            background-color: #72E4FE;
+            border: none;
+            color: #ffffff;
+            border-radius: 24px;
+            padding: 4px 12px;
         }
 
         #prevBtn {
-        background-color: #bbbbbb;
+        background-color:#A9A9A9;
         }
-        
-        /* Make circles that indicate the steps of the form: */
+
         .step {
         height: 15px;
         width: 15px;
@@ -84,106 +100,87 @@
 
         /* Mark the steps that are finished and valid: */
         .step.finish {
-        background-color: #4CAF50;
+        background-color: #218EC4;
         }
+
 
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/profile">TD</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                <a class="nav-link" href="/userRegister">Registeration Form<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="/profile">Profile<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="/primarydash">Primary Domain</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="/secondarydash">Secondary Domain</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="http://think-digital.in/">Our Website</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <p style="color: red;"><%= msg %></p>
-    <form id="regForm" action="/user/registerInfo" method="POST">
-        <div class="tab">
-            <input type="text" name="name" class="name" placeholder="Name" required>
+    <div class="container reg-container">
+      <h2>Fill in Your Registeration Details</h2>
+      
+      <form id="regForm" action="/user/registerInfo" method="POST">
+          <div class="tab">
+              <input type="text" name="name" class="name" placeholder="Name" required>
 
-            <input type="text" name="regno" class="regno" placeholder="Register Number" required>
-            <input type="hidden" id="token" name="token" >
-        </div>
+              <input type="text" name="regno" class="regno" placeholder="Register Number" required>
+              <input type="hidden" id="token" name="token" >
+          </div>
 
-        <div class="tab">
-            <input type="text" name="dept" class="dept" placeholder="Department" required>
+          <div class="tab">
+              <input type="text" name="dept" class="dept" placeholder="Department" required>
 
-            <label for="year">Year:</label>
-            <select form="regForm" id="year" name="year" required>
-                <option value="1">1</option>
-                <option value="1">2</option>
-                <option value="1">3</option>
-            </select>
+              <label for="year">Year:</label>
+              <select form="regForm" id="year" name="year" required>
+                  <option value="1">1</option>
+                  <option value="1">2</option>
+                  <option value="1">3</option>
+              </select>
 
-            <p>Please select your batch:</p>
-            <input type="radio" id="batch1" name="batch" value="batch1">
-            <label for="batch1">Batch 1</label>
-            <input type="radio" id="batch2" name="batch" value="batch2">
-            <label for="batch2">Batch 2</label>
-        </div>
-        
-        <div class="tab">
-            <input type="text" name="contactno" class="contact-no" placeholder="Contact Number" required>
+              <p>Please select your batch:</p>
+              <input type="radio" id="batch1" name="batch" value="batch1">
+              <label for="batch1">Batch 1</label>
+              <input type="radio" id="batch2" name="batch" value="batch2">
+              <label for="batch2">Batch 2</label>
+          </div>
+          
+          <div class="tab">
+              <input type="text" name="contactno" class="contact-no" placeholder="Contact Number" required>
 
-            <input type="text" name="whatsappno" class="whatsapp-no" placeholder="Whatsapp Number" required>
-        </div>
-        
+              <input type="text" name="whatsappno" class="whatsapp-no" placeholder="Whatsapp Number" required>
+          </div>
+          
 
-        <div class="tab">
-            <label for="domain1">Primary Domain:</label>
-            <select form="regForm" id="domain1" name="domain1" required>
-                <option value="web">Web</option>
-                <option value="app">App</option>
-                <option value="iot">Iot</option>
-                <option value="game">Game</option>
-                <option value="gd">Graphic Design</option>
-                <option value="hr">HR</option>
-            </select>
-    
-            <label for="domain2">Secondary Domain:</label>
-            <select form="regForm" id="domain2" name="domain2" required>
-                <option value="web">Web</option>
-                <option value="app">App</option>
-                <option value="iot">Iot</option>
-                <option value="game">Game</option>
-                <option value="gd">Graphic Design</option>
-                <option value="hr">HR</option>
-            </select>
-        </div>
+          <div class="tab">
+              <label for="domain1">Primary Domain:</label>
+              <select form="regForm" id="domain1" name="domain1" required>
+                  <option value="web">Web</option>
+                  <option value="app">App</option>
+                  <option value="iot">Iot</option>
+                  <option value="game">Game</option>
+                  <option value="gd">Graphic Design</option>
+                  <option value="hr">HR</option>
+              </select>
+      
+              <label for="domain2">Secondary Domain:</label>
+              <select form="regForm" id="domain2" name="domain2" required>
+                  <option value="web">Web</option>
+                  <option value="app">App</option>
+                  <option value="iot">Iot</option>
+                  <option value="game">Game</option>
+                  <option value="gd">Graphic Design</option>
+                  <option value="hr">HR</option>
+              </select>
+          </div>
 
-        <div style="overflow:auto;">
-            <div style="float:right;">
-              <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-              <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
-            </div>
-        </div>
+          <div style="overflow:auto; margin-top: 2%;">
+              <div style="float:right;">
+                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+              </div>
+          </div>
 
-        <div style="text-align:center;margin-top:40px;">
-            <span class="step"></span>
-            <span class="step"></span>
-            <span class="step"></span>
-            <span class="step"></span>
-        </div>
-    </form>
+          <p style="color: red;"><%= msg %></h2>
+
+          <div style="text-align:center;margin-top:40px;">
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+              <span class="step"></span>
+          </div>
+      </form>
+    </div>
 
     <script>
         let token = localStorage.getItem('token')

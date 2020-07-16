@@ -84,8 +84,8 @@ Router.post('/register', async(req,res)=>{
             let mailOptions = {
                 from: process.env.EMAIL,
                 to: email,
-                subject: 'Confirmation email for Tdian register',
-                html: "<p>link is...<a href="+link+">Click here to verify....</a></p>"
+                subject: 'Think Digital Registeration Email',
+                html: "<h2>Welcome to Think Digital</h2><br><p>Click<a href="+link+">here</a>to verify your email</p>"
             };
             
             transporter.sendMail(mailOptions, function(error, info){
@@ -255,9 +255,8 @@ Router.post('/forgotpassword', async(req,res) => {
 Router.get('/verifypasswordlink', (req,res) => {
 
     if((req.protocol+"://"+req.get('host'))==("http://"+host))
-    {
         res.render('user/changepassword', {id: req.query.id})
-    } 
+     
     else {
         res.send("Some error occured. Please try again!")
     }
