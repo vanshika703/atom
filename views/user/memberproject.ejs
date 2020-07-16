@@ -122,12 +122,12 @@
                                 <div class="other-text">
 
                                 <% task.subtasks.forEach(subtask => {%>
-                                <h5><%= subtask.title %> </h5>
+                               <div id="subtasktitle"><h5><%= subtask.title %> </h5></div> 
                                 <h6>**<%= subtask.complete?('done'):('not done') %></h6>
                                 <p>From <%= subtask.startDate %></p>
                                 <p>To <%= subtask.endDate %></p>
                                 <% if(!subtask.complete) { %>
-                                <button id='<%= subtask._id %>' class='subtask-update btn-primary'>Done</button>
+                                <button onclick="taskcompletefunction()" id='<%= subtask._id %>' class='subtask-update btn-primary'>Done</button>
                                 <% } %>
                                 <%})%>
                                 </div>
@@ -141,12 +141,12 @@
                             <div class="title">      <h3>Your Bugs</h3></div>
                                 <div class="other-text">
                                 <% task.bugs.forEach(bug => {%>
-                                <h5><%= bug.title %> </h5>
+                              <div id="bugTitle">  <h5><%= bug.title %> </h5></div>
                                 <h6>**<%= bug.complete?('done'):('not done') %></h6>
                                 <p>From <%= bug.startDate %></p>
                                 <p>To <%= bug.endDate %></p>
                                 <% if(!bug.complete) { %>
-                                <button id='<%= bug._id %>' class='bug-update btn-primary'>Done</button>
+                                <button onclick="bugsSolved()" id='<%= bug._id %>' class='bug-update btn-primary'>Done</button>
                                 <% } %>
                                 <%})%>
                                 </div>
@@ -158,6 +158,17 @@
         </div>
     </div>
     <script>
+        function taskcompletefunction()
+        {
+            var s=document.getElementById('subtasktitle');
+            s.style.textDecoration="line-through";
+         
+        }
+        function bugsSolved()
+        {
+            var s=document.getElementById('bugTitle');
+            s.style.textDecoration="line-through";
+        }
         function openSlideMenu() {
             document.getElementById('side-menu').style.width = '250px';
             document.getElementById('main').style.marginLeft = '250px';
