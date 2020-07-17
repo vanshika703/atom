@@ -127,7 +127,7 @@
                                 <p>From <%= subtask.startDate %></p>
                                 <p>To <%= subtask.endDate %></p>
                                 <% if(!subtask.complete) { %>
-                                <button onclick="taskcompletefunction()" id='<%= subtask._id %>' class='subtask-update btn-primary'>Done</button>
+                                <button onclick="taskcompletefunction()" id='<%= subtask._id %>' class='subtask-update '>Done</button>
                                 <% } %>
                                 <%})%>
                                 </div>
@@ -146,7 +146,7 @@
                                 <p>From <%= bug.startDate %></p>
                                 <p>To <%= bug.endDate %></p>
                                 <% if(!bug.complete) { %>
-                                <button onclick="bugsSolved()" id='<%= bug._id %>' class='bug-update btn-primary'>Done</button>
+                                <button onclick="bugsSolved()" id='<%= bug._id %>' class='bug-update '>Done</button>
                                 <% } %>
                                 <%})%>
                                 </div>
