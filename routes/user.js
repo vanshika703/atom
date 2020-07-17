@@ -241,10 +241,10 @@ Router.post('/forgotpassword', async(req,res) => {
         };
           
         transporter.sendMail(mailOptions, function(error, info){
-            if(error) throw error
-            
-            res.json({msg:"Please check your email"});
-            
+            if(!error) return res.json({msg:"Please check your email"});
+
+            console.error(error)
+            res.json({msg:'Server Error!'})
         })
     } catch (error) {
         console.error(error)
