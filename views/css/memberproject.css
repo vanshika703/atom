@@ -226,3 +226,37 @@ width: 100%;}
     display: inline-block;
     margin-top: 5px;
   }
+
+
+  .bug-update {
+    line-height: 1em;
+    letter-spacing: 0.06em;
+    
+    font-weight: normal;
+    font-size: 14px;
+    text-decoration: none;
+    color: #fff;
+    background: #5fdde5;
+    display: inline-block;
+    transition: background 200ms;
+    border-radius: 8px;
+  }
+  
+  .bug-update:hover {
+    background: #87dfd6;
+  }
+  
+  .bug-update:after {
+    font-family: 'FontAwesome', sans-serif;
+    
+    content: "\f105";
+    margin-left: 20px;
+    color: #87dfd6;
+    font-size: 18px;
+    vertical-align: middle;
+    transition: color 200ms;
+  }
+  
+  .bug-update:hover:after {
+    color: #fff;
+  }
