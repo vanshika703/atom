@@ -8,8 +8,8 @@
     
     <title>Document</title>
     <style>
-        *{
-          outline: none;
+        *:focus {
+            outline: 0 !important;
         }
         body{
             background-color: #ffffff;
@@ -73,9 +73,12 @@
         .event-card p{
           color:#A9A9A9;
         }
-        .event-card a{
+        #view-btn{
           font-size: 14px;
           color:#26A4E2;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
         }
 
         #feedback-btn,
@@ -208,7 +211,7 @@
                       <h5 class="card-title<%= c %>"><%= result[i].title %></h5>
                       <p class="card-subtitle mb-2">Date:  <%= result[i].date %></p>
                     <p>
-                        <a data-toggle="collapse" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View More</a>
+                        <button id="view-btn" data-toggle="collapse" onclick="btnToggle()" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View Details</button>
                         <button id="feedback-btn" type="button" data-toggle="collapse" data-target="#multiCollapseExample2<%= c %>" aria-expanded="false" aria-controls="multiCollapseExample2">Leave Feedback</button>
                     </p>
                     <div class="row">
@@ -256,6 +259,19 @@
       </div>
     </div>
     <script>
+
+      //changing view more to view less
+      var i=0
+      function btnToggle(){
+        i++
+        viewBtn = document.getElementById('view-btn')
+        if(i % 2 ==0)
+          viewBtn.innerHTML = "View Details"
+        else
+          viewBtn.innerHTML = "Hide Details"
+      }
+
+
       //adding the token to all links
       let token = localStorage.getItem('token')
       document.querySelectorAll('.dynamic-link').forEach(link => link.href+=`/${token}`)
