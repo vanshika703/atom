@@ -4,66 +4,150 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
-      integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <!-- Lottie File cdn -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;600&display=swap" rel="stylesheet">
-
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <!-- progress bar -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-  <!-- bootstrap -->
-  <link rel="stylesheet" href="/css/memberdashboard.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+ 
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+<style>
+    *:focus {
+            outline: 0 !important;
+        }
+        body{
+            background-color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .sidenav{
+          height: 100vh;
+          width:200px;
+          position: fixed;
+          top: 0;
+          left: 0;
+          background-color: #72E4FE!important;
+          z-index: 999;
+        }
+        .nontdnav{
+          display: block;
+        }
+        .nontdnav a{
+          color:white!important;
+        }
+        .nontdnav a:hover{
+          color:#eee!important;
+        }
+        #logout-btn{
+            background-color: white;
+            border:none;
+            color:#72E4FE;
+            border-radius: 24px;
+            padding: 4px 12px;
+        }
+        #logout-btn:hover{
+          background-color: #eee;
+        }
+        .dash-container{
+          margin-left: 200px;
+        }
+        .column {
+  width: 50%;
+  padding: 0 10px;
+  padding-top: 2%;
+}
+
+.row {margin: 0 -5px;}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.card{
+  box-shadow: 0 4px 8px 0 #ddf3f5;
+  transition: 0.3s;
+}
+
+.card:hover {
+  box-shadow: 16px 16px 16px 16px #ddf3f5;
+}
+@media (max-width: 600px)
+        {
+          .sidenav{
+            height: auto;
+            width: 100vw;
+          }
+          .dash-container{
+            margin: 10vh 0 0 0;
+          }
+          .timeline{
+            width: 100%;
+            margin: 0 auto;
+          }
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+  }
+  .title
+  {
+    font-size: x-large;
+  color: #72E4FE;
+  }
+  .other-text
+  {
+    font-size: large;
+    color: gray;
+  }
+  
+ 
+  .name
+  { padding-top: 3%;
+    font-size: large;
+    color: gray;
+  }
+  
+</style>
 </head>
-
 <body>
-    <div class="all">
-        <nav class="navbar">
-            <span class="open-slide">
-                <a href="#" onclick="openSlideMenu()">
-                    <svg width="30" height="30">
-                        <path d="M0,5 30,5" stroke="#72E4FE" stroke-width="5" />
-                        <path d="M0,14 30,14" stroke="#72E4FE" stroke-width="5" />
-                        <path d="M0,23 30,23" stroke="#72E4FE" stroke-width="5" />
-                    </svg>
-                </a>
-            </span>
-        </nav>
-        <div class="navbar-header">
-        </div>
+   
+  <nav class="navbar navbar-expand-lg navbar-light sidenav">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav nontdnav">
+        <li class="nav-item">
+          <a class="nav-link dynamic-link" href="/user/memberprofile">Profile<span class="sr-only">(current)</span></a>
+        </li>
+       
+        <hr>
+        <li class="nav-item">
+          <a class="nav-link dynamic-link" href="/user/dashboard">Dashboard</a>
+        </li>
+        <hr>
+        <li class="nav-item">
+          <a class="nav-link" href="http://think-digital.in/">Our Website</a>
+        </li>
+        <hr>
+        <li class="nav-item">
+          <button class="nav-link" id="logout-btn" style="cursor: pointer;">Logout</button>
+        </li>
+      </ul>
+    </div>
+</nav>
 
-        <div id="side-menu" class="side-nav">
-            <nav class="navbar navbar-inverse navbar-fixed-top">
-                <div class="container-fluid">
-                    <ul class="nav navbar-nav">
-                        <a class="nav-item" href="#" class="btn-close" onclick="closeSlideMenu()">&times;</a>
-                        <a class="nav-item dynamic-link" href="/user/memberprofile">Profile</a>
-                        <a class="nav-item dynamic-link" href="/user/dashboard">Dashboard</a>
-                        <a class="nav-item" href="http://think-digital.in/">Our Website</a>
-                        <button class="nav-button" id="logout-btn">Logout</button>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-        <div id="main">
+        <div class="container dash-container">
   
         <a class="name navbar-brand" href="#">Hello <%=user.name%> <i class="fas fa-user"></i></a>
       
-            <div class="row1">
+            <div class="row">
               <% tasks.forEach(task => { %>
-                <div class="column1">
-                    <div class="card1">
-                        <div class="content">
-                            <div class="card-header">
+                <div class="column">
+                    <div class="card">
+                      <div class="content">
+                        <div class="card-header">  
+                           
                                 <div class="title">
                                     <p><%= task.title %></p>
                                 </div>
@@ -76,10 +160,12 @@
                                 <div class="other-text">
                                     <p> Description:<%= task.description %></p>
                                 </div>
-                                <div class="stage readmore">
-                                  <a class="project-link" href='/user/project/<%= task._id %>'>Know More</a></div>
-                              </div>
-                            </div>
+                                
+                                  <a class="project-link nav-link" style="color: grey;" href='/user/project/<%= task._id %>'>Know More  <i class="fas fa-chevron-right"></i></i></a>
+                                
+                                
+                        </div>
+                      </div>
                         </div>
                     </div>
                     <%})%>
