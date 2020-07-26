@@ -35,6 +35,11 @@
                 <li>
                     <a href="/admin/viewMembers">View Members</a>
                 </li>
+                <% if (user.type) { %>
+                 <li>
+                     <a href="/admin/viewAdmins">View Admins</a>
+                 </li>
+                <% } %>
 
             </ul>
     
@@ -89,8 +94,8 @@
                                     <option value="<%= user.domain1 %>"><%= user.domain1 %></option>
                                     <option value="<%= user.domain2 %>"><%= user.domain2 %></option>
                                 </select>
-                                <button class="promoteBtn btn btn-sm btn-colour">Promote to member</button>
-                                <button class="deleteBtn btn btn-sm btn-colour">Delete user</button>
+                                <button class="promoteBtn btn btn-sm btn-colour" title="Promote to member">Promote</button>
+                                <button class="deleteBtn btn btn-sm btn-colour" title="Delete user"><i class="fa fa-trash"></i></button>
                                 <a class="btn btn-link" href="/admin/viewprofile/<%= user._id %>">View More</a>
                             </td>
                         </tr>

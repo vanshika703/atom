@@ -51,7 +51,8 @@ Router.post('/login', (req,res) => {
         req.session.user = {
             name:result[0].name,
             email:result[0].email,
-            id:result[0]._id
+            id:result[0]._id,
+            type:result[0].adminType
         }
 
         req.session.user.expires = new Date(
@@ -252,6 +253,7 @@ Router.get('/viewmemberprofile/:id', (req,res) => {
         res.render('admin/adminviewmemberprofile',{user,admin:req.session.user})
     })
 })
+
 Router.post('/delete', (req,res) => {
     let id = req.body.id
     let from = req.query.from
@@ -394,6 +396,72 @@ Router.post('/editProject',async(req,res) => {
 Router.all('/logout', (req,res) => {
     req.session.destroy()
     res.render('admin/adminlogin',{msg : 'You have been logged out!'})
+})
+
+//extras for super admin
+Router.get('/viewAdmins',async(req,res) => {
+    if(!req.session.user.type) return res.status(401).json({msg:'Not authorised!'})
+
+    let db = req.app.locals.db
+
+    try {
+        let admins = await db.db('atom').collection('admins').find({},{projection:{password:0}}).toArray()
+        
+        res.render('admin/viewadmins',{data:admins,user:req.session.user})
+    } catch (error) {
+        console.error(error)
+        return res.render('error')
+    }
+})
+
+Router.get('/viewadminprofile/:id', async(req,res) => {
+    if(!req.session.user.type) return res.status(401).json({msg:'Not authorised!'})
+
+    let db = req.app.locals.db
+
+    try {
+        let user = await db.db('atom').collection('admins').findOne({_id:new ObjectId(req.params.id)},{projection:{password:0}})
+        res.render('admin/viewadminprofile',{user,admin:req.session.user})
+    } catch (error) {
+        console.error(error)
+        res.render('error')
+    }
+})
+
+Router.post('/promoteMember',async(req,res)=> {
+    if(!req.session.user.type) return res.status(401).json({msg:'Not authorised!'})
+
+    let db = req.app.locals.db
+    let { id } = req.body
+    try {
+        let user = await db.db('atom').collection('users').findOneAndDelete({_id: new ObjectId(id)})
+        
+        user.value.adminType = 0
+        await db.db('atom').collection('admins').insertOne(user.value)
+        res.json({msg:'Member promoted!'})
+
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({msg:'Server error! Please refresh and try again!'})
+    }
+})
+
+Router.post('/demoteAdmin',async(req,res)=> {
+    if(!req.session.user.type) return res.status(401).json({msg:'Not authorised!'})
+
+    let db = req.app.locals.db
+    let { id } = req.body
+    try {
+        let admin = await db.db('atom').collection('admins').findOneAndDelete({_id: new ObjectId(id)})
+        
+        delete admin.value.adminType
+        await db.db('atom').collection('users').insertOne(admin.value)
+        res.json({msg:'Admin demoted!'})
+
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({msg:'Server error! Please refresh and try again!'})
+    }
 })
 
 module.exports = Router

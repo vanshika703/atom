@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
-    <title>Attendance</title>
+    <title>View Admins</title>
 </head>
 <body>
-
     <div class="wrapper">
         <!-- Sidebar -->
         <nav id="sidebar">
@@ -69,53 +69,41 @@
                 </div>
             </nav>
             
-            <h3 class="mt-5"><span class="text-color">Event</span> :<%= event.title %> </h3>
-            <h5><span class="text-color">Date</span> : <%= event.date %> </h5>
-        
-            <h4 class="mt-5">Attending</h4>
+            <h3 class="mt-5">Admins</h3>
             <div class="table-responsive-lg">
                 <table class="table table-striped">
                     <tr>
                         <th>Name</th>
-                        <th>Email</th>
+                        <th>Year</th>
+                        <th>Designation</th>
+                        <th>Actions</th>
                     </tr>
-                    <% event.attendance.forEach(entry => { %>
-                        <% if (entry.willAttend) { %>
-                            <tr>
-                                <td>Name: <%= entry.name %> </td>
-                                <td>Email: <%= entry.email %> </td>
-                            </tr>
-                        <% } %>
-                    <% }) %>
+                    <% for(let admin of data){ %>
+                        <tr>
+                            <td><%= admin.name %></td>
+                            <td><%= admin.year %></td>
+                            <% if (admin.adminType) { %>
+                            <td>Super Admin</td>
+                            <% } else { %>
+                            <td>Admin</td>
+                            <% } %>
+                            <td>
+                                <button class="demoteBtn btn btn-sm btn-colour" data-id="<%= admin._id %>" title="Demote to member">Demote</button>
+                                <a class="btn btn-link" href="/admin/viewadminprofile/<%= admin._id %>">View More</a>
+                            </td>
+                        </tr>
+                     <% } %>
                 </table>
             </div>
-        
-            <h4 class="mt-5">Not Attending</h4>
-            <div class="table-responsive-lg">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                    </tr>
-                    <% event.attendance.forEach(entry => { %>
-                        <% if (!entry.willAttend) { %>
-                            <tr>
-                                <td>Name: <%= entry.name %> </td>
-                                <td>Email: <%= entry.email %> </td>
-                            </tr>
-                        <% } %>
-                    <% }) %>
-                </table>
-            </div>
-
+            
         </div>
     </div>
-
-
+    
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
     <script>
 
         $(document).ready(function () {
@@ -130,5 +118,27 @@
             });
 
         });
+        
+        document.querySelectorAll('.demoteBtn').forEach(btn => btn.addEventListener('click',demoteAdmin))
+
+        async function demoteAdmin(e) {
+            let id = e.target.dataset.id
+
+            let response = await fetch(`/admin/demoteAdmin`,{
+                method: 'POST',
+                headers:{'content-type':'application/json'},
+                body:JSON.stringify({id})
+            })
+
+            let data = await response.json()
+
+            if(response.status === 200){
+                e.target.offsetParent.innerHTML = data.msg
+            } else {
+                e.target.offsetParent.style.color = 'red'
+                e.target.offsetParent.innerHTML = data.msg
+            }
+        }
     </script>
 </body>
+</html>

@@ -34,6 +34,11 @@
                 <li>
                     <a href="/admin/viewMembers">View Members</a>
                 </li>
+                <% if (user.type) { %>
+                 <li>
+                     <a href="/admin/viewAdmins">View Admins</a>
+                 </li>
+                <% } %>
 
             </ul>
     
@@ -82,8 +87,8 @@
                             <td><%= project.deadline %></td>
                             <td style="width: 40px;"><%= project.description %></td>
                             <td>
-                                <button class="deleteTask btn btn-sm btn-colour" data-id="<%= project._id %>">Delete</button>
-                                <button class="editTask btn btn-sm btn-colour" data-id="<%= project._id %>">Edit</button>
+                                <button class="deleteTask btn btn-colour" data-id="<%= project._id %>" title="Delete Project"><i class="fa fa-trash"></i></button>
+                                <button class="editTask btn btn-colour" data-id="<%= project._id %>" title="Edit Project"><i class="fa fa-edit"></i></button>
                                 <a class="btn btn-link" href="/admin/viewproject/<%= project._id %>">View More</a>
                             </td>
                         </tr>

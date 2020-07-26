@@ -45,6 +45,11 @@
                 <li>
                     <a href="/admin/viewMembers">View Members</a>
                 </li>
+                <% if (user.type) { %>
+                 <li>
+                     <a href="/admin/viewAdmins">View Admins</a>
+                 </li>
+                <% } %>
 
             </ul>
     
@@ -103,8 +108,8 @@
                     <li class="list-group-item"><span class="text-color">Edited on</span>: <%= data[i].editedOn %></li>
                    <% } %>
                    <li class="list-group-item">
-                       <button class="deleteEvent btn btn-sm btn-colour" data-id="<%= data[i]._id %>">Delete</button>
-                       <button type="submit" class="editEvent btn btn-sm btn-colour" data-id="<%= data[i]._id %>">Edit</button>
+                       <button class="deleteEvent btn btn-colour" data-id="<%= data[i]._id %>" title="Delete Event"><i class="fa fa-trash"></i></button>
+                       <button class="editEvent btn btn-colour" data-id="<%= data[i]._id %>" title="Edit Event"><i class="fa fa-pencil-square-o"></i></button>
                    </li>
                     <% if (data[i].feedback) { %>
                      <li class="list-group-item">
