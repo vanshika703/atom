@@ -90,6 +90,9 @@
                             <td>
                                 <button class="demoteBtn btn btn-sm btn-colour" data-id="<%= admin._id %>" title="Demote to member">Demote</button>
                                 <a class="btn btn-link" href="/admin/viewadminprofile/<%= admin._id %>">View More</a>
+                                <div class="spinner-border" id="<%= admin._id %>" style="color: #26A4E2;" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
                             </td>
                         </tr>
                      <% } %>
@@ -118,11 +121,13 @@
             });
 
         });
+        document.querySelectorAll('.spinner-border').forEach(spinner => spinner.style.display = 'none')
         
         document.querySelectorAll('.demoteBtn').forEach(btn => btn.addEventListener('click',demoteAdmin))
 
         async function demoteAdmin(e) {
             let id = e.target.dataset.id
+            document.getElementById(id).style.display = 'block'
 
             let response = await fetch(`/admin/demoteAdmin`,{
                 method: 'POST',

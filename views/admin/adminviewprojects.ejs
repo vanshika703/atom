@@ -90,6 +90,9 @@
                                 <button class="deleteTask btn btn-colour" data-id="<%= project._id %>" title="Delete Project"><i class="fa fa-trash"></i></button>
                                 <button class="editTask btn btn-colour" data-id="<%= project._id %>" title="Edit Project"><i class="fa fa-edit"></i></button>
                                 <a class="btn btn-link" href="/admin/viewproject/<%= project._id %>">View More</a>
+                                <div class="spinner-border" id="<%= project._id %>" style="color: #26A4E2;" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
                             </td>
                         </tr>
                      <% } %>
@@ -119,12 +122,15 @@
 
         });
 
+        document.querySelectorAll('.spinner-border').forEach(spinner => spinner.style.display = 'none')
+
         //delete
         document.querySelectorAll('.deleteTask').forEach(btn => btn.addEventListener('click',deleteTask))
         
         async function deleteTask(e) {
             e.preventDefault()
             let id = e.target.dataset.id
+            document.getElementById(id).style.display = 'block'
             
             let response = await fetch(`/admin/delete?from=tasks`,{
                 method: 'POST',

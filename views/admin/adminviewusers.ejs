@@ -88,15 +88,17 @@
                             <td><%= user.year %></td>
                             <td><%= user.dept %></td>
                             <td>
-                                <input type="hidden" class="id" value="<%= user._id %>">
                                 <select class="domain-list custom-select">
                                     <option value="" disabled selected>Select a domain to promote</option>
                                     <option value="<%= user.domain1 %>"><%= user.domain1 %></option>
                                     <option value="<%= user.domain2 %>"><%= user.domain2 %></option>
                                 </select>
-                                <button class="promoteBtn btn btn-sm btn-colour" title="Promote to member">Promote</button>
-                                <button class="deleteBtn btn btn-sm btn-colour" title="Delete user"><i class="fa fa-trash"></i></button>
+                                <button class="promoteBtn btn btn-sm btn-colour" title="Promote to member" data-id="<%= user._id %>">Promote</button>
+                                <button class="deleteBtn btn btn-sm btn-colour" title="Delete user" data-id="<%= user._id %>"><i class="fa fa-trash"></i></button>
                                 <a class="btn btn-link" href="/admin/viewprofile/<%= user._id %>">View More</a>
+                                <div class="spinner-border" id="<%= user._id %>" style="color: #26A4E2;" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
                             </td>
                         </tr>
                      <% } %>
@@ -125,19 +127,15 @@
             });
 
         });
-        var deleteBtns = document.querySelectorAll('.deleteBtn')
-        var promoteBtns = document.querySelectorAll('.promoteBtn')
 
-        deleteBtns.forEach(btn => {
-            btn.addEventListener('click', deleteUser)
-        })
-
-        promoteBtns.forEach(btn => {
-            btn.addEventListener('click', promoteUser)
-        })
+        document.querySelectorAll('.spinner-border').forEach(spinner => spinner.style.display = 'none')
+        
+        document.querySelectorAll('.deleteBtn').forEach(btn => btn.addEventListener('click', deleteUser))
+        document.querySelectorAll('.promoteBtn').forEach(btn => btn.addEventListener('click', promoteUser))
 
         async function deleteUser(e) {
-            let id = e.target.offsetParent.firstElementChild.value
+            let {id} = e.target.dataset
+            document.getElementById(id).style.display = 'block'
 
             let response = await fetch(`/admin/delete?from=users`,{
                 method: 'POST',
@@ -154,11 +152,12 @@
         }
         
         async function promoteUser(e) {
-            let id = e.target.offsetParent.firstElementChild.value
-
-            let selectedDomain = e.target.offsetParent.childNodes[3].value
-            if(!selectedDomain) return alert('please choose a domain to promote to')
-
+            let {id} = e.target.dataset
+            
+            let selectedDomain = e.target.offsetParent.childNodes[1].value
+            if(!selectedDomain) return alert('Please choose a domain to promote to!')
+            document.getElementById(id).style.display = 'block'
+            
             let response = await fetch(`/admin/promote`,{
                 method: 'POST',
                 headers: {
@@ -170,9 +169,11 @@
             let data = await response.json()
     
             if(response.status === 200){
-                e.target.offsetParent.innerHTML = `User promoted`
+                e.target.offsetParent.innerHTML = data.msg
+            } else {
+                e.target.offsetParent.style.color = 'red'
+                e.target.offsetParent.innerHTML = data.msg
             }
-            console.log(data)
         }
 
     </script>

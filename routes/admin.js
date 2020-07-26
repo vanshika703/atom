@@ -282,7 +282,7 @@ Router.post('/promote', (req,res) => {
         if(dbErr) return res.render('error')
         
         console.log(result.modifiedCount)
-        res.send({msg:'promoted'})
+        res.send({msg:'User promoted!'})
     })
 })
 
