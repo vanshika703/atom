@@ -123,7 +123,13 @@
                 </div>
             </div>
 
-            <h3 class="mt-5">Member progress</h3>
+            <h4 class="mt-5">Overall progress</h4>
+            <div class="line"></div>
+            <div class="progress my-4" style="height: 25px;">
+                <div class="progress-bar text-body" role="progressbar" style="background-color: #72E4FE;width: <%= project.percentage %>%;"><%= project.percentage %>%</div>
+            </div>
+
+            <h4 class="mt-5">Member progress</h4>
             <div class="line"></div>
             <% project.members.forEach(member => { %>
              
