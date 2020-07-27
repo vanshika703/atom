@@ -9,6 +9,16 @@ form{
     align-items: center;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 textarea{
     min-width: 250px;
     max-width: 250px;
@@ -102,7 +112,7 @@ a, a:hover, a:focus {
     background: #fff;
 }
 
-#sidebar ul li.active > a, a[aria-expanded="true"] {
+#sidebar ul li.active > a {
     color: #fff;
     background: #72E4FE;
 }

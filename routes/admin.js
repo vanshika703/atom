@@ -199,6 +199,10 @@ Router.get('/viewproject/:id',async(req,res) => {
         let subtasks = await db.db('atom').collection('subtasks').find({project:id}).toArray()
         let bugs = await db.db('atom').collection('bugs').find({project:id}).toArray()
 
+        let done_bugs = bugs.reduce((count,bug) => bug.complete?count+1:count,0)
+        let done = subtasks.reduce((count,sub) => sub.complete?count+1:count,done_bugs)
+        project.percentage = Math.round((done/(subtasks.length+bugs.length))*100)
+
         project.members.forEach(member => {
             let current_subs = subtasks.filter(subtask => subtask.member===member.id)
             let current_bugs = bugs.filter(bug => bug.member===member.id)
@@ -392,6 +396,31 @@ Router.post('/editProject',async(req,res) => {
     }
 })
 
+Router.put('/updateContact/:id/:number', async(req,res) => {
+    let { db } = req.app.locals
+    let { id, number } = req.params
+
+    try {
+        await db.db('atom').collection('users').updateOne({_id:new ObjectId(id)},{$set:{contactno:number}})
+        res.json({msg:'Updated!'})
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({msg:'Server error! Please refresh and try again!'})
+    }
+})
+
+Router.put('/updateWhatsapp/:id/:number', async(req,res) => {
+    let { db } = req.app.locals
+    let { id, number } = req.params
+
+    try {
+        await db.db('atom').collection('users').updateOne({_id:new ObjectId(id)},{$set:{whatsappno:number}})
+        res.json({msg:'Updated!'})
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({msg:'Server error! Please refresh and try again!'})
+    }
+})
 
 Router.all('/logout', (req,res) => {
     req.session.destroy()

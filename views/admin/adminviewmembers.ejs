@@ -80,23 +80,54 @@
                         <th>Actions</th>
                     </tr>
                     <% for(let member of data){ %>
-                        <tr>
-                            <td><%= member.name %></td>
-                            <td><%= member.domain %></td>
-                            <td><%= member.year %></td>
-                            <td><%= member.dept %></td>
-                            <td>
-                                <button class="deleteBtn btn btn-sm btn-colour" title="Delete member" data-id="<%= member._id %>"><i class="fa fa-trash"></i></button>
-                                <% if (user.type) { %>
-                                <button class="promoteBtn btn btn-sm btn-colour" title="Promote to admin" data-id="<%= member._id %>">Promote</button>    
-                                <% } %>
-                                <a class="btn btn-link" href="/admin/viewmemberprofile/<%= member._id %>">View More</a>
-                                <div class="spinner-border" id="<%= member._id %>" style="color: #26A4E2;" role="status">
-                                    <span class="sr-only">Loading...</span>
+                    <tr>
+                        <td><%= member.name %></td>
+                        <td><%= member.domain %></td>
+                        <td><%= member.year %></td>
+                        <td><%= member.dept %></td>
+                        <td>
+                            <button class="deleteBtn btn btn-sm btn-colour" title="Delete member" data-id="<%= member._id %>"><i class="fa fa-trash"></i></button>
+                            <% if (user.type) { %>
+                            <button class="promoteBtn btn btn-sm btn-colour" title="Promote to admin" data-id="<%= member._id %>">Promote</button>    
+                            <% } %>
+                            <a class="btn btn-link" href="/admin/viewmemberprofile/<%= member._id %>">View Profile</a>
+                            
+                            <a class="btn btn-link more-actions-link" href="#more-actions<%= member._id %>" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="more-actions<%= member._id %>">More <i class="fa fa-angle-down"></i></a>
+                            
+                            <div class="collapse" id="more-actions<%= member._id %>">
+                                <p>
+                                    <a class="btn btn-link" data-toggle="collapse" href="#updateContact<%= member._id %>" role="button" aria-expanded="false" aria-controls="updateContact<%= member._id %>">Update Contact No.</a>
+                                    <a class="btn btn-link" data-toggle="collapse" href="#updateWhatsapp<%= member._id %>" role="button" aria-expanded="false" aria-controls="updateWhatsapp<%= member._id %>">Update Whatsapp No.</a>
+                                </p>
+    
+                                <div id="collapsible<%= member._id %>">
+                                    <div class="collapse" id="updateContact<%= member._id %>" data-parent="#collapsible<%= member._id %>">
+                                        <form class="contactForm">
+                                            <div class="form-group">
+                                                <input type="number" placeholder="Contact Number" class="form-control" value="<%= member.contactno %>">
+                                            </div>
+                                            <button class="btn btn-sm btn-colour">Update</button>
+                                        </form>
+                                        <p id="contactMsg<%= member._id %>"></p>
+                                    </div>
+                                    <div class="collapse" id="updateWhatsapp<%= member._id %>" data-parent="#collapsible<%= member._id %>">
+                                        <form class="whatsappForm">
+                                            <div class="form-group">
+                                                <input type="number" placeholder="Whatsapp Number" class="form-control" value="<%= member.whatsappno %>">
+                                            </div>
+                                            <button class="btn btn-sm btn-colour">Update</button>
+                                        </form>
+                                        <p id="whatsappMsg<%= member._id %>"></p>
+                                    </div>
                                 </div>
-                            </td>
-                        </tr>
-                     <% } %>
+                            </div>
+
+                            <div class="spinner-border" id="<%= member._id %>" style="color: #26A4E2;" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <% } %>
                 </table>
             </div>
             
@@ -168,6 +199,67 @@
             } else {
                 e.target.offsetParent.style.color = 'red'
                 e.target.offsetParent.innerHTML = data.msg
+            }
+        }
+
+        document.querySelectorAll('.contactForm').forEach(form => form.addEventListener('submit',updateContact))
+        document.querySelectorAll('.whatsappForm').forEach(form => form.addEventListener('submit',updateWhatsapp))
+
+        async function updateContact(e) {
+            e.preventDefault()
+            let id = e.target.parentNode.id.substring(13)
+            document.getElementById(id).style.display = 'block'
+
+            let number = e.target.querySelector('input').value
+            
+            let res = await fetch(`/admin/updateContact/${id}/${number}`,{
+                method:'PUT'
+            })
+
+            let data = await res.json()
+
+            if(res.status === 200) {
+                document.getElementById(id).style.display = 'none'
+                document.getElementById(`contactMsg${id}`).innerHTML = data.msg
+            } else {
+                document.getElementById(id).style.display = 'none'
+                document.getElementById(`contactMsg${id}`).style.color = red
+                document.getElementById(`contactMsg${id}`).innerHTML = data.msg
+            }
+        }
+        
+        async function updateWhatsapp(e) {
+            e.preventDefault()
+            let id = e.target.parentNode.id.substring(14)
+            document.getElementById(id).style.display = 'block'
+            
+            let number = e.target.querySelector('input').value
+
+            let res = await fetch(`/admin/updateWhatsapp/${id}/${number}`,{
+                method:'PUT'
+            })
+
+            let data = await res.json()
+
+            if(res.status === 200) {
+                document.getElementById(id).style.display = 'none'
+                document.getElementById(`whatsappMsg${id}`).innerHTML = data.msg
+            } else {
+                document.getElementById(id).style.display = 'none'
+                document.getElementById(`whatsappMsg${id}`).style.color = red
+                document.getElementById(`whatsappMsg${id}`).innerHTML = data.msg
+            }
+        }
+        
+        document.querySelectorAll('.more-actions-link').forEach(link => link.addEventListener('click',toggleView))
+
+        function toggleView(e) {
+            let link = e.target
+            link.classList.toggle('active')
+            if(link.classList.contains('active')) {
+                link.innerHTML = `Less <i class="fa fa-angle-up"></i>`
+            } else {
+                link.innerHTML = `More <i class="fa fa-angle-down"></i>`
             }
         }
         

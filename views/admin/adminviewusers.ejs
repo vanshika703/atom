@@ -81,27 +81,58 @@
                         <th>Actions</th>
                     </tr>
                     <% for(let user of data){ %>
-                        <tr>
-                            <td><%= user.name %></td>
-                            <td><%= user.domain1 %></td>
-                            <td><%= user.domain2 %></td>
-                            <td><%= user.year %></td>
-                            <td><%= user.dept %></td>
-                            <td>
-                                <select class="domain-list custom-select">
-                                    <option value="" disabled selected>Select a domain to promote</option>
-                                    <option value="<%= user.domain1 %>"><%= user.domain1 %></option>
-                                    <option value="<%= user.domain2 %>"><%= user.domain2 %></option>
-                                </select>
-                                <button class="promoteBtn btn btn-sm btn-colour" title="Promote to member" data-id="<%= user._id %>">Promote</button>
-                                <button class="deleteBtn btn btn-sm btn-colour" title="Delete user" data-id="<%= user._id %>"><i class="fa fa-trash"></i></button>
-                                <a class="btn btn-link" href="/admin/viewprofile/<%= user._id %>">View More</a>
-                                <div class="spinner-border" id="<%= user._id %>" style="color: #26A4E2;" role="status">
-                                    <span class="sr-only">Loading...</span>
+                    <tr>
+                        <td><%= user.name %></td>
+                        <td><%= user.domain1 %></td>
+                        <td><%= user.domain2 %></td>
+                        <td><%= user.year %></td>
+                        <td><%= user.dept %></td>
+                        <td>
+                            <select class="domain-list custom-select">
+                                <option value="" disabled selected>Select a domain to promote</option>
+                                <option value="<%= user.domain1 %>"><%= user.domain1 %></option>
+                                <option value="<%= user.domain2 %>"><%= user.domain2 %></option>
+                            </select>
+                            <button class="promoteBtn btn btn-sm btn-colour" title="Promote to member" data-id="<%= user._id %>">Promote</button>
+                            <button class="deleteBtn btn btn-sm btn-colour" title="Delete user" data-id="<%= user._id %>"><i class="fa fa-trash"></i></button>
+                            <a class="btn btn-link" href="/admin/viewprofile/<%= user._id %>">View Profile</a>
+
+                            <a class="btn btn-link more-actions-link" href="#more-actions<%= user._id %>" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="more-actions<%= user._id %>">More <i class="fa fa-angle-down"></i></a>
+
+                            <div class="collapse" id="more-actions<%= user._id %>">
+                                <p>
+                                    <a class="btn btn-link" data-toggle="collapse" href="#updateContact<%= user._id %>" role="button" aria-expanded="false" aria-controls="updateContact<%= user._id %>">Update Contact No.</a>
+                                    <a class="btn btn-link" data-toggle="collapse" href="#updateWhatsapp<%= user._id %>" role="button" aria-expanded="false" aria-controls="updateWhatsapp<%= user._id %>">Update Whatsapp No.</a>
+                                </p>
+    
+                                <div id="collapsible<%= user._id %>">
+                                    <div class="collapse" id="updateContact<%= user._id %>" data-parent="#collapsible<%= user._id %>">
+                                        <form class="contactForm">
+                                            <div class="form-group">
+                                                <input type="number" placeholder="Contact Number" class="form-control" value="<%= user.contactno %>">
+                                            </div>
+                                            <button class="btn btn-sm btn-colour">Update</button>
+                                        </form>
+                                        <p id="contactMsg<%= user._id %>"></p>
+                                    </div>
+                                    <div class="collapse" id="updateWhatsapp<%= user._id %>" data-parent="#collapsible<%= user._id %>">
+                                        <form class="whatsappForm">
+                                            <div class="form-group">
+                                                <input type="number" placeholder="Whatsapp Number" class="form-control" value="<%= user.whatsappno %>">
+                                            </div>
+                                            <button class="btn btn-sm btn-colour">Update</button>
+                                        </form>
+                                        <p id="whatsappMsg<%= user._id %>"></p>
+                                    </div>
                                 </div>
-                            </td>
-                        </tr>
-                     <% } %>
+                            </div>
+
+                            <div class="spinner-border" id="<%= user._id %>" style="color: #26A4E2;" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <% } %>
                 </table>
             </div>
 
@@ -173,6 +204,67 @@
             } else {
                 e.target.offsetParent.style.color = 'red'
                 e.target.offsetParent.innerHTML = data.msg
+            }
+        }
+
+        document.querySelectorAll('.contactForm').forEach(form => form.addEventListener('submit',updateContact))
+        document.querySelectorAll('.whatsappForm').forEach(form => form.addEventListener('submit',updateWhatsapp))
+
+        async function updateContact(e) {
+            e.preventDefault()
+            let id = e.target.parentNode.id.substring(13)
+            document.getElementById(id).style.display = 'block'
+
+            let number = e.target.querySelector('input').value
+            
+            let res = await fetch(`/admin/updateContact/${id}/${number}`,{
+                method:'PUT'
+            })
+
+            let data = await res.json()
+
+            if(res.status === 200) {
+                document.getElementById(id).style.display = 'none'
+                document.getElementById(`contactMsg${id}`).innerHTML = data.msg
+            } else {
+                document.getElementById(id).style.display = 'none'
+                document.getElementById(`contactMsg${id}`).style.color = red
+                document.getElementById(`contactMsg${id}`).innerHTML = data.msg
+            }
+        }
+        
+        async function updateWhatsapp(e) {
+            e.preventDefault()
+            let id = e.target.parentNode.id.substring(14)
+            document.getElementById(id).style.display = 'block'
+            
+            let number = e.target.querySelector('input').value
+
+            let res = await fetch(`/admin/updateWhatsapp/${id}/${number}`,{
+                method:'PUT'
+            })
+
+            let data = await res.json()
+
+            if(res.status === 200) {
+                document.getElementById(id).style.display = 'none'
+                document.getElementById(`whatsappMsg${id}`).innerHTML = data.msg
+            } else {
+                document.getElementById(id).style.display = 'none'
+                document.getElementById(`whatsappMsg${id}`).style.color = red
+                document.getElementById(`whatsappMsg${id}`).innerHTML = data.msg
+            }
+        }
+
+        document.querySelectorAll('.more-actions-link').forEach(link => link.addEventListener('click',toggleView))
+
+        function toggleView(e) {
+            let link = e.target
+            link.classList.toggle('active')
+            if(link.classList.contains('active')) {
+                link.innerHTML = `Less <i class="fa fa-angle-up"></i>`
+            } else {
+                link.innerHTML = `More <i class="fa fa-angle-down"></i>`
             }
         }
 
