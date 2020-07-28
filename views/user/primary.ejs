@@ -158,6 +158,12 @@
         #suggestion input::placeholder{
             color:#A9A9A9;
         }
+        .spin-1{
+          display: none;
+        }
+        .spin-2{
+          display: none;
+        }
     </style>
 </head>
 <body>
@@ -228,6 +234,9 @@
                                   <label for="yes">yes</label><br>
                                   <input  type="radio" id="no" name="attendance" value="no">
                                   <label for="no">no</label><br>
+                                  <div class="spinner-border text-info spin-1" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                  </div>
                                   <button class="submit-btn" type="submit">Submit</button>
                               </form>
                             </div>
@@ -248,6 +257,9 @@
                                     <input id="understanding" class="slider" type="range" min="1" max="5" value="5" name="understanding">
                                     <label class="slider-label" for="understanding">Understanding</label><br>
                                     <input id="suggestion" type="text" placeholder="Any Suggestions" name="suggestion"><br>
+                                    <div class="spinner-border text-info spin-2" role="status">
+                                      <span class="sr-only">Loading...</span>
+                                    </div>
                                     <button class="submit-btn" type="submit">Submit</button>
                                 </form>
                               </div>
