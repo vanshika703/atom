@@ -2,345 +2,420 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
-        integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+    integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
 
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    
-    <!-- progress bar -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <!-- bootstrap -->
-    <!-- <link rel="stylesheet" href="/css/memberproject.css"> -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <title>Project Details</title>
-    <style>
-        *:focus {
-            outline: 0 !important;
-        }
-        body{
-            background-color: #ffffff;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .sidenav{
-          height: 100vh;
-          width:200px;
-          position: fixed;
-          top: 0;
-          left: 0;
-          background-color: #72E4FE!important;
-          z-index: 999;
-        }
-        .nontdnav{
-          display: block;
-        }
-        .nontdnav a{
-          color:white!important;
-        }
-        .nontdnav a:hover{
-          color:#eee!important;
-        }
-        #logout-btn{
-            background-color: white;
-            border:none;
-            color:#72E4FE;
-            border-radius: 24px;
-            padding: 4px 12px;
-        }
-        #logout-btn:hover{
-          background-color: #eee;
-        }
-        .dash-container{
-          margin-left: 200px;
-        }
-        .column1 {
-  width: 25%;
-  padding: 0 10px;
-  padding-top: 2%;
-}
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-.row1 {margin: 0 -5px;}
+  <!-- progress bar -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <!-- bootstrap -->
+  <!-- <link rel="stylesheet" href="/css/memberproject.css"> -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+  </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+  </script>
+  <title>Project Details</title>
+  <style>
+    *:focus {
+      outline: 0 !important;
+    }
 
-.row1:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.card1{
-  box-shadow: 0 4px 8px 0 #ddf3f5;
-  transition: 0.3s;
-}
+    body {
+      background-color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+    }
 
-.card1:hover {
-  box-shadow: 16px 16px 16px 16px #ddf3f5;
-}
-.column {
-  padding-top: 5%;
-  /* float: left; */
-  width: 25%;
-  padding: 0 10px;
-}
+    .sidenav {
+      height: 100vh;
+      width: 200px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #72E4FE !important;
+      z-index: 999;
+    }
 
-/* Remove extra left and right margins, due to padding */
-.row {margin: 0 -5px;
-padding-top: 2%;}
+    .nontdnav {
+      display: block;
+    }
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.card {
-  box-shadow: 0 4px 8px 0 #ddf3f5;
-  transition: 0.3s;
-   padding: 16px;
-  text-align: center;
-  background-color: #f1f1f1; 
-}
-.card:hover {
-  box-shadow: 16px 16px 16px 16px #ddf3f5;
-}
-        @media (max-width: 600px)
-        {
-          .sidenav{
-            height: auto;
-            width: 100vw;
-          }
-          .dash-container{
-            margin: 10vh 0 0 0;
-          }
-          .timeline{
-            width: 100%;
-            margin: 0 auto;
-          }
-          .column {
-    width: 100%;
-    display: block;
-    margin-bottom: 20px;
-  }
-  .column1 {
-    width: 100%;
-    display: block;
-    margin-bottom: 20px;
-  }
-  }
-  .title
-  {
-    font-size: x-large;
-  color: #72E4FE;
-  }
-  .other-text
-  {
-    font-size: large;
-    color: gray;
-  }
-  .update
-  {
-  background-color: #72E4FE;
-  border: none;
-  color: white;
-  padding: 7px 15px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px 1x;
-  cursor: pointer;
-  font-size: small;
-  }
-    </style>
+    .nontdnav a {
+      color: white !important;
+    }
+
+    .nontdnav a:hover {
+      color: #eee !important;
+    }
+
+    #logout-btn {
+      background-color: white;
+      border: none;
+      color: #72E4FE;
+      border-radius: 24px;
+      padding: 4px 12px;
+    }
+
+    #logout-btn:hover {
+      background-color: #eee;
+    }
+
+    .dash-container {
+      margin-left: 200px;
+    }
+
+    .column1 {
+
+      padding-bottom: 2%;
+      padding-top: 5%;
+      /* float: left; */
+      width: 25%;
+      padding: 0 10px;
+    }
+
+    .row1 {
+      margin: 0 -5px;
+    }
+
+    .row1:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    .card1 {
+      box-shadow: 0 4px 8px 0 #ddf3f5;
+      transition: 0.3s;
+      padding: 16px;
+      text-align: center;
+      background-color: #f1f1f1;
+
+    }
+
+    .card1:hover {
+      box-shadow: 8px 8px 8px 8px #ddf3f5;
+    }
+
+    .column {
+      padding-bottom: 2%;
+      padding-top: 5%;
+      /* float: left; */
+      width: 50%;
+      padding: 0 10px;
+    }
+
+    /* Remove extra left and right margins, due to padding */
+    .row {
+      margin: 0 -5px;
+      padding-top: 2%;
+      padding-bottom: 2%;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    .card {
+      box-shadow: 0 4px 8px 0 #ddf3f5;
+      transition: 0.3s;
+      padding: 16px;
+      text-align: center;
+      background-color: #f1f1f1;
+    }
+
+    .card:hover {
+      box-shadow: 16px 16px 16px 16px #ddf3f5;
+    }
+
+    @media (max-width: 600px) {
+      .sidenav {
+        height: auto;
+        width: 100vw;
+      }
+
+      .dash-container {
+        margin: 10vh 0 0 0;
+      }
+
+      .timeline {
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .column {
+        width: 100%;
+        display: block;
+        margin-bottom: 20px;
+      }
+
+      .column1 {
+        width: 100%;
+        display: block;
+        margin-bottom: 20px;
+      }
+    }
+
+    .title {
+      font-size: x-large;
+      color: #72E4FE;
+    }
+
+    .other-text {
+      font-size: large;
+      color: gray;
+    }
+
+    .update {
+      background-color: #72E4FE;
+      border: none;
+      color: white;
+      padding: 7px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin: 2px 1x;
+      cursor: pointer;
+      font-size: small;
+    }
+
+    .phase {
+      color: black
+    }
+
+    .topright {
+      position: absolute;
+      padding-top: 2%;
+      top: 8px;
+      right: 16px;
+      font-size: 18px;
+      color: black;
+    }
+
+    .resources {}
+  </style>
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light sidenav">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav nontdnav">
-            <li class="nav-item">
-              <a class="nav-link dynamic-link" href="/user/memberprofile">Profile<span class="sr-only">(current)</span></a>
-            </li>
-           
-            <hr>
-            <li class="nav-item">
-              <a class="nav-link dynamic-link" href="/user/dashboard">Dashboard</a>
-            </li>
-            <hr>
-            <li class="nav-item">
-              <a class="nav-link" href="http://think-digital.in/">Our Website</a>
-            </li>
-            <hr>
-            <li class="nav-item">
-              <button class="nav-link" id="logout-btn" style="cursor: pointer;">Logout</button>
-            </li>
-          </ul>
-        </div>
-    </nav>
+  <nav class="navbar navbar-expand-lg navbar-light sidenav">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav nontdnav">
+        <li class="nav-item">
+          <a class="nav-link dynamic-link" href="/user/memberprofile">Profile<span class="sr-only">(current)</span></a>
+        </li>
 
- <div class="container dash-container" >
-       
-            <div class="row1">
-                <div class="column1">
-                    <div class="card1">
-                        <div class="content">
-                            <div class="card-header">
-                                <div class="title">
-                                    <p><%= task.title %></p>
-                                </div>
-                                <div class="other-text">
-                                    <p>From:<%= task.startDate %></p>
-                                </div>
-                                <div class="other-text">
-                                    <p> Deadline:<%= task.deadline %></p>
-                                </div>
-                                <div class="other-text">
-                                    <p> Description:<%= task.description %></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="progress" style="height:25px;">
-                    <div class="progress-bar" style="background-color: #72E4FE;width:<%= task.percentage %>%"><%= task.percentage %>%</div>
-                </div>
-
-                <div class="row">
-                    <div class="column ">
-                        <div class="card">
-                            
-                            <div class="title">   <h3 >Resources</h3></div>
-                           
-                                <div class="other-text">
-                                <% task.resources.forEach(resource => {%>
-                                <p><%= resource %></p>
-
-                                <%})%>
-                                </div>
-                        </div>
-                    </div>
-                    <div class="column ">
-                        <div class="card">
-                          
-                            <div class="title">     <h3>Phases</h3></div> 
-                                <div class="other-text">
-                                <% task.phases.forEach(phase => {%>
-                                <p><%= phase.title %> till <%= phase.deadline %></p>
-                                <%})%>
-                                </div>
-                        </div>
-                    </div>
-                    <div class="column ">
-                        <div class="card">
-
-                                <h3 class="title">Your Tasks</h3>
-                                <div class="other-text">
-
-                                <% task.subtasks.forEach(subtask => {%>
-                                    <% if(!subtask.complete) { %>
-                                        <div>  <h5><%= subtask.title %> </h5></div>
-                                        <% }else{ %>
-                                        <div style="text-decoration: line-through;">  <h5><%= subtask.title %> </h5></div>
-                                        <% } %>
-                                <p>From <%= subtask.startDate %></p>
-                                <p>To <%= subtask.endDate %></p>
-                                <% if(!subtask.complete) { %>
-                                <button  id='<%= subtask._id %>' class='update '>Done <i class="far fa-check-circle"></i></button>
-                                <% } %>
-                                <%})%>
-                                </div>
-                        </div>
-                    </div>
-
-                    <div class="column ">
-                        <div class="card">
-
-                            
-                            <div class="title">      <h3>Your Bugs</h3></div>
-                                <div class="other-text">
-                                <% task.bugs.forEach(bug => {%>
-                             
-                                <% if(!bug.complete) { %>
-                                    <div>  <h5><%= bug.title %> </h5></div>
-                                    <% }else{ %>
-                                    <div style="text-decoration: line-through;">  <h5><%= bug.title %> </h5></div>
-                                    <% } %>
-
-                                <p>From <%= bug.startDate %></p>
-                                <p>To <%= bug.endDate %></p>
-                                <% if(!bug.complete) { %>
-                                <button  id='<%= bug._id %>' class='update '>Done <i class="far fa-check-circle"></i></button>
-                                <% } %>
-                                <%})%>
-                                </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-       
+        <hr>
+        <li class="nav-item">
+          <a class="nav-link dynamic-link" href="/user/dashboard">Dashboard</a>
+        </li>
+        <hr>
+        <li class="nav-item">
+          <a class="nav-link" href="http://think-digital.in/">Our Website</a>
+        </li>
+        <hr>
+        <li class="nav-item">
+          <button class="nav-link" id="logout-btn" style="cursor: pointer;">Logout</button>
+        </li>
+      </ul>
     </div>
-</div>
-    <script>
-       
-       
-        let token = localStorage.getItem('token')
+  </nav>
 
-        //adding the token to all links
-        document.querySelectorAll('.dynamic-link').forEach(link => link.href += `/${token}`)
+  <div class="container dash-container">
 
-        //logout functionality
-        document.querySelector('#logout-btn').addEventListener('click', () => {
-            localStorage.removeItem('token')
-            window.location = '/user/login'
-        })
 
-        document.querySelectorAll('.subtask-update').forEach(btn => btn.addEventListener('click', updateSubtask))
-        async function updateSubtask(e) {
-            let res = await fetch(`/user/update/${e.target.id}`, {
-                method: 'PUT',
-                headers: {
-                    'x-auth-token': token
-                }
-            })
-            if (res.status === 200) {
-                let data = await res.json()
-                console.log(data.msg)
-            
-                e.target.style.display = 'none'
-                e.target.parentElement.childNodes[3].innerHTML = '**done'
-                location.reload()
-            }
+    <div class="title">
+      <p><%= task.title %></p>
+    </div>
+    <div class="other-text">
+      <p> Description: <%= task.description %></p>
+    </div>
+
+    <div class="other-text ">
+      <p> From:<%= task.startDate %></p>
+    </div>
+    <div class="other-text ">
+      <p> Deadline:<%= task.deadline %></p>
+    </div>
+
+
+    <!-- <div class="progress" style="height:25px;">
+                    <div class="progress-bar" style="background-color: #72E4FE;width:<%= task.percentage %>%"><%= task.percentage %>%</div>
+                </div> -->
+
+    <div class="row">
+
+      <div class="column ">
+        <div class="title">
+          <h3>Phases</h3>
+        </div>
+        <div class="other-text">
+          <% task.phases.forEach((phase,i) => {%>
+
+          <div class="phase"> <i class="fas fa-check"></i> Phase <%=i+1%></div>
+          <p> >> <%= phase.title %> till <%= phase.deadline %></p>
+
+          <%})%>
+        </div>
+
+      </div>
+      <div class="column resources ">
+
+
+        <div class="title">
+          <h3>Resources</h3>
+        </div>
+
+        <div class="other-text">
+          <% task.resources.forEach(resource => {%>
+          <p><%= resource %></p>
+
+          <%})%>
+        </div>
+
+      </div>
+    </div>
+    <div class="title">
+      <p>Progress-Bar</p>
+    </div>
+    <div class="progress" style="height:25px;">
+      <div class="progress-bar" style="background-color: #72E4FE;width:<%= task.percentage %>%"><%= task.percentage %>%
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+
+
+
+        <% task.subtasks.forEach(subtask => {%>
+
+        <div class="column1">
+          <div class="card1">
+            <div class="other-text">
+              <h3 class="title">Your Tasks</h3>
+              <% if(!subtask.complete) { %>
+              <div>
+                <h5><%= subtask.title %> </h5>
+              </div>
+              <% }else{ %>
+              <div style="text-decoration: line-through;">
+                <h5><%= subtask.title %> </h5>
+              </div>
+              <% } %>
+              <p>From <%= subtask.startDate %></p>
+              <p>To <%= subtask.endDate %></p>
+              <% if(!subtask.complete) { %>
+              <button id='<%= subtask._id %>' class='update '>Done <i class="far fa-check-circle"></i></button>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <%})%>
+
+
+
+
+
+
+        <% task.bugs.forEach(bug => {%>
+        <div class="column1">
+          <div class="card1">
+            <div class="other-text">
+              <div class="title">
+                <h3>Your Bugs</h3>
+              </div>
+              <% if(!bug.complete) { %>
+              <div>
+                <h5><%= bug.title %> </h5>
+              </div>
+              <% }else{ %>
+              <div style="text-decoration: line-through;">
+                <h5><%= bug.title %> </h5>
+              </div>
+              <% } %>
+              <p>From <%= bug.startDate %></p>
+              <p>To <%= bug.endDate %></p>
+              <% if(!bug.complete) { %>
+              <button id='<%= bug._id %>' class='update '>Done <i class="far fa-check-circle"></i></button>
+              <% } %>
+            </div>
+          </div>
+        </div>
+
+        <%})%>
+
+
+      </div>
+    </div>
+
+  </div>
+  </div>
+  <script>
+    let token = localStorage.getItem('token')
+
+    //adding the token to all links
+    document.querySelectorAll('.dynamic-link').forEach(link => link.href += `/${token}`)
+
+    //logout functionality
+    document.querySelector('#logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('token')
+      window.location = '/user/login'
+    })
+
+    document.querySelectorAll('.subtask-update').forEach(btn => btn.addEventListener('click', updateSubtask))
+    async function updateSubtask(e) {
+      let res = await fetch(`/user/update/${e.target.id}`, {
+        method: 'PUT',
+        headers: {
+          'x-auth-token': token
         }
+      })
+      if (res.status === 200) {
+        let data = await res.json()
+        console.log(data.msg)
 
-        document.querySelectorAll('.bug-update').forEach(btn => btn.addEventListener('click', updateBug))
-        async function updateBug(e) {
-            let res = await fetch(`/user/updateBug/${e.target.id}`, {
-                method: 'PUT',
-                headers: {
-                    'x-auth-token': token
-                }
-            })
-            if (res.status === 200) {
-                let data = await res.json()
-                console.log(data.msg)
-                
-                e.target.style.display = 'none'
-                e.target.parentElement.childNodes[3].innerHTML = '**done'
-                location.reload()
-            }
+        e.target.style.display = 'none'
+        e.target.parentElement.childNodes[3].innerHTML = '**done'
+        location.reload()
+      }
+    }
+
+    document.querySelectorAll('.bug-update').forEach(btn => btn.addEventListener('click', updateBug))
+    async function updateBug(e) {
+      let res = await fetch(`/user/updateBug/${e.target.id}`, {
+        method: 'PUT',
+        headers: {
+          'x-auth-token': token
         }
-    </script>
+      })
+      if (res.status === 200) {
+        let data = await res.json()
+        console.log(data.msg)
+
+        e.target.style.display = 'none'
+        e.target.parentElement.childNodes[3].innerHTML = '**done'
+        location.reload()
+      }
+    }
+  </script>
 </body>
 
 </html>
