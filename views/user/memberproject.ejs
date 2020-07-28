@@ -256,43 +256,33 @@
       <p> Deadline:<%= task.deadline %></p>
     </div>
 
-
-    <!-- <div class="progress" style="height:25px;">
-                    <div class="progress-bar" style="background-color: #72E4FE;width:<%= task.percentage %>%"><%= task.percentage %>%</div>
-                </div> -->
-
     <div class="row">
-
       <div class="column ">
         <div class="title">
           <h3>Phases</h3>
         </div>
         <div class="other-text">
           <% task.phases.forEach((phase,i) => {%>
-
           <div class="phase"> <i class="fas fa-check"></i> Phase <%=i+1%></div>
           <p> >> <%= phase.title %> till <%= phase.deadline %></p>
-
           <%})%>
         </div>
-
       </div>
+    </div>
+    <div class="row">
       <div class="column resources ">
-
-
         <div class="title">
           <h3>Resources</h3>
         </div>
-
         <div class="other-text">
           <% task.resources.forEach(resource => {%>
           <p><%= resource %></p>
-
           <%})%>
         </div>
-
       </div>
     </div>
+
+
     <div class="title">
       <p>Progress-Bar</p>
     </div>
@@ -301,62 +291,58 @@
       </div>
     </div>
     <div class="card-body">
+      <h3 class="title">Your Tasks</h3>
       <div class="row">
-
-
-
         <% task.subtasks.forEach(subtask => {%>
 
         <div class="column1">
           <div class="card1">
-            <div class="other-text">
-              <h3 class="title">Your Tasks</h3>
-              <% if(!subtask.complete) { %>
-              <div>
-                <h5><%= subtask.title %> </h5>
-              </div>
-              <% }else{ %>
-              <div style="text-decoration: line-through;">
-                <h5><%= subtask.title %> </h5>
-              </div>
-              <% } %>
-              <p>From <%= subtask.startDate %></p>
-              <p>To <%= subtask.endDate %></p>
-              <% if(!subtask.complete) { %>
-              <button id='<%= subtask._id %>' class='update '>Done <i class="far fa-check-circle"></i></button>
-              <% } %>
+
+            <% if(!subtask.complete) { %>
+            <div>
+              <h5><%= subtask.title %> </h5>
             </div>
+            <% }else{ %>
+            <div style="text-decoration: line-through;">
+              <h5><%= subtask.title %> </h5>
+            </div>
+            <% } %>
+            <p>From <%= subtask.startDate %></p>
+            <p>To <%= subtask.endDate %></p>
+            <% if(!subtask.complete) { %>
+            <button id='<%= subtask._id %>' class='update '>Done <i class="far fa-check-circle"></i></button>
+            <% } %>
+
           </div>
         </div>
         <%})%>
+      </div>
 
+      <div class="title">
+        <h3>Your Bugs</h3>
 
-
-
-
-
+      </div>
+      <div class="row">
         <% task.bugs.forEach(bug => {%>
         <div class="column1">
           <div class="card1">
-            <div class="other-text">
-              <div class="title">
-                <h3>Your Bugs</h3>
-              </div>
-              <% if(!bug.complete) { %>
-              <div>
-                <h5><%= bug.title %> </h5>
-              </div>
-              <% }else{ %>
-              <div style="text-decoration: line-through;">
-                <h5><%= bug.title %> </h5>
-              </div>
-              <% } %>
-              <p>From <%= bug.startDate %></p>
-              <p>To <%= bug.endDate %></p>
-              <% if(!bug.complete) { %>
-              <button id='<%= bug._id %>' class='update '>Done <i class="far fa-check-circle"></i></button>
-              <% } %>
+
+
+            <% if(!bug.complete) { %>
+            <div>
+              <h5><%= bug.title %> </h5>
             </div>
+            <% }else{ %>
+            <div style="text-decoration: line-through;">
+              <h5><%= bug.title %> </h5>
+            </div>
+            <% } %>
+            <p>From <%= bug.startDate %></p>
+            <p>To <%= bug.endDate %></p>
+            <% if(!bug.complete) { %>
+            <button id='<%= bug._id %>' class='update '>Done <i class="far fa-check-circle"></i></button>
+            <% } %>
+
           </div>
         </div>
 
