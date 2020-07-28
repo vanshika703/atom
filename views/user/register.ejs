@@ -93,6 +93,9 @@
             border-radius: 24px;
             padding: 4px 12px;
         }
+        .spinner-border{
+            display: none;
+        }
     </style>
 
 </head>
@@ -116,12 +119,19 @@
 
                     <div class="g-recaptcha" data-sitekey="6Lfie_kUAAAAACG2c9bShoCfR7ov1Setigc9Q6BH"></div>
                     <p id="captcha-msg"></p>
+
+                    
+                    <div id="spinner" class="spinner-border" role="status" style="color: #72E4FE;">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
                     <input class="reg-btn" type="submit">
                 </form>
                 <h6>Or Sign In with Google</h6>
                 <div class="g-signin2" data-onsuccess="onSignIn" data-onfailure="onSignInFailure"></div>
                 <p id="msg" style="color:red"></p>
                 <!-- <a href="#" id="sign-out" onclick="signOut();">Sign out</a> -->
+
 
                 <p>Already regsitered in? Login <a href="/user/login">Here</a></p>
 
@@ -143,9 +153,11 @@
 
     <script>
         document.getElementById('reg-form').addEventListener('submit', submitForm)
-
+        spinner = document.getElementById('spinner')
         async function submitForm(e){
             e.preventDefault()
+
+            spinner.style.display = 'block'
 
             const email = document.querySelector('#email').value
             const password = document.querySelector('#password').value
@@ -161,11 +173,15 @@
             })
 
             let data = await response.json()
+            
             if(response.status === 200){
+                
                 document.querySelector('#captcha-msg').style.color = 'blue'
             } else {
+                
                 document.querySelector('#captcha-msg').style.color = 'red'
             }
+            spinner.style.display = 'none'
             document.querySelector('#captcha-msg').innerHTML = data.msg
         }
 

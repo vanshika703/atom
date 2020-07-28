@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     
     <title>Document</title>
@@ -49,6 +49,7 @@
         }
         .dash-container h2{
           color: #218EC4;
+          padding: 2%;
         }
         .step{
             height: 50px;
@@ -194,18 +195,18 @@
         <div class="timeline">
         <% for(let i=0; i<result.length; i++) { %>
 
-                <!-- <% let endDate = new Date(result[i].endDate) %>
+                <% let endDate = new Date(result[i].endDate) %>
                 <% let startDate = new Date(result[i].startDate) %>
-                <% if(today < startDate) { %> -->
+                <% if(today < startDate) { %>
                 <div class="step red float-left">
                   <%= c++ %>
                   <div class="line grey-line"></div>
                 </div> 
-                <!-- <% } else if (today >= startDate && today <= endDate){ %> -->
+                <% } else if (today >= startDate && today <= endDate){ %>
                 <div class="step yellow float-left"><%= c++ %> <div class="line grey-line"></div></div> 
-                <!-- <% } else { %>  -->
+                <% } else { %>
                 <div class="step green float-left"><%= c++ %> <div class="line green-line"></div></div> 
-                <!-- <% } %> -->
+                <% } %>
                 <div class="card event-card" style="width: 18rem;">
                     <div class="card-body">
                       <h5 class="card-title<%= c %>"><%= result[i].title %></h5>

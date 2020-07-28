@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-signin-client_id" content="523384873779-e29ttamvfnbfkhb650ppufoas5qmr328.apps.googleusercontent.com">
-    
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>Login</title>
     <style>
         *:focus {
@@ -91,6 +90,10 @@
             border-radius: 24px;
             padding: 4px 12px;
             border: none;
+            cursor: pointer;
+        }
+        .spinner-border{
+            display: none;
         }
     </style>
 </head>
@@ -109,8 +112,12 @@
                 <form id="login-form">
                     <input type="email" placeholder="email" id="email">
                     <input type="password" placeholder="password" id="password">
+                    <div id="spinner" class="spinner-border" role="status" style="color: #72E4FE;">
+                        <span class="sr-only">Loading...</span>
+                    </div>
                     <input class="login-btn" type="submit" value="Login">
                 </form>
+
                 
                 <form action="/user/userRegister" method="POST" style="display: none;">
                     <input type="text" id="register-token" name="token">
@@ -140,9 +147,13 @@
 
     <script>
         document.getElementById('login-form').addEventListener('submit', submitForm)
+        spinner = document.getElementById('spinner')
 
         async function submitForm(e){
             e.preventDefault()
+
+            spinner.style.display = 'block'
+            
             document.querySelector('#msg').innerHTML = ''
 
             const email = document.querySelector('#email').value
@@ -172,6 +183,7 @@
             } else {
                 document.querySelector('#msg').innerHTML = data.msg
             }
+            spinner.style.display = 'none'
         }
     </script>
 </body>
