@@ -74,7 +74,7 @@
         .event-card p{
           color:#A9A9A9;
         }
-        #view-btn{
+        .view-btn{
           font-size: 14px;
           color:#26A4E2;
           background-color: transparent;
@@ -158,10 +158,8 @@
         #suggestion input::placeholder{
             color:#A9A9A9;
         }
-        .spin-1{
-          display: none;
-        }
-        .spin-2{
+        .spinner-border{
+          margin-left: 50px;
           display: none;
         }
     </style>
@@ -218,7 +216,7 @@
                       <h5 class="card-title<%= c %>"><%= result[i].title %></h5>
                       <p class="card-subtitle mb-2">Date:  <%= result[i].date %></p>
                     <p>
-                        <button id="view-btn" data-toggle="collapse" onclick="btnToggle()" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View Details</button>
+                        <button class="view-btn" data-toggle="collapse" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View Details</button>
                         <button id="feedback-btn" type="button" data-toggle="collapse" data-target="#multiCollapseExample2<%= c %>" aria-expanded="false" aria-controls="multiCollapseExample2">Leave Feedback</button>
                     </p>
                     <div class="row">
@@ -234,9 +232,6 @@
                                   <label for="yes">yes</label><br>
                                   <input  type="radio" id="no" name="attendance" value="no">
                                   <label for="no">no</label><br>
-                                  <div class="spinner-border text-info spin-1" role="status">
-                                    <span class="sr-only">Loading...</span>
-                                  </div>
                                   <button class="submit-btn" type="submit">Submit</button>
                               </form>
                             </div>
@@ -257,9 +252,6 @@
                                     <input id="understanding" class="slider" type="range" min="1" max="5" value="5" name="understanding">
                                     <label class="slider-label" for="understanding">Understanding</label><br>
                                     <input id="suggestion" type="text" placeholder="Any Suggestions" name="suggestion"><br>
-                                    <div class="spinner-border text-info spin-2" role="status">
-                                      <span class="sr-only">Loading...</span>
-                                    </div>
                                     <button class="submit-btn" type="submit">Submit</button>
                                 </form>
                               </div>
@@ -267,17 +259,22 @@
                         </div>
                     </div>
                     </div>
+                    <div class="spinner-border text-info" id="spinner<%=result[i]._id%>" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                    <p id="msg<%=result[i]._id%>"></p>
                 </div>
         <% } %>
       </div>
     </div>
     <script>
 
+      document.querySelectorAll('.view-btn').forEach(btn => btn.addEventListener('click',btnToggle))
+      var i = 0
       //changing view more to view less
-      var i=0
-      function btnToggle(){
+      function btnToggle(e){
         i++
-        viewBtn = document.getElementById('view-btn')
+        viewBtn = e.target
         if(i % 2 ==0)
           viewBtn.innerHTML = "View Details"
         else
@@ -305,6 +302,8 @@
         e.preventDefault()
 
         let id = e.target.parentNode.id
+        let spinner = document.getElementById(`spinner${id}`)
+        spinner.style.display = 'block'
 
         let value = e.target.childNodes
         let attendance
@@ -330,10 +329,16 @@
         })
 
         let data = await response.json()
+        spinner.style.display = 'none'
         if(response.status===200)
         {
-          console.log(data.msg)
+          document.getElementById(`msg${id}`).innerHTML = data.msg
+        } else if(response.status===409) {
+          document.getElementById(`msg${id}`).innerHTML = data.msg
+        } else {
+          document.getElementById(`msg${id}`).innerHTML = 'Server error! Please try again!'
         }
+        setTimeout(() => document.getElementById(`msg${id}`).innerHTML = '',2500)
       }
 
       let feedbacks = document.querySelectorAll('.feedback')
@@ -346,6 +351,9 @@
         e.preventDefault()
 
         let id = e.target.parentNode.id
+        let spinner = document.getElementById(`spinner${id}`)
+        spinner.style.display = 'block'
+
         let env = e.target.childNodes[1].value
         let speaker = e.target.childNodes[6].value
         let understanding = e.target.childNodes[11].value
@@ -371,10 +379,13 @@
         })
 
         let data = await response.json()
-        if(response.status===200)
-        {
-          console.log(data)
+        spinner.style.display = 'none'
+        if(response.status===200){
+          document.getElementById(`msg${id}`).innerHTML = data.msg
+        } else {
+          document.getElementById(`msg${id}`).innerHTML = 'Server error. Please try again!'
         }
+        setTimeout(() => document.getElementById(`msg${id}`).innerHTML = '',2500)
       }
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
