@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">    
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     
     <title>Document</title>
     <style>
-        *{
-          outline: none;
+        *:focus {
+            outline: 0 !important;
         }
         body{
             background-color: #ffffff;
@@ -46,6 +47,7 @@
         }
         .dash-container{
           margin-left: 200px;
+          padding: 2%;
         }
         .dash-container h2{
           color: #218EC4;
@@ -211,7 +213,7 @@
                       <h5 class="card-title<%= c %>"><%= result[i].title %></h5>
                       <p class="card-subtitle mb-2">Date:  <%= result[i].date %></p>
                     <p>
-                        <a data-toggle="collapse" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View More</a>
+                        <a id="view-btn" data-toggle="collapse" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" onclick="btnToggle()" aria-controls="multiCollapseExample1">View Details</a>
                         <button id="feedback-btn" type="button" data-toggle="collapse" data-target="#multiCollapseExample2<%= c %>" aria-expanded="false" aria-controls="multiCollapseExample2">Leave Feedback</button>
                     </p>
                     <div class="row">
@@ -259,6 +261,19 @@
       </div>
     </div>
     <script>
+
+
+      //changing view more to view less
+      var i=0
+      function btnToggle(){
+        i++
+        viewBtn = document.getElementById('view-btn')
+        if(i % 2 ==0)
+          viewBtn.innerHTML = "View Details"
+        else
+          viewBtn.innerHTML = "Hide Details"
+      }
+
       //adding the token to all links
       let token = localStorage.getItem('token')
       document.querySelectorAll('.dynamic-link').forEach(link => link.href+=`/${token}`)

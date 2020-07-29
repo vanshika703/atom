@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     
     <title>Document</title>
     <style>
-      *{
-        outline: none;
-      }
+      *:focus {
+            outline: 0 !important;
+        }
       body{
           background-color: #ffffff;
           font-family: 'Montserrat', sans-serif;
@@ -47,12 +48,12 @@
       .profile-container h2{
         color: #218EC4;
       }
-      .profile-container{
-        margin-left: 250px;
-      }
       .profile-container p{
-        color: #72E4FE;
-        font-weight: 400;
+        color: #72E4FE!important;
+      }
+      .profile-container{
+        padding: 2%;
+        margin-left: 250px;
       }
       .profile-container span{
         color: #A9A9A9;
@@ -60,6 +61,9 @@
       }
       .profile-row{
         height: 100vh;
+      }
+      p{
+        margin: 0;
       }
       @media (max-width: 600px)
         {
@@ -105,21 +109,27 @@
     </nav>
     
     <div class="container profile-container">
+      <div class="row">
+        <div class="col-lg-6 col-xs-12">
           <h2>Profile</h2>
           <% if (user.registered == 0) { %>
             <p>Please complete registeration to view profile</p>
           <% } else { %>
-            <p style="margin-top: 5%;">Name : <span><%= user.name %></span></p>
-            <p>Register Number : <span><%= user.regno %></span></p>
-            <p>Department : <span><%= user.dept %></span></p>
+            <ul class="list-group" >
             
-            <p>Batch : <span><%= user.batch %></span></p>
-            <p>Contact Number : <span><%= user.contactno %></span></p>
-            <p>Whatsapp Number : <span><%= user.whatsappno %></span></p>
-            <p>Primary Domain : <span><%= user.domain1 %></span></p>
-            <p>Secondary Domain : <span><%= user.domain2 %></span></p> 
-            <p>Year : <span><%= user.year %></span></p>  
+              <li class="list-group-item list-group-item-light"><p >Name : <span><%= user.name %></span></p></li>
+              <li class="list-group-item list-group-item-light"><p>Register Number : <span><%= user.regno %></span></p></li>
+              <li class="list-group-item list-group-item-light"><p>Department : <span><%= user.dept %></span></p></li>
+              <li class="list-group-item list-group-item-light"><p>Batch : <span><%= user.batch %></span></p></li>
+              <li class="list-group-item list-group-item-light"><p>Contact Number : <span><%= user.contactno %></span></p></li>
+              <li class="list-group-item list-group-item-light"><p>Whatsapp Number : <span><%= user.whatsappno %></span></p></li>
+              <li class="list-group-item list-group-item-light"><p>Primary Domain : <span><%= user.domain1 %></span></p></li>
+              <li class="list-group-item list-group-item-light"><p>Secondary Domain : <span><%= user.domain2 %></span></p></li>
+              <li class="list-group-item list-group-item-light"><p>Year : <span><%= user.year %></span></p></span></p></li>
+            </ul>  
           <% } %>
+        </div>
+      </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

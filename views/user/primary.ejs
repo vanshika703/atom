@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     
     <title>Document</title>
     <style>
-        *{
-          outline: none;
+        *:focus {
+            outline: 0 !important;
         }
         body{
             background-color: #ffffff;
@@ -49,6 +49,7 @@
         }
         .dash-container h2{
           color: #218EC4;
+          padding: 2%;
         }
         .step{
             height: 50px;
@@ -73,9 +74,12 @@
         .event-card p{
           color:#A9A9A9;
         }
-        .event-card a{
+        .view-btn{
           font-size: 14px;
           color:#26A4E2;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
         }
 
         #feedback-btn,
@@ -154,6 +158,10 @@
         #suggestion input::placeholder{
             color:#A9A9A9;
         }
+        .spinner-border{
+          margin-left: 50px;
+          display: none;
+        }
     </style>
 </head>
 <body>
@@ -191,24 +199,24 @@
         <div class="timeline">
         <% for(let i=0; i<result.length; i++) { %>
 
-                <!-- <% let endDate = new Date(result[i].endDate) %>
+                <% let endDate = new Date(result[i].endDate) %>
                 <% let startDate = new Date(result[i].startDate) %>
-                <% if(today < startDate) { %> -->
+                <% if(today < startDate) { %>
                 <div class="step red float-left">
                   <%= c++ %>
                   <div class="line grey-line"></div>
                 </div> 
-                <!-- <% } else if (today >= startDate && today <= endDate){ %> -->
+                <% } else if (today >= startDate && today <= endDate){ %>
                 <div class="step yellow float-left"><%= c++ %> <div class="line grey-line"></div></div> 
-                <!-- <% } else { %>  -->
+                <% } else { %>
                 <div class="step green float-left"><%= c++ %> <div class="line green-line"></div></div> 
-                <!-- <% } %> -->
+                <% } %>
                 <div class="card event-card" style="width: 18rem;">
                     <div class="card-body">
                       <h5 class="card-title<%= c %>"><%= result[i].title %></h5>
                       <p class="card-subtitle mb-2">Date:  <%= result[i].date %></p>
                     <p>
-                        <a data-toggle="collapse" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View More</a>
+                        <button class="view-btn" data-toggle="collapse" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View Details</button>
                         <button id="feedback-btn" type="button" data-toggle="collapse" data-target="#multiCollapseExample2<%= c %>" aria-expanded="false" aria-controls="multiCollapseExample2">Leave Feedback</button>
                     </p>
                     <div class="row">
@@ -251,11 +259,29 @@
                         </div>
                     </div>
                     </div>
+                    <div class="spinner-border text-info" id="spinner<%=result[i]._id%>" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                    <p id="msg<%=result[i]._id%>"></p>
                 </div>
         <% } %>
       </div>
     </div>
     <script>
+
+      document.querySelectorAll('.view-btn').forEach(btn => btn.addEventListener('click',btnToggle))
+      var i = 0
+      //changing view more to view less
+      function btnToggle(e){
+        i++
+        viewBtn = e.target
+        if(i % 2 ==0)
+          viewBtn.innerHTML = "View Details"
+        else
+          viewBtn.innerHTML = "Hide Details"
+      }
+
+
       //adding the token to all links
       let token = localStorage.getItem('token')
       document.querySelectorAll('.dynamic-link').forEach(link => link.href+=`/${token}`)
@@ -276,6 +302,8 @@
         e.preventDefault()
 
         let id = e.target.parentNode.id
+        let spinner = document.getElementById(`spinner${id}`)
+        spinner.style.display = 'block'
 
         let value = e.target.childNodes
         let attendance
@@ -301,10 +329,16 @@
         })
 
         let data = await response.json()
+        spinner.style.display = 'none'
         if(response.status===200)
         {
-          console.log(data.msg)
+          document.getElementById(`msg${id}`).innerHTML = data.msg
+        } else if(response.status===409) {
+          document.getElementById(`msg${id}`).innerHTML = data.msg
+        } else {
+          document.getElementById(`msg${id}`).innerHTML = 'Server error! Please try again!'
         }
+        setTimeout(() => document.getElementById(`msg${id}`).innerHTML = '',2500)
       }
 
       let feedbacks = document.querySelectorAll('.feedback')
@@ -317,6 +351,9 @@
         e.preventDefault()
 
         let id = e.target.parentNode.id
+        let spinner = document.getElementById(`spinner${id}`)
+        spinner.style.display = 'block'
+
         let env = e.target.childNodes[1].value
         let speaker = e.target.childNodes[6].value
         let understanding = e.target.childNodes[11].value
@@ -342,10 +379,13 @@
         })
 
         let data = await response.json()
-        if(response.status===200)
-        {
-          console.log(data)
+        spinner.style.display = 'none'
+        if(response.status===200){
+          document.getElementById(`msg${id}`).innerHTML = data.msg
+        } else {
+          document.getElementById(`msg${id}`).innerHTML = 'Server error. Please try again!'
         }
+        setTimeout(() => document.getElementById(`msg${id}`).innerHTML = '',2500)
       }
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

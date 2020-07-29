@@ -1,6 +1,8 @@
 const Router = require('express').Router()
 const jwt = require('jsonwebtoken')
 
+const path = require('path')
+
 const mongodb = require('mongodb')
 const ObjectId = mongodb.ObjectId
 
@@ -21,6 +23,8 @@ Router.get('/', (req,res)=>{
 })
 
 Router.post('/register', async(req,res)=>{
+
+    console.log(__dirname)
 
     const { email,password,captcha } = req.body
 
@@ -85,7 +89,12 @@ Router.post('/register', async(req,res)=>{
                 from: process.env.EMAIL,
                 to: email,
                 subject: 'Think Digital Registeration Email',
-                html: "<h2>Welcome to Think Digital</h2><br><p>Click<a href="+link+">here</a>to verify your email</p>"
+                html: `<body style="background-color:#218EC4;"> <!-- container table --> <table width=40% align="center" cellspacing=0 cellpadding=0 border=0 style="background-color: white; text-align: center;"> <!-- header --> <tr> <td> <table width=100%> <tr> <td><h1 style="font-family: serif; font-weight: 700; font-size: 32px;color: #72E4FE;;border-bottom: 1px solid #c5c9d0; padding-bottom:2%; margin-left:5%;margin-right:5%">Welcome to Think Digital</h1></td> </tr> </table> <!-- text --> <table width="100%" cellspacing=0 cellpadding=0 border=0 style="font-family: 'Open Sans', sans-serif;color: #22364e; text-align: center;" > <tr> <td> <img src="cid:unique@vanshika703" style="height:200px; width:250px;"> </td> </tr> <tr> <td> <h3 style="font-weight: 600;font-size: 22px; margin-left: 5%; ">Hi,</h3> </td> </tr> <tr> <td> <p style="font-size: 16px;letter-spacing: -0.14px; margin-left: 5%; ">Thank you for showing interest in Think Digital!</p> <p style="font-size: 16px;letter-spacing: -0.14px; margin-left: 5%; ">Click the button below to verify you email.</p><br> </td> </tr> <tr> <td> <a href="${link}" style="color: #eeeeee ;text-decoration: none;"> <button style="font-size: 16px;letter-spacing: -0.14px; margin:0 0 5% 5%;background-color: #72E4FE;color: #ffffff;border-radius: 24px;padding: 8px 16px;border: none;">Verify email</button><br> </a> </td> </tr> </table> <!-- footer --> <table width="100%" cellspacing=0 cellpadding=0 border=0 style="background-color: #eeeeee!important; z-index: 1;  padding-top: 2%; color: #22364e;"> <tr style="text-align: center;"> <td> <ul class="footer-icon-bar" style="margin-left:-10%;"> <li class="icons" style="display: inline; padding: 2%;"><a href="https://www.facebook.com/teamTD/" target="_blank" style="color: #72E4FE;"><i class="fa fa-facebook"></i></a> </li> <li class="icons" style="display: inline;padding: 2%;"><a href="https://www.youtube.com/channel/UC38Rh8mw5OgKQQywPRfCwsg" target="_blank" style="color:#72E4FE"><i class="fa fa-youtube-play"></i></a> </li> <li class="icons" style="display: inline;padding: 2%;"><a href="https://www.linkedin.com/school/think_digital/" target="_blank" style="color: #72E4FE"><i class="fa fa-linkedin"></i></a></li> <li class="icons" style="display: inline;padding: 2%;"><a href="https://www.instagram.com/thinkdigital.td_srm/" target="_blank" style="color: #72E4FE"><i class="fa fa-instagram"></i></a></li> </ul> <p class="address" style="font-size: 12px;">SRM Institute of Science &amp; Technology,<br> Kattankulathur,<br>Tamil Nadu - 603-203</p> <p style="font-size: 12px;" ><a href="tel:+918617362801" style="color: #22364e; text-decoration: none;">8617362801</a><br> <a href="tel:+918428367716" style="color: #22364e; text-decoration: none;">8428367716</a><br> <a class="td-email" href="mailto:thinkdigital.td@gmail.com" style="color: #22364e; text-decoration: none;">thinkdigital.td@gmail.com</a> </p> </div> </td> </tr> </table> </td> </tr> </table> </body> </html> `,
+                attachments: [{
+                    filename: 'reg-email.png',
+                    path:  'views/img/reg-email.png',
+                    cid:'unique@vanshika703'
+                }]
             };
             
             transporter.sendMail(mailOptions, function(error, info){
@@ -237,7 +246,12 @@ Router.post('/forgotpassword', async(req,res) => {
             from: process.env.EMAIL,
             to: req.body.email,
             subject: 'Change password link for TD Atom',
-            html: "<p>password reset link is...<a href="+link+">Click here to reset....</a></p>"
+            html: `<body style="background-color:#218EC4;text-align: center;"><table width=40% align="center" cellspacing=0 cellpadding=0 border=0 style="background-color: white; text-align: center;"> <!-- header --> <tr> <td> <table width=100%> <tr> <td><h1 style="font-family: serif; font-weight: 700; font-size: 32px;color: #72E4FE;;border-bottom: 1px solid #c5c9d0; padding-bottom:2%; margin-left:5%;margin-right:5%">Welcome to Think Digital</h1></td> </tr> </table> <!-- text --> <table width="100%" cellspacing=0 cellpadding=0 border=0 style="font-family: 'Open Sans', sans-serif;color: #22364e; text-align: center;" > <tr> <td> <img src="cid:unique@vanshika7030" style="height:200px; width:250px;"> </td> </tr> <tr> <td> <h3 style="font-weight: 600;font-size: 22px; margin-left: 5%; ">Hi,</h3> </td> </tr> <tr> <td> <p style="font-size: 16px;letter-spacing: -0.14px; margin-left: 5%; ">Click the button below to change your password.</p><br> </td> </tr> <tr> <td> <a href="${link}" style="color: #eeeeee ;text-decoration: none;"> <button style="font-size: 16px;letter-spacing: -0.14px; margin:0 0 5% 5%;background-color: #72E4FE;color: #ffffff;border-radius: 24px;padding: 8px 16px;border: none;">Change Password</button><br> </a> </td> </tr> </table> <!-- footer --> <table width="100%" cellspacing=0 cellpadding=0 border=0 style="background-color: #eeeeee!important; z-index: 1; padding-top: 2%; color: #22364e;"> <tr style="text-align: center;"> <td> <ul class="footer-icon-bar" style="margin-left:-10%;"> <li class="icons" style="display: inline; padding: 2%;"><a href="https://www.facebook.com/teamTD/" target="_blank" style="color: #72E4FE;"><i class="fa fa-facebook"></i></a> </li> <li class="icons" style="display: inline;padding: 2%;"><a href="https://www.youtube.com/channel/UC38Rh8mw5OgKQQywPRfCwsg" target="_blank" style="color:#72E4FE"><i class="fa fa-youtube-play"></i></a> </li> <li class="icons" style="display: inline;padding: 2%;"><a href="https://www.linkedin.com/school/think_digital/" target="_blank" style="color: #72E4FE"><i class="fa fa-linkedin"></i></a></li> <li class="icons" style="display: inline;padding: 2%;"><a href="https://www.instagram.com/thinkdigital.td_srm/" target="_blank" style="color: #72E4FE"><i class="fa fa-instagram"></i></a></li> </ul> <p class="address" style="font-size: 12px;">SRM Institute of Science &amp; Technology,<br> Kattankulathur,<br>Tamil Nadu - 603-203</p> <p style="font-size: 12px;" ><a href="tel:+918617362801" style="color: #22364e; text-decoration: none;">8617362801</a><br> <a href="tel:+918428367716" style="color: #22364e; text-decoration: none;">8428367716</a><br> <a class="td-email" href="mailto:thinkdigital.td@gmail.com" style="color: #22364e; text-decoration: none;">thinkdigital.td@gmail.com</a> </p> </div> </td> </tr> </table> </td> </tr> </table> </body></html>`,
+            attachments: [{
+                filename: 'fp-email.png',
+                path:  'views/img/fp-email.png',
+                cid:'unique@vanshika7030'
+            }]
         };
           
         transporter.sendMail(mailOptions, function(error, info){
@@ -421,8 +435,7 @@ Router.post('/attendance', authHeader, async(req,res) => {
                 if(email === result.attendance[i].email)
                 {
                     console.log("given atn")
-                    return res.json({msg:"already marked attendance"})
-                    break
+                    return res.status(409).json({msg:"You have already marked attendance"})
                 }
             }
         }
@@ -465,7 +478,7 @@ Router.post('/feedback', authHeader, async(req,res) => {
 
     } catch (error) {
         console.error(error)
-        res.json({msg:'Server error'})
+        res.status(500).json({msg:'Server error'})
     }
 
 
