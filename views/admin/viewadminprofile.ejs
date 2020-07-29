@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
-    <title>Attendance</title>
+    <title>Admin Profile</title>
 </head>
 <body>
-
     <div class="wrapper">
         <!-- Sidebar -->
         <nav id="sidebar">
@@ -35,7 +35,7 @@
                 <li>
                     <a href="/admin/viewMembers">View Members</a>
                 </li>
-                <% if (user.type) { %>
+                <% if (admin.type) { %>
                  <li>
                      <a href="/admin/viewAdmins">View Admins</a>
                  </li>
@@ -59,7 +59,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="#">Welcome <%= user.name %></a>
+                                <a class="nav-link" href="#">Welcome <%= admin.name %></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin/logout"><i class="fa fa-sign-out"></i>Logout</a>
@@ -69,55 +69,29 @@
                 </div>
             </nav>
             
-            <h3 class="mt-5"><span class="text-color">Event</span> :<%= event.title %> </h3>
-            <h5><span class="text-color">Date</span> : <%= event.date %> </h5>
-        
-            <h4 class="mt-5">Attending</h4>
-            <div class="table-responsive-lg">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                    </tr>
-                    <% event.attendance.forEach(entry => { %>
-                        <% if (entry.willAttend) { %>
-                            <tr>
-                                <td>Name: <%= entry.name %> </td>
-                                <td>Email: <%= entry.email %> </td>
-                            </tr>
-                        <% } %>
-                    <% }) %>
-                </table>
+            <h3 class="mt-5">Admin Details</h3>
+            <div class="line mt-3"></div>
+            <div class="mt-5">
+                <p><span class="text-color">Name</span> : <%= user.name %></p>
+                <p><span class="text-color">Year</span> : <%= user.year %></p> 
+                <p><span class="text-color">Email</span> : <%= user.email %></p>
+                <p><span class="text-color">Register Number</span> : <%= user.regno %></p>
+                <p><span class="text-color">Department</span> : <%= user.dept %></p>
+                <p><span class="text-color">Batch</span> : <%= user.batch %></p>
+                <p><span class="text-color">Contact Number</span> : <%= user.contactno %></p>
+                <p><span class="text-color">Whatsapp Number</span> : <%= user.whatsappno %></p>
             </div>
-        
-            <h4 class="mt-5">Not Attending</h4>
-            <div class="table-responsive-lg">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                    </tr>
-                    <% event.attendance.forEach(entry => { %>
-                        <% if (!entry.willAttend) { %>
-                            <tr>
-                                <td>Name: <%= entry.name %> </td>
-                                <td>Email: <%= entry.email %> </td>
-                            </tr>
-                        <% } %>
-                    <% }) %>
-                </table>
-            </div>
-
+            
+            
         </div>
     </div>
-
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    
     <script>
-
         $(document).ready(function () {
 
             $("#sidebar").mCustomScrollbar({
@@ -131,4 +105,7 @@
 
         });
     </script>
+
+    
 </body>
+</html>

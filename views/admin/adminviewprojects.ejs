@@ -34,6 +34,11 @@
                 <li>
                     <a href="/admin/viewMembers">View Members</a>
                 </li>
+                <% if (user.type) { %>
+                 <li>
+                     <a href="/admin/viewAdmins">View Admins</a>
+                 </li>
+                <% } %>
 
             </ul>
     
@@ -82,9 +87,12 @@
                             <td><%= project.deadline %></td>
                             <td style="width: 40px;"><%= project.description %></td>
                             <td>
-                                <button class="deleteTask btn btn-sm btn-colour" data-id="<%= project._id %>">Delete</button>
-                                <button class="editTask btn btn-sm btn-colour" data-id="<%= project._id %>">Edit</button>
+                                <button class="deleteTask btn btn-colour" data-id="<%= project._id %>" title="Delete Project"><i class="fa fa-trash"></i></button>
+                                <button class="editTask btn btn-colour" data-id="<%= project._id %>" title="Edit Project"><i class="fa fa-edit"></i></button>
                                 <a class="btn btn-link" href="/admin/viewproject/<%= project._id %>">View More</a>
+                                <div class="spinner-border" id="<%= project._id %>" style="color: #26A4E2;" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
                             </td>
                         </tr>
                      <% } %>
@@ -113,4 +121,41 @@
             });
 
         });
+
+        document.querySelectorAll('.spinner-border').forEach(spinner => spinner.style.display = 'none')
+
+        //delete
+        document.querySelectorAll('.deleteTask').forEach(btn => btn.addEventListener('click',deleteTask))
+        
+        async function deleteTask(e) {
+            e.preventDefault()
+            let id = e.target.dataset.id
+            document.getElementById(id).style.display = 'block'
+            
+            let response = await fetch(`/admin/delete?from=tasks`,{
+                method: 'POST',
+                headers:{'content-type':'application/json'},
+                body:JSON.stringify({id})
+            })
+
+            let data = await response.json()
+
+            if(response.status === 200){
+                e.target.parentNode.innerHTML = `<p style="color:red">Task deleted</p>`
+                console.log(data.msg)
+            }
+            else {
+                    e.target.parentNode.innerHTML = `<p style="color:red">Some error occured, please reload the page and try again</p>`
+                }
+            }
+            
+            //edit
+            document.querySelectorAll('.editTask').forEach(btn => btn.addEventListener('click',editTask))
+
+            function editTask(e){
+                e.preventDefault()
+                window.location = `/admin/editProject?id=${e.target.dataset.id}`
+            }
+
+    </script>
 

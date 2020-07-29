@@ -36,6 +36,11 @@
                 <li>
                     <a href="/admin/viewMembers">View Members</a>
                 </li>
+                <% if (user.type) { %>
+                 <li>
+                     <a href="/admin/viewAdmins">View Admins</a>
+                 </li>
+                <% } %>
 
             </ul>
     

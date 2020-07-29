@@ -45,6 +45,11 @@
                 <li>
                     <a href="/admin/viewMembers">View Members</a>
                 </li>
+                <% if (user.type) { %>
+                 <li>
+                     <a href="/admin/viewAdmins">View Admins</a>
+                 </li>
+                <% } %>
 
             </ul>
     
@@ -103,8 +108,11 @@
                     <li class="list-group-item"><span class="text-color">Edited on</span>: <%= data[i].editedOn %></li>
                    <% } %>
                    <li class="list-group-item">
-                       <button class="deleteEvent btn btn-sm btn-colour" data-id="<%= data[i]._id %>">Delete</button>
-                       <button type="submit" class="editEvent btn btn-sm btn-colour" data-id="<%= data[i]._id %>">Edit</button>
+                       <button class="deleteEvent btn btn-colour" data-id="<%= data[i]._id %>" title="Delete Event"><i class="fa fa-trash"></i></button>
+                       <button class="editEvent btn btn-colour" data-id="<%= data[i]._id %>" title="Edit Event"><i class="fa fa-pencil-square-o"></i></button>
+                        <div class="spinner-border" id="<%= data[i]._id %>" style="color: #26A4E2;" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
                    </li>
                     <% if (data[i].feedback) { %>
                      <li class="list-group-item">
@@ -141,6 +149,9 @@
             });
 
         });
+
+        document.querySelectorAll('.spinner-border').forEach(spinner => spinner.style.display = 'none')
+
         //filter
         var buttons = document.querySelectorAll('.filter')
 
@@ -164,6 +175,7 @@
         async function deleteEvent(e) {
             e.preventDefault()
             let id = e.target.dataset.id
+            document.getElementById(id).style.display = 'block'
             
             let response = await fetch(`/admin/delete?from=events`,{
                     method: 'POST',
@@ -180,15 +192,15 @@
             else{
                     e.target.parentNode.innerHTML = `<p style="color:red">Some error occured, please reload the page and try again</p>`
                 }
-            }
+        }
             
-            //edit
-            document.querySelectorAll('.editEvent').forEach(btn => btn.addEventListener('click',editEvent))
+        //edit
+        document.querySelectorAll('.editEvent').forEach(btn => btn.addEventListener('click',editEvent))
 
-            function editEvent(e){
-                e.preventDefault()
-                window.location = `/admin/editEvent?id=${e.target.dataset.id}`
-            }
+        function editEvent(e){
+            e.preventDefault()
+            window.location = `/admin/editEvent?id=${e.target.dataset.id}`
+        }
     </script>
 </body>
 </html>
