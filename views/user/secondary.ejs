@@ -159,6 +159,10 @@
         #suggestion input::placeholder{
             color:#A9A9A9;
         }
+        .spinner-border{
+          margin-left: 50px;
+          display: none;
+        }
     </style>
 </head>
 <body>
@@ -213,7 +217,7 @@
                       <h5 class="card-title<%= c %>"><%= result[i].title %></h5>
                       <p class="card-subtitle mb-2">Date:  <%= result[i].date %></p>
                     <p>
-                        <a id="view-btn" data-toggle="collapse" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" onclick="btnToggle()" aria-controls="multiCollapseExample1">View Details</a>
+                        <a class="view-btn" data-toggle="collapse" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View Details</a>
                         <button id="feedback-btn" type="button" data-toggle="collapse" data-target="#multiCollapseExample2<%= c %>" aria-expanded="false" aria-controls="multiCollapseExample2">Leave Feedback</button>
                     </p>
                     <div class="row">
@@ -256,18 +260,22 @@
                         </div>
                     </div>
                     </div>
+                    <div class="spinner-border text-info" id="spinner<%=result[i]._id%>" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                    <p id="msg<%=result[i]._id%>"></p>
                 </div>
         <% } %>
       </div>
     </div>
     <script>
 
-
+      document.querySelectorAll('.view-btn').forEach(btn => btn.addEventListener('click',btnToggle))
+      var i = 0
       //changing view more to view less
-      var i=0
-      function btnToggle(){
+      function btnToggle(e){
         i++
-        viewBtn = document.getElementById('view-btn')
+        viewBtn = e.target
         if(i % 2 ==0)
           viewBtn.innerHTML = "View Details"
         else
@@ -294,6 +302,8 @@
         e.preventDefault()
 
         let id = e.target.parentNode.id
+        let spinner = document.getElementById(`spinner${id}`)
+        spinner.style.display = 'block'
 
         let value = e.target.childNodes
         let attendance
@@ -320,10 +330,16 @@
         })
 
         let data = await response.json()
+        spinner.style.display = 'none'
         if(response.status===200)
         {
-          console.log(data.msg)
+          document.getElementById(`msg${id}`).innerHTML = data.msg
+        } else if(response.status===409) {
+          document.getElementById(`msg${id}`).innerHTML = data.msg
+        } else {
+          document.getElementById(`msg${id}`).innerHTML = 'Server error! Please try again!'
         }
+        setTimeout(() => document.getElementById(`msg${id}`).innerHTML = '',2500)
       }
 
       let feedbacks = document.querySelectorAll('.feedback')
@@ -336,6 +352,9 @@
         e.preventDefault()
 
         let id = e.target.parentNode.id
+        let spinner = document.getElementById(`spinner${id}`)
+        spinner.style.display = 'block'
+
         let env = e.target.childNodes[1].value
         let speaker = e.target.childNodes[6].value
         let understanding = e.target.childNodes[11].value
@@ -349,8 +368,6 @@
           suggestion
         }
 
-        console.log("info:", info)
-
         let response = await fetch('/user/feedback',{ 
           method: 'POST',
           headers: {
@@ -361,10 +378,13 @@
         })
 
         let data = await response.json()
-        if(response.status===200)
-        {
-          console.log(data)
+        spinner.style.display = 'none'
+        if(response.status===200){
+          document.getElementById(`msg${id}`).innerHTML = data.msg
+        } else {
+          document.getElementById(`msg${id}`).innerHTML = 'Server error. Please try again!'
         }
+        setTimeout(() => document.getElementById(`msg${id}`).innerHTML = '',2500)
       }
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
