@@ -4,9 +4,6 @@ const ObjectId = mongodb.ObjectId
 const bcrypt = require('bcryptjs')
 const {adminloginValidation,changePasswordValidation} = require('../validation')
 
-Router.get('/', (req,res) => {
-    res.render('admin/adminlogin',{msg:''})
-})
 
 // Router.get('/register', (req,res) => {
 //     res.render('admin/adminregister',{msg:''})
@@ -14,7 +11,7 @@ Router.get('/', (req,res) => {
 
 // Router.post('/register', (req,res) => {
     
-//     const salt = bcrypt.genSaltSync(10)
+    //     const salt = bcrypt.genSaltSync(10)
 //     const hashed = bcrypt.hashSync(req.body.password,salt)
 
 //     let newData = {
@@ -33,7 +30,11 @@ Router.get('/', (req,res) => {
 //         res.status(200).send('Registered!')
 //     })
 // })
-
+    
+    
+Router.get('/', (req,res) => {
+    res.render('admin/adminlogin',{msg:''})
+})
 
 Router.post('/login', (req,res) => {
 
@@ -44,7 +45,7 @@ Router.post('/login', (req,res) => {
     let dbo = db.db('atom')
 
     dbo.collection('admins').find({email:req.body.email}).toArray((dbErr,result) => {
-        if(dbErr) return res.render('error')
+        if(dbErr) return res.status(500).send('Server error! Please refresh and try again!')
 
         if(!result.length || !bcrypt.compareSync(req.body.password,result[0].password)) return res.status(400).send('Email/Password is wrong')
 
@@ -89,11 +90,6 @@ Router.get('/dashboard', async(req,res) => {
     }
 })
 
-
-Router.get('/changePassword', (req,res) => {
-    res.render('admin/adminchangepassword',{user:req.session.user})
-})
-
 Router.post('/changePassword',(req,res) => {
 
     let {error} = changePasswordValidation(req.body)
@@ -103,14 +99,14 @@ Router.post('/changePassword',(req,res) => {
     let dbo = db.db('atom')
     
     dbo.collection('admins').findOne({_id:new ObjectId(req.session.user.id)},(dbErr,user) => {
-        if(dbErr) return res.render('error')
+        if(dbErr) return res.status(500).send('Server error! Please refresh and try again!')
         
         if(!bcrypt.compareSync(req.body.currentPassword,user.password)) return res.status(400).send('Current Password is incorrect')
         
         const salt = bcrypt.genSaltSync(10)
         const hashed = bcrypt.hashSync(req.body.newPassword,salt)
         dbo.collection('admins').updateOne({_id:new ObjectId(req.session.user.id)},{$set:{password:hashed}}, (dbErr,result) => {
-            if(dbErr) return res.render('error') 
+            if(dbErr) return res.status(500).send('Server error! Please refresh and try again!')
             
             console.log(result)
             res.send('Password Updated')
@@ -156,7 +152,7 @@ Router.get('/viewFeedback/:id',async(req,res) => {
         
     } catch (error) {
         console.error(error)
-        res.render('error')
+        return res.render('error')
     }
 })
 
@@ -169,7 +165,7 @@ Router.get('/viewAttendance/:id',async(req,res) => {
         
     } catch (error) {
         console.error(error)
-        res.render('error')
+        return res.render('error')
     }
 })
 
@@ -215,7 +211,7 @@ Router.get('/viewproject/:id',async(req,res) => {
         res.render('admin/viewproject',{project,user:req.session.user})
     } catch (error) {
         console.error(error)
-        res.render('error')
+        return res.render('error')
     }
 })
 
@@ -265,16 +261,14 @@ Router.post('/delete', (req,res) => {
     
     let db = req.app.locals.db
     db.db('atom').collection(from).findOneAndDelete({_id:new ObjectId(id)},(dbErr,deleted) => {
-        if(dbErr) return res.render('error')
+        if(dbErr) return res.status(500).json({msg:'Server error! Please refresh and try again!'})
         
-        console.log(deleted.value)
-
         db.db('atom').collection(coll).insertOne(deleted.value, (error,result) => {
-            if(error) return res.render('error')
+            if(error) return console.error(error)
 
             console.log(result.insertedCount)
         })
-        res.send({msg:'deleted'})
+        res.send({msg:'Deleted!'})
     })
 })
 
@@ -283,22 +277,10 @@ Router.post('/promote', (req,res) => {
 
     let db = req.app.locals.db
     db.db('atom').collection('users').updateOne({_id:new ObjectId(id)},{$set:{userType:1,domain}},(dbErr,result) => {
-        if(dbErr) return res.render('error')
+        if(dbErr) return res.status(500).json({msg:'Server error! Please refresh and try again!'})
         
         console.log(result.modifiedCount)
         res.send({msg:'User promoted!'})
-    })
-})
-
-Router.get('/addTask',(req,res) => {
-    
-    let db = req.app.locals.db
-    let dbo= db.db('atom')
-
-    dbo.collection('users').find({ userType: 1 },{projection:{password:0}}).toArray((dbErr, tdians) => {
-        if (dbErr) return res.render('error')
-        
-        res.render('admin/adminaddtask',{data:tdians,user:req.session.user})
     })
 })
 
@@ -321,15 +303,14 @@ Router.post('/addTask',async(req,res) => {
 
     let db = req.app.locals.db
     db.db('atom').collection('tasks').insertOne(project,(dbErr,result) => {
-        if(dbErr) return res.json({msg:'Server error'})
+        if(dbErr) return res.status(500).json({msg:'Server error! Please refresh and try again!'})
 
-        console.log('Project: '+result.insertedCount)
         subtasks.forEach(subtask => {
             subtask.project = result.insertedId.toString()
         })
 
         db.db('atom').collection('subtasks').insertMany(subtasks, (err,output) => {
-            if(err) return res.json({msg:'Server error'})
+            if(err) return res.status(500).json({msg:'Server error! Please refresh and try again!'})
 
             console.log(output.insertedCount)
             res.send({msg:'Project added. Refresh the page to clear out the form'})
@@ -356,7 +337,7 @@ Router.post('/editEvent',(req,res) => {
     delete req.body.id
 
     db.db('atom').collection('events').updateOne({_id:new ObjectId(id)},{$set:req.body},(err,result) => {
-        if(err) return res.json({msg:'Server error!'})
+        if(err) return res.status(500).json({msg:'Server error! Please refresh and try again!'})
 
         console.log(result)
         res.json({msg:'Updated!'})
@@ -387,12 +368,12 @@ Router.post('/editProject',async(req,res) => {
 
     try {
         await db.db('atom').collection('tasks').updateOne({_id:new ObjectId(id)},{$set:req.body})
-        if(bugs.length === 0) return res.json({msg:'updated'})
+        if(bugs.length === 0) return res.json({msg:'Updated!'})
         await db.db('atom').collection('bugs').insertMany(bugs)
-        return res.json({msg:'updated'})
+        return res.json({msg:'Updated!'})
     } catch (error) {
         console.error(error)
-        return res.render('error')
+        return res.status(500).json({msg:'Server error! Please refresh and try again!'})
     }
 })
 

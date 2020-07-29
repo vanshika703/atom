@@ -24,8 +24,6 @@ Router.get('/', (req,res)=>{
 
 Router.post('/register', async(req,res)=>{
 
-    console.log(__dirname)
-
     const { email,password,captcha } = req.body
 
     if(!captcha){
@@ -68,7 +66,7 @@ Router.post('/register', async(req,res)=>{
         }
 
         dbo.collection('users').insertOne(userInfo, (dbErr,result)=>{
-            if(dbErr) return res.render('error')
+            if(dbErr) return res.status(500).json({msg:'Server error! Please refresh and try again!'})
 
             host = req.get('host')
             rand = result.insertedId
@@ -99,13 +97,14 @@ Router.post('/register', async(req,res)=>{
             
             transporter.sendMail(mailOptions, function(error, info){
                 if (error) {
-                    console.error(error);
+                    console.error(error)
+                    return res.status(500).json({msg:'Could not send verification email! Please refresh and try again!'})
                 } else {
                     console.log('Email sent: ' + info.response);
+                    res.json({msg:"Check email for verification link"})
                 }
             });
 
-            res.json({msg:"Check email for verification link"})
         })
     })    
 })
@@ -123,7 +122,7 @@ Router.get('/verify', (req,res) => {
         dbo.collection('users').findOne({_id : new ObjectId(req.query.id)}, (dbErr, user)=>{
             if(dbErr) return res.render('error')
             
-            if(!user) return res.send('No such user found')
+            if(!user) return res.render('error')
 
             dbo.collection('users').updateOne({_id : new ObjectId(req.query.id)}, { $set: {verified : 1} }, async(err, result)=>{
                 if(err) return res.render('error')
@@ -131,11 +130,10 @@ Router.get('/verify', (req,res) => {
                 console.log(result.modifiedCount)
                 res.redirect('/user/login')
             })
-            console.log('object')
         }) 
     } 
     else {
-        res.status(404).send('Error 404')
+        res.render('404')
     }
 })
 
@@ -155,7 +153,7 @@ Router.post('/login', (req,res) =>{
     let dbo = db.db('atom')
 
     dbo.collection('users').findOne({email,registrationType:0}, (dbErr, user)=>{
-        if(dbErr) return res.render('error')
+        if(dbErr) return res.status(500).json({msg:'Server error! Please refresh and try again!'})
 
         if(!user) return res.status(400).json({msg:"Incorrect credentials!"})
 
@@ -225,7 +223,7 @@ Router.post('/forgotpassword', async(req,res) => {
         
         let dbo = db.db("atom")
         let user = await dbo.collection('users').findOne({email : req.body.email,registrationType:0 })
-        if(!user) return res.json({msg:"No such user found!"})
+        if(!user) return res.status(400).json({msg:"No such user found!"})
     
         host = req.get('host')
         rand = user._id
@@ -272,7 +270,7 @@ Router.get('/verifypasswordlink', (req,res) => {
         res.render('user/changepassword', {id: req.query.id})
      
     else {
-        res.send("Some error occured. Please try again!")
+        return res.render('error')
     }
 })
 
@@ -285,22 +283,22 @@ Router.post('/changepassword', async(req,res) => {
     let db = req.app.locals.db
 
     try {
+        let dbo = db.db('atom')
+        let user = await dbo.collection('users').findOne({_id : new ObjectId(req.body.id)}) 
+        if(!user) return res.json({msg:"no such user found"})
+    
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password, salt)
+    
+        await dbo.collection('users').updateOne({_id : new ObjectId(req.body.id) }, { $set: {password : hashedPassword} })
+    
+        res.json({msg:"Password updated succesfully"})
         
     } catch (error) {
         console.error(error)
-        res.json({msg:'Server error'})
+        res.json({msg:'Server error! Please refresh and try again!'})
     }
 
-    let dbo = db.db('atom')
-    let user = await dbo.collection('users').findOne({_id : new ObjectId(req.body.id)}) 
-    if(!user) return res.json({msg:"no such user found"})
-
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(password, salt)
-
-    await dbo.collection('users').updateOne({_id : new ObjectId(req.body.id) }, { $set: {password : hashedPassword} })
-
-    res.json({msg:"Password updated succesfully"})
 })
 
 Router.post('/userRegister',auth,(req,res) => {
@@ -451,7 +449,7 @@ Router.post('/attendance', authHeader, async(req,res) => {
 
     } catch (error) {
         console.error(error)
-        res.json({msg:'Server error'})
+        res.status(500).json({msg:'Server error'})
     }
 })
 
