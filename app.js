@@ -26,7 +26,7 @@ const userRoute = require('./routes/user')
 app.use('/user',userRoute)
 
 app.all('*',(req,res) => {
-    res.send('cannot find what you are looking for')
+    res.render('404')
 }) 
 
 var PORT = process.env.PORT || 5000
