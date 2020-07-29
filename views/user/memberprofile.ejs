@@ -4,66 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/memberprofile.css">
+   
   <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <title>Document</title>
+    <style>
+
+*:focus {
+            outline: 0 !important;
+        }
+        body{
+            background-color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .sidenav{
+          height: 100vh;
+          width:200px;
+          position: fixed;
+          top: 0;
+          left: 0;
+          background-color: #72E4FE!important;
+          z-index: 999;
+        }
+        .nontdnav{
+          display: block;
+        }
+        .nontdnav a{
+          color:white!important;
+        }
+        .nontdnav a:hover{
+          color:#eee!important;
+        }
+        #logout-btn{
+            background-color: white;
+            border:none;
+            color:#72E4FE;
+            border-radius: 24px;
+            padding: 4px 12px;
+        }
+        #logout-btn:hover{
+          background-color: #eee;
+        }
+        .dash-container{
+          margin-left: 200px;
+          padding-top: 5%;
+        }
+        
+p{
+  font-size: 21px;
+  font-size: large;
+  color: black;
+}
+p:hover
+{
+  font-size: 21px;
+  font-size: larger;
+  color: gray;
+}
+.name
+{
+  font-size: 27px;
+  color: grey;
+  margin-bottom: 20px;
+}
+@media (max-width: 600px)
+        {
+          .sidenav{
+            height: auto;
+            width: 100vw;
+          }
+          .dash-container{
+            margin: 10vh 0 0 0;
+          }
+          .timeline{
+            width: 100%;
+            margin: 0 auto;
+          }
+        }
+    </style>
 </head>
 <body>
 
-  <div class="wrapper">
-    <div class="sidebar">
-  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">TD</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link dynamic-link" href="/user/memberprofile">Profile<span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link dynamic-link" href="/user/dashboard">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="http://think-digital.in/">Our Website</a>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link" id="logout-btn" style="cursor: pointer;">Logout</button>
-          </li>
-        </ul>
-      </div>
-    </nav> -->
-
-   
-      
-        <ul >
-          <li >
-            <a class="nav-link dynamic-link" href="/user/memberprofile">Profile<span class="sr-only">(current)</span></a>
-          </li>
-          <li>
-            <a class="nav-link dynamic-link" href="/user/dashboard">Dashboard</a>
-          </li>
-          <li >
-            <a class="nav-link" href="http://think-digital.in/">Our Website</a>
-          </li>
-          <li >
-            
-            <button class="button nav-link" id="logout-btn" style="cursor: pointer;">Logout</button>
-          </li>
-        
-      </div>
-
-    
-  </div>
-  <div class="main_content">
-    <div class="container">
+  
+  <nav class="navbar navbar-expand-lg navbar-light sidenav">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav nontdnav">
+        <li class="nav-item">
+          <a class="nav-link dynamic-link" href="/user/memberprofile">Profile<span class="sr-only">(current)</span></a>
+        </li>
+       
+        <hr>
+        <li class="nav-item">
+          <a class="nav-link dynamic-link" href="/user/dashboard">Dashboard</a>
+        </li>
+        <hr>
+        <li class="nav-item">
+          <a class="nav-link" href="http://think-digital.in/">Our Website</a>
+        </li>
+        <hr>
+        <li class="nav-item">
+          <button class="nav-link" id="logout-btn" style="cursor: pointer;">Logout</button>
+        </li>
+      </ul>
+    </div>
+</nav>
+<div class="container dash-container" >
+  
+ 
       <% if (user.registered == 0) { %>
         <p>Please complete registeration to view profile</p>
       <% } else { %>
-        <div class="name">  <%= user.name %></div>
+        <div class="name">  <%= user.name %>  <i class="fas fa-user"></i></div>
         <p>Register Number : <%= user.regno %></p>
         <p>Department : <%= user.dept %></p>
         
@@ -74,9 +129,9 @@
         <p>Secondary Domain : <%= user.domain2 %></p> 
         <p>Year : <%= user.year %></p>  
       <% } %>
-    </div>
+   
   </div>
-  </div>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
