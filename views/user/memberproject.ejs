@@ -74,6 +74,7 @@
 
     .dash-container {
       margin-left: 200px;
+      margin-top: 5px;
     }
 
     .column1 {
@@ -172,7 +173,6 @@
 
     .title {
       font-size: x-large;
-      color: #72E4FE;
     }
 
     .other-text {
@@ -205,8 +205,12 @@
       font-size: 18px;
       color: black;
     }
+    .line {
+      background-color: #72E4FE;
+      height: 3px;
+      width: 75px;
+    }
 
-    .resources {}
   </style>
 </head>
 
@@ -241,9 +245,10 @@
 
   <div class="container dash-container">
 
-
-    <div class="title">
-      <p><%= task.title %></p>
+    <h3 class="mb-1">Project Details</h3>
+    <div class="line mb-3"></div>
+    <div class="other-text">
+      <p>Title: <%= task.title %></p>
     </div>
     <div class="other-text">
       <p> Description: <%= task.description %></p>
@@ -260,6 +265,7 @@
       <div class="column ">
         <div class="title">
           <h3>Phases</h3>
+          <div class="line mb-3"></div>
         </div>
         <div class="other-text">
           <% task.phases.forEach((phase,i) => {%>
@@ -273,6 +279,7 @@
       <div class="column resources ">
         <div class="title">
           <h3>Resources</h3>
+          <div class="line mb-3"></div>
         </div>
         <div class="other-text">
           <% task.resources.forEach(resource => {%>
@@ -283,15 +290,15 @@
     </div>
 
 
-    <div class="title">
-      <p>Progress-Bar</p>
+    <div class="title mb-3">
+      <h3>Progress-Bar</h3>
     </div>
     <div class="progress" style="height:25px;">
       <div class="progress-bar" style="background-color: #72E4FE;width:<%= task.percentage %>%"><%= task.percentage %>%
       </div>
     </div>
-    <div class="card-body">
-      <h3 class="title">Your Tasks</h3>
+      <h3 class="title mt-5">Your Tasks</h3>
+      <div class="line mb-3"></div>
       <div class="row">
         <% task.subtasks.forEach(subtask => {%>
 
@@ -320,7 +327,7 @@
 
       <div class="title">
         <h3>Your Bugs</h3>
-
+        <div class="line mb-3"></div>
       </div>
       <div class="row">
         <% task.bugs.forEach(bug => {%>
@@ -350,7 +357,7 @@
 
 
       </div>
-    </div>
+    
 
   </div>
   </div>
