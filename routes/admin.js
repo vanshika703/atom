@@ -8,31 +8,31 @@ Router.get('/', (req,res) => {
     res.render('admin/adminlogin',{msg:''})
 })
 
-Router.get('/register', (req,res) => {
-    res.render('admin/adminregister',{msg:''})
-})
+// Router.get('/register', (req,res) => {
+//     res.render('admin/adminregister',{msg:''})
+// })
 
-Router.post('/register', (req,res) => {
+// Router.post('/register', (req,res) => {
     
-    const salt = bcrypt.genSaltSync(10)
-    const hashed = bcrypt.hashSync(req.body.password,salt)
+//     const salt = bcrypt.genSaltSync(10)
+//     const hashed = bcrypt.hashSync(req.body.password,salt)
 
-    let newData = {
-        name:req.body.name,
-        email:req.body.email,
-        password: hashed
-    }
+//     let newData = {
+//         name:req.body.name,
+//         email:req.body.email,
+//         password: hashed
+//     }
 
-    let db = req.app.locals.db
-    let dbo = db.db('atom')
+//     let db = req.app.locals.db
+//     let dbo = db.db('atom')
 
-    dbo.collection('admins').insertOne(newData, (dbErr,result) => {
-        if(dbErr) return res.render('error')
+//     dbo.collection('admins').insertOne(newData, (dbErr,result) => {
+//         if(dbErr) return res.render('error')
 
-        console.log('inserted'+result.insertedCount)
-        res.status(200).send('Registered!')
-    })
-})
+//         console.log('inserted'+result.insertedCount)
+//         res.status(200).send('Registered!')
+//     })
+// })
 
 
 Router.post('/login', (req,res) => {
