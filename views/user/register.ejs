@@ -129,11 +129,11 @@
                 <h6>Or Sign In with Google</h6>
                 <div class="g-signin2" data-onsuccess="onSignIn" data-onfailure="onSignInFailure"></div>
                 <p id="msg" style="color:red"></p>
-                <!-- <a href="#" id="sign-out" onclick="signOut();">Sign out</a> -->
 
 
                 <p>Already regsitered in? Login <a href="/user/login">Here</a></p>
-
+                <a id="#signout" onclick="signOut()" ></a>
+                
                 <form action="/user/userRegister" method="POST" style="display: none;">
                     <input type="text" id="register-token" name="token">
                     <input type="submit" id="register-btn">
@@ -152,7 +152,7 @@
 
     <script>
         document.getElementById('reg-form').addEventListener('submit', submitForm)
-        spinner = document.getElementById('spinner')
+        var spinner = document.getElementById('spinner')
         async function submitForm(e){
             e.preventDefault()
 
@@ -188,6 +188,8 @@
             var profile = googleUser.getBasicProfile();
     
             var id_token = googleUser.getAuthResponse().id_token;
+
+            spinner.style.display = 'block'
     
             let response = await fetch('/user/googleLogIn', {
                 method: 'POST',
@@ -201,17 +203,21 @@
 
             if(response.status === 200){
                 localStorage.setItem('token',data.token)
+                localStorage.setItem('loginType','google')
                 document.querySelector('#register-token').value = data.token
                 document.querySelector('#register-btn').click()
             } else if(response.status === 201){
                 localStorage.setItem('token',data.token)
+                localStorage.setItem('loginType','google')
                 document.querySelector('#member-token').value = data.token
                 document.querySelector('#member-btn').click()
             } else if(response.status === 202){
                 localStorage.setItem('token',data.token)
+                localStorage.setItem('loginType','google')
                 document.querySelector('#user-token').value = data.token
                 document.querySelector('#user-btn').click()
             } else {
+                spinner.style.display = 'none'
                 document.querySelector('#sign-out').click()
                 document.querySelector('#msg').innerHTML = data.msg
             }

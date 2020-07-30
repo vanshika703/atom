@@ -1,8 +1,6 @@
 const Router = require('express').Router()
 const jwt = require('jsonwebtoken')
 
-const path = require('path')
-
 const mongodb = require('mongodb')
 const ObjectId = mongodb.ObjectId
 
@@ -606,6 +604,10 @@ Router.put('/updateBug/:id',authHeader,async(req,res) => {
         console.error(error)
         return res.status(500).json({msg:'Server Error!'})
     }
+})
+
+Router.get('/glogout',(req,res) => {
+    res.render('user/glogout')
 })
 
 function auth(req,res,next){

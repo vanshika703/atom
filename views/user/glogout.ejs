@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="523384873779-e29ttamvfnbfkhb650ppufoas5qmr328.apps.googleusercontent.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <title>Redirecting...</title>
+    <style>
+        body{
+            font-family: Montserrat;
+        }
+    </style>
+</head>
+<body>
+    
+    <div style="display:none" class="g-signin2" data-onsuccess="onSignIn" data-onfailure="onSignInFailure"></div>
+    <h4 class="text-center mt-5">
+        Redirecting... Please wait...
+    </h4>
+
+    <script>
+
+        async function onSignIn(googleUser) {
+
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.')
+                window.location = '/user/login'
+            });
+    
+        }
+    </script>
+</body>
+</html>

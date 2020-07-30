@@ -143,6 +143,9 @@ p:hover
       //logout functionality
       document.querySelector('#logout-btn').addEventListener('click',() => {
         localStorage.removeItem('token')
+        let loginType = localStorage.getItem('loginType')
+        localStorage.removeItem('loginType')
+        if(loginType === 'google') return window.location = '/user/glogout'
         window.location = '/user/login'
       })
     </script>

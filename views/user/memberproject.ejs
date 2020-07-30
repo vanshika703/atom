@@ -369,8 +369,11 @@
     document.querySelectorAll('.dynamic-link').forEach(link => link.href += `/${token}`)
 
     //logout functionality
-    document.querySelector('#logout-btn').addEventListener('click', () => {
+    document.querySelector('#logout-btn').addEventListener('click',() => {
       localStorage.removeItem('token')
+      let loginType = localStorage.getItem('loginType')
+      localStorage.removeItem('loginType')
+      if(loginType === 'google') return window.location = '/user/glogout'
       window.location = '/user/login'
     })
 

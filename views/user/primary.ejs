@@ -269,6 +269,21 @@
     </div>
     <script>
 
+      
+      
+      //adding the token to all links
+      let token = localStorage.getItem('token')
+      document.querySelectorAll('.dynamic-link').forEach(link => link.href+=`/${token}`)
+      
+      //logout functionality
+      document.querySelector('#logout-btn').addEventListener('click',() => {
+        localStorage.removeItem('token')
+        let loginType = localStorage.getItem('loginType')
+        localStorage.removeItem('loginType')
+        if(loginType === 'google') return window.location = '/user/glogout'
+        window.location = '/user/login'
+      })
+      
       document.querySelectorAll('.view-btn').forEach(btn => btn.addEventListener('click',btnToggle))
       var i = 0
       //changing view more to view less
@@ -280,17 +295,6 @@
         else
           viewBtn.innerHTML = "Hide Details"
       }
-
-
-      //adding the token to all links
-      let token = localStorage.getItem('token')
-      document.querySelectorAll('.dynamic-link').forEach(link => link.href+=`/${token}`)
-
-      //logout functionality
-      document.querySelector('#logout-btn').addEventListener('click',() => {
-        localStorage.removeItem('token')
-        window.location = '/user/login'
-      })
 
       let atns = document.querySelectorAll('.attendance')
 

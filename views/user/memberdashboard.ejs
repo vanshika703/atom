@@ -186,10 +186,13 @@ let token = localStorage.getItem('token')
     //adding the token to all links
     document.querySelectorAll('.dynamic-link').forEach(link => link.href += `/${token}`)
     //logout functionality
-    document.querySelector('#logout-btn').addEventListener('click', () => {
-      localStorage.removeItem('token')
-      window.location = '/user/login'
-    })
+    document.querySelector('#logout-btn').addEventListener('click',() => {
+        localStorage.removeItem('token')
+        let loginType = localStorage.getItem('loginType')
+        localStorage.removeItem('loginType')
+        if(loginType === 'google') return window.location = '/user/glogout'
+        window.location = '/user/login'
+      })
     function openSlideMenu() {
             document.getElementById('side-menu').style.width = '250px';
             document.getElementById('main').style.marginLeft = '250px';

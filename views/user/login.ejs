@@ -136,7 +136,7 @@
                 
                 <p>or</p>
                 <div class="g-signin2" data-onsuccess="onSignIn" data-onfailure="onSignInFailure"></div>
-
+                <a id="#signout" onclick="signOut()" ></a>
                 
                 
                 <p>Not regsitered? Register<a href="/user"> Here</a></p>
@@ -147,7 +147,7 @@
 
     <script>
         document.getElementById('login-form').addEventListener('submit', submitForm)
-        spinner = document.getElementById('spinner')
+        var spinner = document.getElementById('spinner')
 
         async function submitForm(e){
             e.preventDefault()
@@ -170,26 +170,30 @@
             let data = await response.json()
             if(response.status === 200){
                 localStorage.setItem('token',data.token)
+                localStorage.setItem('loginType','normal')
                 document.querySelector('#register-token').value = data.token
                 document.querySelector('#register-btn').click()
             } else if(response.status === 201){
                 localStorage.setItem('token',data.token)
+                localStorage.setItem('loginType','normal')
                 document.querySelector('#member-token').value = data.token
                 document.querySelector('#member-btn').click()
             } else if(response.status === 202){
                 localStorage.setItem('token',data.token)
+                localStorage.setItem('loginType','normal')
                 document.querySelector('#user-token').value = data.token
                 document.querySelector('#user-btn').click()
             } else {
+                spinner.style.display = 'none'
                 document.querySelector('#msg').innerHTML = data.msg
             }
-            spinner.style.display = 'none'
         }
 
         async function onSignIn(googleUser) {
             var profile = googleUser.getBasicProfile();
     
             var id_token = googleUser.getAuthResponse().id_token;
+            spinner.style.display = 'block'
     
             let response = await fetch('/user/googleLogIn', {
                 method: 'POST',
@@ -200,21 +204,24 @@
             })
 
             let data = await response.json()
-            console.log(data)
 
             if(response.status === 200){
                 localStorage.setItem('token',data.token)
+                localStorage.setItem('loginType','google')
                 document.querySelector('#register-token').value = data.token
                 document.querySelector('#register-btn').click()
             } else if(response.status === 201){
                 localStorage.setItem('token',data.token)
+                localStorage.setItem('loginType','google')
                 document.querySelector('#member-token').value = data.token
                 document.querySelector('#member-btn').click()
             } else if(response.status === 202){
                 localStorage.setItem('token',data.token)
+                localStorage.setItem('loginType','google')
                 document.querySelector('#user-token').value = data.token
                 document.querySelector('#user-btn').click()
             } else {
+                spinner.style.display = 'none'
                 document.querySelector('#sign-out').click()
                 document.querySelector('#msg').innerHTML = data.msg
             }
