@@ -9,7 +9,7 @@ const nodemailer = require('nodemailer')
 const fetch = require('node-fetch')
 
 const {OAuth2Client} = require('google-auth-library')
-const client = new OAuth2Client("523384873779-e29ttamvfnbfkhb650ppufoas5qmr328.apps.googleusercontent.com")
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT)
 
 const { loginValidation, registerInfoValidation } = require('../validation')
 
@@ -28,7 +28,7 @@ Router.post('/register', async(req,res)=>{
         return res.status(400).json({"msg":"Please select captcha"})
     }
 
-    const secretKey = '6Lfie_kUAAAAAAYZM0z0uetf7cs8pFQ4_e567GmN'
+    const secretKey = process.env.CAPTCHA_SECRET
 
     const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}&remoteip=${req.connection.remoteAddress}`
 
@@ -171,7 +171,7 @@ Router.post('/googleLogIn', async(req,res) => {
     try {
         const ticket = await client.verifyIdToken({
             idToken: req.body.id_token,
-            audience: "523384873779-e29ttamvfnbfkhb650ppufoas5qmr328.apps.googleusercontent.com"
+            audience: process.env.GOOGLE_CLIENT
         })
         const payload = ticket.getPayload()
         const email = payload['email']
