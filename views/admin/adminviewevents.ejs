@@ -106,8 +106,8 @@
                     <li class="list-group-item"><span class="text-color">Edited on</span>: <%= data[i].editedOn %></li>
                    <% } %>
                    <li class="list-group-item">
-                       <button class="deleteEvent btn btn-colour" data-id="<%= data[i]._id %>" title="Delete Event"><i class="fa fa-trash"></i></button>
-                       <button class="editEvent btn btn-colour" data-id="<%= data[i]._id %>" title="Edit Event"><i class="fa fa-pencil-square-o"></i></button>
+                       <button class="deleteEvent btn btn-colour" data-id="<%= data[i]._id %>" title="Delete Event"><i class="fa fa-trash" data-id="<%= data[i]._id %>"></i></button>
+                       <button class="editEvent btn btn-colour" data-id="<%= data[i]._id %>" title="Edit Event"><i class="fa fa-pencil-square-o" data-id="<%= data[i]._id %>"></i></button>
                         <div class="spinner-border" id="<%= data[i]._id %>" style="color: #26A4E2;" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>

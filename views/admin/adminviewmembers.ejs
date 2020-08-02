@@ -86,7 +86,7 @@
                         <td><%= member.year %></td>
                         <td><%= member.dept %></td>
                         <td>
-                            <button class="deleteBtn btn btn-sm btn-colour" title="Delete member" data-id="<%= member._id %>"><i class="fa fa-trash"></i></button>
+                            <button class="deleteBtn btn btn-sm btn-colour" title="Delete member" data-id="<%= member._id %>"><i class="fa fa-trash" data-id="<%= user._id %>"></i></button>
                             <% if (user.type) { %>
                             <button class="promoteBtn btn btn-sm btn-colour" title="Promote to admin" data-id="<%= member._id %>">Promote</button>    
                             <% } %>

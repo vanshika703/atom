@@ -87,8 +87,8 @@
                             <td><%= project.deadline %></td>
                             <td style="width: 40px;"><%= project.description %></td>
                             <td>
-                                <button class="deleteTask btn btn-colour" data-id="<%= project._id %>" title="Delete Project"><i class="fa fa-trash"></i></button>
-                                <button class="editTask btn btn-colour" data-id="<%= project._id %>" title="Edit Project"><i class="fa fa-edit"></i></button>
+                                <button class="deleteTask btn btn-colour" data-id="<%= project._id %>" title="Delete Project"><i class="fa fa-trash" data-id="<%= project._id %>"></i></button>
+                                <button class="editTask btn btn-colour" data-id="<%= project._id %>" title="Edit Project"><i class="fa fa-edit" data-id="<%= project._id %>"></i></button>
                                 <a class="btn btn-link" href="/admin/viewproject/<%= project._id %>">View More</a>
                                 <div class="spinner-border" id="<%= project._id %>" style="color: #26A4E2;" role="status">
                                     <span class="sr-only">Loading...</span>

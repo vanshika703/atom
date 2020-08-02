@@ -94,7 +94,7 @@
                                 <option value="<%= user.domain2 %>"><%= user.domain2 %></option>
                             </select>
                             <button class="promoteBtn btn btn-sm btn-colour" title="Promote to member" data-id="<%= user._id %>">Promote</button>
-                            <button class="deleteBtn btn btn-sm btn-colour" title="Delete user" data-id="<%= user._id %>"><i class="fa fa-trash"></i></button>
+                            <button class="deleteBtn btn btn-sm btn-colour" title="Delete user" data-id="<%= user._id %>"><i class="fa fa-trash" data-id="<%= user._id %>"></i></button>
                             <a class="btn btn-link" href="/admin/viewprofile/<%= user._id %>">View Profile</a>
 
                             <a class="btn btn-link more-actions-link" href="#more-actions<%= user._id %>" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="more-actions<%= user._id %>">More <i class="fa fa-angle-down"></i></a>
