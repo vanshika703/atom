@@ -67,12 +67,15 @@
         .event-card{
           width: 80%!important;
           margin: 5%!important;
+          border-bottom: 3px solid #72E4FE;
         }
-        .event-card h5{
+        .event-card h5,
+        .event-card h6{
           color: #72E4FE;
         }
         .event-card p{
           color:#A9A9A9;
+          font-size: 14px;
         }
         .view-btn{
           font-size: 14px;
@@ -199,40 +202,52 @@
         <div class="timeline">
         <% for(let i=0; i<result.length; i++) { %>
 
-                <% let endDate = new Date(result[i].endDate) %>
-                <% let startDate = new Date(result[i].startDate) %>
-                <% if(today < startDate) { %>
-                <div class="step red float-left">
-                  <%= c++ %>
-                  <div class="line grey-line"></div>
-                </div> 
-                <% } else if (today >= startDate && today <= endDate){ %>
-                <div class="step yellow float-left"><%= c++ %> <div class="line grey-line"></div></div> 
-                <% } else { %>
+          <% today = new Date %>
+          <% eventDate = new Date(result[i].date) %>
+
                 <div class="step green float-left"><%= c++ %> <div class="line green-line"></div></div> 
-                <% } %>
+                
                 <div class="card event-card" style="width: 18rem;">
                     <div class="card-body">
+                      <img src="/img/calendar.svg" height="25" width="40" style="float: left;">
+                      <h6><%= result[i].date.substring(0,7) %></h6>
+                      
                       <h5 class="card-title<%= c %>"><%= result[i].title %></h5>
-                      <p class="card-subtitle mb-2">Date:  <%= result[i].date %></p>
-                    <p>
+                      
+                      
+                    <p style="margin-bottom: 0;">
+                      
                         <button class="view-btn" data-toggle="collapse" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View Details</button>
-                        <button id="feedback-btn" type="button" data-toggle="collapse" data-target="#multiCollapseExample2<%= c %>" aria-expanded="false" aria-controls="multiCollapseExample2">Leave Feedback</button>
+                        
+                        <% if(today >= eventDate) { %>  
+                          <button id="feedback-btn" type="button" data-toggle="collapse" data-target="#multiCollapseExample2<%= c %>" aria-expanded="false" aria-controls="multiCollapseExample2">Leave Feedback</button>
+                        <% } %> 
+                      
                     </p>
+
+                    <div id="btn-collapse<%= c %>">
                     <div class="row">
                         <div class="col">
-                          <div class="collapse multi-collapse" id="multiCollapseExample1<%= c %>">
-                            <p><%= result[i].description %> </p>
-                            <p>Venue:  <%= result[i].venue %> </p>
-                            <p>Time:  <%= result[i].startTime %> -  <%= result[i].endTime %></p>
-                            <p>Will you be attending?</p>
+                          <div class="collapse multi-collapse" id="multiCollapseExample1<%= c %>"  data-parent="#btn-collapse<%= c %>" >
+                            
                             <div id="<%=result[i]._id%>" >
                               <form class="attendance">
+                                <p>Time:  <%= result[i].startTime %> -  <%= result[i].endTime %></p>
+                                <p>Venue:  <%= result[i].venue %> </p>
+                                
+                                <p><%= result[i].description %> </p>
+
+                                <% if(today <= eventDate) { %>
+                                <hr>
+                                
+                                <p>Will you be attending?</p>
                                   <input  type="radio" id="yes" name="attendance" value="yes">
+                                  
                                   <label for="yes">yes</label><br>
                                   <input  type="radio" id="no" name="attendance" value="no">
                                   <label for="no">no</label><br>
                                   <button class="submit-btn" type="submit">Submit</button>
+                                  <% } %>
                               </form>
                             </div>
                           </div>
@@ -240,16 +255,18 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="collapse multi-collapse" id="multiCollapseExample2<%= c %>">
+                            <div class="collapse multi-collapse" id="multiCollapseExample2<%= c %>" data-parent="#btn-collapse<%= c %>" >
                               <div id="<%=result[i]._id%>" >
                                 <form class="feedback">
-                                    <input id="env" class="slider" type="range" min="1" max="5" value="5" name="env">
+
+                                    
+                                    <span>&#128578;</span><input oninput="changeEmoji(event)" id="env" class="slider" type="range" min="1" max="5" value="3" name="env">
                                     <label class="slider-label" for="env">Environment</label><br>
                                     
-                                    <input id="speaker" class="slider" type="range" min="1" max="5" value="5" name="speaker">
+                                    <span>&#128578;</span><input oninput="changeEmoji(event)" id="speaker" class="slider" type="range" min="1" max="5" value="3" name="speaker">
                                     <label class="slider-label" for="speaker">Speakers</label><br>
                                     
-                                    <input id="understanding" class="slider" type="range" min="1" max="5" value="5" name="understanding">
+                                    <span>&#128578;</span><input oninput="changeEmoji(event)" id="understanding" class="slider" type="range" min="1" max="5" value="3" name="understanding">
                                     <label class="slider-label" for="understanding">Understanding</label><br>
                                     <input id="suggestion" type="text" placeholder="Any Suggestions" name="suggestion"><br>
                                     <button class="submit-btn" type="submit">Submit</button>
@@ -258,6 +275,7 @@
                             </div>
                         </div>
                     </div>
+                  </div>
                     </div>
                     <div class="spinner-border text-info" id="spinner<%=result[i]._id%>" role="status">
                       <span class="sr-only">Loading...</span>
@@ -284,6 +302,27 @@
         window.location = '/user/login'
       })
       
+      //only 1 collapse should open at a time
+      function changeEmoji(e){
+        let slider = e.target
+
+        switch(slider.value){
+          case '1' : slider.previousSibling.innerHTML = '&#128532;'
+                  break;
+          case '2' : slider.previousSibling.innerHTML = '&#128528;'
+                  break;
+          case '3' : slider.previousSibling.innerHTML = '&#128578;'
+                  break;
+          case '4' : slider.previousSibling.innerHTML = '&#128516;'
+                  break;
+          case '5' : slider.previousSibling.innerHTML = '&#128513;'
+                  break;
+          default : slider.previousSibling.innerHTML = '&#128578;'
+                  
+        }
+      }
+
+
       document.querySelectorAll('.view-btn').forEach(btn => btn.addEventListener('click',btnToggle))
       var i = 0
       //changing view more to view less
