@@ -434,8 +434,7 @@ Router.post('/attendance', authHeader, async(req,res) => {
                 if(email === result.attendance[i].email)
                 {
                     console.log("given atn")
-                    return res.json({msg:"already marked attendance"})
-                    break
+                    return res.status(409).json({msg:"You have already marked attendance"})
                 }
             }
         }
@@ -478,7 +477,7 @@ Router.post('/feedback', authHeader, async(req,res) => {
 
     } catch (error) {
         console.error(error)
-        res.json({msg:'Server error'})
+        res.status(500).json({msg:'Server error'})
     }
 
 
