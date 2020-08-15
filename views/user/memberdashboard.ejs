@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
  
-  <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-  <title>Dashboard</title>
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
 <style>
     *:focus {
             outline: 0 !important;
@@ -96,8 +96,9 @@
   }
   .other-text
   {
-    font-size: large;
+    font-size: 16px;
     color: gray;
+    margin-left: 5%;
   }
   
  
@@ -145,38 +146,41 @@
         <div class="container dash-container">
   
         <a class="name navbar-brand" href="#">Hello <%=user.name%> <i class="fas fa-user"></i></a>
+        <hr>
         <h3 class="mt-5">Your Projects</h3>
-        <div class="line"></div>
-            <div class="row">
+        
+          <div class="row">
+            <div class="card-deck">
               <% tasks.forEach(task => { %>
-                <div class="column">
+                
+                <div class="column col-lg-4">
+                  
                     <div class="card">
                       <div class="content">
                         <div class="card-header">  
                            
                                 <div class="title">
-                                    <p><%= task.title %></p>
+                                    <img src="/img/concept.svg" style="height: 40px;width: 50px; float: left;"><p><%= task.title %></p>
                                 </div>
                                 <div class="other-text">
-                                    <p>From:<%= task.startDate %></p>
+                                    <p><%= task.startDate %> - <%= task.deadline %></p>
                                 </div>
                                 <div class="other-text">
-                                    <p> Deadline:<%= task.deadline %></p>
-                                </div>
-                                <div class="other-text">
-                                    <p> Description:<%= task.description %></p>
+                                    <p><%= task.description %></p>
                                 </div>
                                 
-                                  <a class="project-link nav-link" style="color: grey;" href='/user/project/<%= task._id %>'>Know More  <i class="fas fa-chevron-right"></i></i></a>
+                                  <button style="background-color: #72E4FE;border-radius: 32px;border:none;font-size: 14px;margin-left: 5%;padding: 0px 0px;"><a class="project-link nav-link"  href='/user/project/<%= task._id %>' style="text-decoration: none; color: white;">Details</a></button>
                                 
                                 
                         </div>
                       </div>
-                        </div>
                     </div>
+                  </div>
                     <%})%>
-                </div>            
-              </div>
+                </div>
+            </div>
+                        
+              
     </div>
     <script>
 
@@ -186,13 +190,10 @@ let token = localStorage.getItem('token')
     //adding the token to all links
     document.querySelectorAll('.dynamic-link').forEach(link => link.href += `/${token}`)
     //logout functionality
-    document.querySelector('#logout-btn').addEventListener('click',() => {
-        localStorage.removeItem('token')
-        let loginType = localStorage.getItem('loginType')
-        localStorage.removeItem('loginType')
-        if(loginType === 'google') return window.location = '/user/glogout'
-        window.location = '/user/login'
-      })
+    document.querySelector('#logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('token')
+      window.location = '/user/login'
+    })
     function openSlideMenu() {
             document.getElementById('side-menu').style.width = '250px';
             document.getElementById('main').style.marginLeft = '250px';
