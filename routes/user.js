@@ -577,8 +577,8 @@ Router.put('/update/:id',authHeader,async(req,res) => {
 
     try {
         let subtask = await db.db('atom').collection('subtasks').findOne({_id:new ObjectId(id)})
-        if(!subtask) return res.render('error')
-        if(subtask.member !== req.userId) return res.send('Not authorised!')
+        if(!subtask) return res.status(500).json({msg:'Server Error!'})
+        if(subtask.member !== req.userId) return res.status(400).json({msg:'Not Authorized!'})
 
         await db.db('atom').collection('subtasks').updateOne({_id:new ObjectId(id)},{$set:{complete:true}})
         res.json({msg:'Updated'})
@@ -595,8 +595,8 @@ Router.put('/updateBug/:id',authHeader,async(req,res) => {
 
     try {
         let bug = await db.db('atom').collection('bugs').findOne({_id:new ObjectId(id)})
-        if(!bug) return res.render('error')
-        if(bug.member !== req.userId) return res.send('Not authorised!')
+        if(!bug) return res.status(500).json({msg:'Server Error!'})
+        if(bug.member !== req.userId) return res.status(400).json({msg:'Not Authorized!'})
 
         await db.db('atom').collection('bugs').updateOne({_id:new ObjectId(id)},{$set:{complete:true}})
         res.json({msg:'Updated'})

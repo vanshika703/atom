@@ -318,7 +318,7 @@
                     <p style="font-size: 12px; color: grey;"><%= subtask.startDate %> - <%= subtask.endDate %></p>
                   
                     <% if(!subtask.complete) { %>
-                    <button id='<%= subtask._id %>' class='subtask-update update' style="padding: 0px 4px; border-radius: 50%;float: right;"><i class="fa fa-check"></i></button>
+                    <button id='<%= subtask._id %>' class='subtask-update update' style="padding: 0px 4px; border-radius: 50%;float: right;"><i class="fa fa-check" id='<%= subtask._id %>'></i></button>
                     <% } %>
                   </div>
                 </div>
@@ -350,7 +350,7 @@
                   <% } %>
                   <p style="font-size: 12px; color: grey;"><%= bug.startDate %> - <%= bug.endDate %></p>
                   <% if(!bug.complete) { %>
-                    <button id='<%= bug._id %>' class='bug-update update' style="padding: 0px 4px; border-radius: 50%;float: right;"><i class="fa fa-check"></i></button>
+                    <button id='<%= bug._id %>' class='bug-update update' style="padding: 0px 4px; border-radius: 50%;float: right;"><i class="fa fa-check" id='<%= bug._id %>'></i></button>
 
                   <% } %>
                 </div>
@@ -383,16 +383,6 @@
         </div>
       </div>
     </div>
-    
-        
-
-
-    
-
-
-      
-    
-
   </div>
   </div>
   <script>
@@ -423,7 +413,7 @@
         console.log(data.msg)
 
         location.reload()
-      }
+      } else console.log(data.msg)
     }
 
     document.querySelectorAll('.bug-update').forEach(btn => btn.addEventListener('click', updateBug))
