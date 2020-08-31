@@ -94,7 +94,7 @@
                                 <option value="<%= user.domain2 %>"><%= user.domain2 %></option>
                             </select>
                             <button class="promoteBtn btn btn-sm btn-colour" title="Promote to member" data-id="<%= user._id %>">Promote</button>
-                            <button class="deleteBtn btn btn-sm btn-colour" title="Delete user" data-id="<%= user._id %>"><i class="fa fa-trash" data-id="<%= user._id %>"></i></button>
+                            <button class="deleteBtn btn btn-sm btn-colour" title="Delete user" data-id="<%= user._id %>"><i class="fa fa-trash"></i></button>
                             <a class="btn btn-link" href="/admin/viewprofile/<%= user._id %>">View Profile</a>
 
                             <a class="btn btn-link more-actions-link" href="#more-actions<%= user._id %>" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="more-actions<%= user._id %>">More <i class="fa fa-angle-down"></i></a>
@@ -165,7 +165,8 @@
         document.querySelectorAll('.promoteBtn').forEach(btn => btn.addEventListener('click', promoteUser))
 
         async function deleteUser(e) {
-            let {id} = e.target.dataset
+            let target = e.currentTarget
+            let {id} = target.dataset
             document.getElementById(id).style.display = 'block'
 
             let response = await fetch(`/admin/delete?from=users`,{
@@ -177,10 +178,12 @@
             let data = await response.json()
 
             if(response.status === 200){
-                e.target.offsetParent.innerHTML = `User deleted`
+                target.parentNode.innerHTML = `<p style="color:red">User deleted</p>`
             }
-            console.log(data)
-        }
+            else {
+                target.parentNode.innerHTML = `<p style="color:red">Some error occured, please reload the page and try again</p>`
+            }
+            }
         
         async function promoteUser(e) {
             let {id} = e.target.dataset

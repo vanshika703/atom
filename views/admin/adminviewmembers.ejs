@@ -86,7 +86,7 @@
                         <td><%= member.year %></td>
                         <td><%= member.dept %></td>
                         <td>
-                            <button class="deleteBtn btn btn-sm btn-colour" title="Delete member" data-id="<%= member._id %>"><i class="fa fa-trash" data-id="<%= user._id %>"></i></button>
+                            <button class="deleteBtn btn btn-sm btn-colour" title="Delete member" data-id="<%= member._id %>"><i class="fa fa-trash"></i></button>
                             <% if (user.type) { %>
                             <button class="promoteBtn btn btn-sm btn-colour" title="Promote to admin" data-id="<%= member._id %>">Promote</button>    
                             <% } %>
@@ -163,7 +163,8 @@
         })
 
         async function deleteMember(e) {
-            let {id} = e.target.dataset
+            let target = e.currentTarget
+            let {id} = target.dataset
             document.getElementById(id).style.display = 'block'
 
             let response = await fetch(`/admin/delete?from=users`,{
@@ -175,9 +176,11 @@
             let data = await response.json()
 
             if(response.status === 200){
-                e.target.offsetParent.innerHTML = `Member deleted`
+                target.parentNode.innerHTML = `<p style="color:red">Member deleted</p>`
             }
-            console.log(data)
+            else {
+                target.parentNode.innerHTML = `<p style="color:red">Some error occured, please reload the page and try again</p>`
+            }
         }
 
         document.querySelectorAll('.promoteBtn').forEach(btn => btn.addEventListener('click', promoteMember))
