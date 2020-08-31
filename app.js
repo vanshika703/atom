@@ -27,7 +27,7 @@ const userRoute = require('./routes/user')
 app.use('/user',userRoute)
 
 app.get('/',(req,res) => {
-    res.redirect('/user/login')
+    res.render('user/login')
 })
 
 app.all('*',(req,res) => {
