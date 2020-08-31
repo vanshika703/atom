@@ -112,6 +112,11 @@
       height: 3px;
       width: 75px;
     }
+    @media (max-width: 600px){
+      .card{
+        margin: 5%;
+      }
+    }
   
 </style>
 </head>
@@ -149,15 +154,12 @@
         <hr>
         <h3 class="mt-5">Your Projects</h3>
         
-          <div class="row">
             <div class="card-deck">
               <% tasks.forEach(task => { %>
-                
-                <div class="column col-lg-4">
                   
                     <div class="card">
                       <div class="content">
-                        <div class="card-header">  
+                        <div class="card-body">  
                            
                                 <div class="title">
                                     <img src="/img/concept.svg" style="height: 40px;width: 50px; float: left;"><p><%= task.title %></p>
@@ -175,9 +177,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
                     <%})%>
-                </div>
             </div>
                         
               
