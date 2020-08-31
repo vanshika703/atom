@@ -21,14 +21,14 @@ app.use(session({
 app.use(express.static(__dirname + '/views'))
 app.set("view engine","ejs")
 
+app.get('/',(req,res) => {
+    res.render('user/login')
+})
+
 const adminRoute = require('./routes/admin')
 app.use('/admin',adminRoute)
 const userRoute = require('./routes/user')
 app.use('/user',userRoute)
-
-app.get('/',(req,res) => {
-    res.render('user/login')
-})
 
 app.all('*',(req,res) => {
     res.render('404')
