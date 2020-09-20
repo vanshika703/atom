@@ -384,6 +384,13 @@ Router.get('/primarydash/:token', authParams, async(req,res) => {
         let query = { domain : user.domain1 }
 
         let result = await dbo.collection("events").find(query).toArray()
+        result.sort((a,b) => {
+            if(new Date(a.date) < new Date(b.date)) return -1
+            if(new Date(a.date) > new Date(b.date)) return 1
+            if(a.startTime < b.startTime) return -1
+            if(a.startTime > b.startTime) return 1
+            return 0
+        })
         let today = new Date()
 
         res.render('user/primary', {result , today})
