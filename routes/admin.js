@@ -450,6 +450,11 @@ Router.post('/promoteMember',async(req,res)=> {
     try {
         let user = await db.db('atom').collection('users').findOneAndDelete({_id: new ObjectId(id)})
         
+        if(user.value.registrationType === 1) {
+            let salt =  bcrypt.genSaltSync(10)
+            let hashed = bcrypt.hashSync(user.value.email.substring(0,user.value.email.indexOf('@')),salt)
+            user.value.password = hashed
+        }
         user.value.adminType = 0
         await db.db('atom').collection('admins').insertOne(user.value)
         res.json({msg:'Member promoted!'})

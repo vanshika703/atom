@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .spinner-border {
+            display: none;
+        }
+    </style>
     <title>Members</title>
 </head>
 <body>
@@ -92,7 +97,7 @@
                             <% } %>
                             <a class="btn btn-link" href="/admin/viewmemberprofile/<%= member._id %>">View Profile</a>
                             
-                            <a class="btn btn-link more-actions-link" href="#more-actions<%= member._id %>" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="more-actions<%= member._id %>">More <i class="fa fa-angle-down"></i></a>
+                            <a class="btn btn-link more-actions-link" href="#more-actions<%= member._id %>" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="more-actions<%= member._id %>">More Actions</a>
                             
                             <div class="collapse" id="more-actions<%= member._id %>">
                                 <p>
@@ -154,8 +159,6 @@
 
         });
 
-        document.querySelectorAll('.spinner-border').forEach(spinner => spinner.style.display = 'none')
-        
         var deleteBtns = document.querySelectorAll('.deleteBtn')
 
         deleteBtns.forEach(btn => {
@@ -257,11 +260,13 @@
             let link = e.target
             link.classList.toggle('active')
             if(link.classList.contains('active')) {
-                link.innerHTML = `Less <i class="fa fa-angle-up"></i>`
+                link.innerHTML = `Less Actions`
             } else {
-                link.innerHTML = `More <i class="fa fa-angle-down"></i>`
+                link.innerHTML = `More Actions`
             }
         }
+
+        
         
     </script>
 </body>
