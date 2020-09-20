@@ -298,7 +298,7 @@
                         <p style="color: grey;font-size: 12px;">Deadline : <%= phase.deadline %></p>
                       </div>
                     </div>
-                        <%})%>
+                  <%})%>
                       
             </div>
           </div>
@@ -377,13 +377,13 @@
               <h3>Resources</h3>
             </div>
             
-                <% task.resources.forEach(resource => {%>
-                  <div class="other-text card card1">
-                    <div class="card-body">
-                      <p><a href="<%= resource %>"><%= resource %></a></p>
-                    </div>
-                  </div>
-                      <%})%>
+            <% task.resources.forEach(resource => {%>
+              <div class="other-text card card1">
+                <div class="card-body">
+                  <p><a href="<%= resource %>" target="_blank"><%= resource %></a></p>
+                </div>
+              </div>
+            <%})%>
                     
           </div>
         </div>
