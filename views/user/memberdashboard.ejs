@@ -6,119 +6,119 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
  
-<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-
-<style>
-    *:focus {
-            outline: 0 !important;
-        }
-        body{
-            background-color: #ffffff;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .sidenav{
-          height: 100vh;
-          width:200px;
-          position: fixed;
-          top: 0;
-          left: 0;
-          background-color: #72E4FE!important;
-          z-index: 999;
-        }
-        .nontdnav{
-          display: block;
-        }
-        .nontdnav a{
-          color:white!important;
-        }
-        .nontdnav a:hover{
-          color:#eee!important;
-        }
-        #logout-btn{
-            background-color: white;
-            border:none;
-            color:#72E4FE;
-            border-radius: 24px;
-            padding: 4px 12px;
-        }
-        #logout-btn:hover{
-          background-color: #eee;
-        }
-        .dash-container{
-          margin-left: 200px;
-        }
-        .column {
-  width: 50%;
-  padding: 0 10px;
-  padding-top: 2%;
-}
-
-.row {margin: 0 -5px;}
-
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.card{
-  box-shadow: 0 4px 8px 0 #ddf3f5;
-  transition: 0.3s;
-}
-
-.card:hover {
-  box-shadow: 16px 16px 16px 16px #ddf3f5;
-}
-@media (max-width: 600px)
-        {
+  <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <title>Dashboard</title>
+  <style>
+      *:focus {
+              outline: 0 !important;
+          }
+          body{
+              background-color: #ffffff;
+              font-family: 'Montserrat', sans-serif;
+          }
           .sidenav{
-            height: auto;
-            width: 100vw;
+            height: 100vh;
+            width:200px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #72E4FE!important;
+            z-index: 999;
+          }
+          .nontdnav{
+            display: block;
+          }
+          .nontdnav a{
+            color:white!important;
+          }
+          .nontdnav a:hover{
+            color:#eee!important;
+          }
+          #logout-btn{
+              background-color: white;
+              border:none;
+              color:#72E4FE;
+              border-radius: 24px;
+              padding: 4px 12px;
+          }
+          #logout-btn:hover{
+            background-color: #eee;
           }
           .dash-container{
-            margin: 10vh 0 0 0;
+            margin-left: 200px;
           }
-          .timeline{
-            width: 100%;
-            margin: 0 auto;
-          }
-  .column {
-    width: 100%;
-    display: block;
-    margin-bottom: 20px;
+          .column {
+    width: 50%;
+    padding: 0 10px;
+    padding-top: 2%;
   }
+
+  .row {margin: 0 -5px;}
+
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
   }
-  .title
-  {
-    font-size: x-large;
-  color: #72E4FE;
+  .card{
+    box-shadow: 0 4px 8px 0 #ddf3f5;
+    transition: 0.3s;
   }
-  .other-text
-  {
-    font-size: 16px;
-    color: gray;
-    margin-left: 5%;
+
+  .card:hover {
+    box-shadow: 16px 16px 16px 16px #ddf3f5;
   }
-  
- 
-  .name
-  { padding-top: 3%;
-    font-size: large;
-    color: gray;
-  }
-  .line {
-      background-color: #72E4FE;
-      height: 3px;
-      width: 75px;
+  @media (max-width: 600px)
+          {
+            .sidenav{
+              height: auto;
+              width: 100vw;
+            }
+            .dash-container{
+              margin: 10vh 0 0 0;
+            }
+            .timeline{
+              width: 100%;
+              margin: 0 auto;
+            }
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
     }
-    @media (max-width: 600px){
-      .card{
-        margin: 5%;
+    }
+    .title
+    {
+      font-size: x-large;
+    color: #72E4FE;
+    }
+    .other-text
+    {
+      font-size: 16px;
+      color: gray;
+      margin-left: 5%;
+    }
+    
+  
+    .name
+    { padding-top: 3%;
+      font-size: large;
+      color: gray;
+    }
+    .line {
+        background-color: #72E4FE;
+        height: 3px;
+        width: 75px;
       }
-    }
-  
-</style>
+      @media (max-width: 600px){
+        .card{
+          margin: 5%;
+        }
+      }
+    
+  </style>
 </head>
 <body>
    
@@ -154,31 +154,27 @@
         <hr>
         <h3 class="mt-5">Your Projects</h3>
         
-            <div class="card-deck">
-              <% tasks.forEach(task => { %>
-                  
-                    <div class="card">
-                      <div class="content">
-                        <div class="card-body">  
-                           
-                                <div class="title">
-                                    <img src="/img/concept.svg" style="height: 40px;width: 50px; float: left;"><p><%= task.title %></p>
-                                </div>
-                                <div class="other-text">
-                                    <p><%= task.startDate %> - <%= task.deadline %></p>
-                                </div>
-                                <div class="other-text">
-                                    <p><%= task.description %></p>
-                                </div>
-                                
-                                  <button style="background-color: #72E4FE;border-radius: 32px;border:none;font-size: 14px;margin-left: 5%;padding: 0px 0px;"><a class="project-link nav-link"  href='/user/project/<%= task._id %>' style="text-decoration: none; color: white;">Details</a></button>
-                                
-                                
-                        </div>
-                      </div>
-                    </div>
-                    <%})%>
+        <div class="row">
+          <% tasks.forEach(task => { %>
+            <div class="card col-lg-3 m-2">
+              <div class="content">
+                <div class="card-body">  
+                  <div class="title">
+                      <img src="/img/concept.svg" style="height: 40px;width: 50px; float: left;"><p><%= task.title %></p>
+                  </div>
+                  <div class="other-text">
+                      <p><%= task.startDate %> - <%= task.deadline %></p>
+                  </div>
+                  <div class="other-text">
+                      <p><%= task.description %></p>
+                  </div>
+                  <button style="background-color: #72E4FE;border-radius: 32px;border:none;font-size: 14px;margin-left: 5%;padding: 0px 0px;"><a class="project-link nav-link"  href='/user/project/<%= task._id %>' style="text-decoration: none; color: white;">Details</a></button>
+                </div>
+              </div>
             </div>
+          <%})%>
+        </div>
+           
                         
               
     </div>
