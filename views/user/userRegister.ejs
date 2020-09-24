@@ -13,13 +13,13 @@
         }
 
         body{
-         
+          box-sizing: border-box;
           height: 100vh;
           width: 100vw;
           font-family: 'Montserrat', sans-serif;
-          background-color: #045de9;
           background-image: linear-gradient(315deg, #045de9 0%, #09c6f9 74%);
-      }
+          background-repeat: initial;
+        }
         
         .reg-container h2{
           color: #218EC4;
@@ -27,14 +27,14 @@
         }
 
         #regForm {
-        border-radius: 12px;
-        box-shadow: grey 0 0 10px;
-        opacity: 0.9;
-        margin: 100px auto;
-        padding: 40px;
-        width: 60%;
-        min-width: 300px;
-        background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: grey 0 0 10px;
+            opacity: 0.9;
+            margin: 5% auto;
+            padding: 40px;
+            width: 60%;
+            min-width: 300px;
+            background-color: #ffffff;
         }
 
         h1{
@@ -43,10 +43,22 @@
 
         input {
         padding: 10px;
+        margin: 5px;
         width: 50%;
         font-size: 16px;
         border: none;
         border-bottom: 2px solid #72E4FE ;
+        }
+
+        input.invalid {
+          border-bottom: 2px solid red ;
+        }
+
+        /* to hide arrows in input type number */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
         }
 
         @media (max-width: 600px){
@@ -59,11 +71,6 @@
             color:#A9A9A9;
         }
 
-        /* Mark input boxes that gets an error on validation: */
-        input.invalid {
-        background-color: #ffdddd;
-        }
-
         /* Hide all steps by default: */
         .tab {
             display: none;
@@ -73,6 +80,11 @@
         }
         label,p{
           color:#A9A9A9;
+        }
+
+        label[for="year"],#batch-label {
+          font-size: 1.2rem;
+          margin-top: 5px;
         }
 
         button {
@@ -104,7 +116,7 @@
 
         /* Mark the steps that are finished and valid: */
         .step.finish {
-        background-color: #218EC4;
+          background-color: #218EC4;
         }
 
 
@@ -116,23 +128,24 @@
       
       <form id="regForm" action="/user/registerInfo" method="POST">
           <div class="tab">
-              <input type="text" name="name" class="name" placeholder="Name" required>
+              <input type="text" name="name" class="name" id="name" placeholder="Full Name" required>
 
-              <input type="text" name="regno" class="regno" placeholder="Register Number" required>
+              <input type="text" name="regno" class="regno" id="regno" placeholder="Register Number" required>
               <input type="hidden" id="token" name="token" >
           </div>
 
           <div class="tab">
-              <input type="text" name="dept" class="dept" placeholder="Department" required>
+              <input type="text" name="dept" class="dept" id="dept" placeholder="Department" required>
 
               <label for="year">Year:</label>
-              <select form="regForm" id="year" name="year" required>
-                  <option value="1">1</option>
-                  <option value="1">2</option>
-                  <option value="1">3</option>
+              <select class="custom-select" style="width: 50%;" form="regForm" id="year" name="year" required>
+                  <option value="" disabled selected>Select a year</option>
+                  <option value="1">1st</option>
+                  <option value="1">2nd</option>
+                  <option value="1">3rd</option>
               </select>
 
-              <p>Please select your batch:</p>
+              <p id="batch-label">Please select your batch:</p>
               <input type="radio" id="batch1" name="batch" value="batch1">
               <label for="batch1">Batch 1</label>
               <input type="radio" id="batch2" name="batch" value="batch2">
@@ -140,27 +153,29 @@
           </div>
           
           <div class="tab">
-              <input type="text" name="contactno" class="contact-no" placeholder="Contact Number" required>
+              <input type="number" name="contactno" class="contact-no" id="contact-no" placeholder="Contact Number" required>
 
-              <input type="text" name="whatsappno" class="whatsapp-no" placeholder="Whatsapp Number" required>
+              <input type="number" name="whatsappno" class="whatsapp-no" id="whatsapp-no" placeholder="Whatsapp Number" required>
           </div>
           
 
           <div class="tab">
               <label for="domain1">Primary Domain:</label>
-              <select form="regForm" id="domain1" name="domain1" required>
-                  <option value="web">Web</option>
-                  <option value="app">App</option>
-                  <option value="iot">Iot</option>
-                  <option value="media">Media</option>
+              <select class="custom-select" style="width: 50%;" form="regForm" id="domain1" name="domain1" required>
+                <option value="" disabled selected>Select primary</option>
+                <option value="web">Web</option>
+                <option value="app">App</option>
+                <option value="iot">Iot</option>
+                <option value="media">Media</option>
               </select>
       
               <label for="domain2">Secondary Domain:</label>
-              <select form="regForm" id="domain2" name="domain2" required>
-                  <option value="web">Web</option>
-                  <option value="app">App</option>
-                  <option value="iot">Iot</option>
-                  <option value="media">Media</option>
+              <select class="custom-select" style="width: 50%;" form="regForm" id="domain2" name="domain2" required>
+                <option value="" disabled selected>Select secondary</option>
+                <option value="web">Web</option>
+                <option value="app">App</option>
+                <option value="iot">Iot</option>
+                <option value="media">Media</option>
               </select>
           </div>
 
@@ -171,7 +186,7 @@
               </div>
           </div>
 
-          <p style="color: red;"><%= msg %></h2>
+          <p class="text-danger" id="error-msg"><%= msg %></h2>
 
           <div style="text-align:center;margin-top:40px;">
               <span class="step"></span>
@@ -186,6 +201,7 @@
         let token = localStorage.getItem('token')
         document.getElementById('token').value = token
         var currentTab = 0;
+        let msg = document.getElementById('error-msg')
         showTab(currentTab); 
         
         function showTab(n) {
@@ -206,7 +222,7 @@
         
         function nextPrev(n) {
           var x = document.getElementsByClassName("tab");
-          /* if (n == 1 && !validateForm()) return false; */
+          if (n == 1 && !validateForm()) return false;
           x[currentTab].style.display = "none";
           currentTab = currentTab + n;
           if (currentTab >= x.length) {
@@ -216,27 +232,95 @@
           showTab(currentTab);
         }
 
-        /* function validateForm() {
-            // This function deals with validation of the form fields
-            var x, y, i, valid = true;
-            x = document.getElementsByClassName("tab");
-            y = x[currentTab].getElementsByTagName("input");
-            // A loop that checks every input field in the current tab:
-            for (i = 0; i < y.length; i++) {
-                // If a field is empty...
-                if (y[i].value == "") {
-                // add an "invalid" class to the field:
-                y[i].className += " invalid";
-                // and set the current valid status to false
-                valid = false;
+        function validateForm() {
+            let valid = true;
+            
+            if(currentTab === 0){
+                let name = document.getElementById('name')
+                let regno = document.getElementById('regno')
+                if(name.value == '' || name.value.length < 3){
+                  name.classList.add('invalid')
+                  valid = false;
+                  msg.innerHTML += '<br>Full Name must be atleast 3 characters!'
+                  setTimeout(clearMsg,2000)
+                } else name.classList.remove('invalid')
+                if(regno.value == '' || regno.value.length != 15){
+                  regno.classList.add('invalid')
+                  valid = false
+                  msg.innerHTML += '<br>Enter a valid 15 character Reg No!'
+                  setTimeout(clearMsg,2000)
+                } else regno.classList.remove('invalid')
+            }
+
+            if(currentTab === 1){
+                let dept = document.getElementById('dept')
+                let year = document.getElementById('year')
+                let batch1 = document.getElementById('batch1')
+                let batch2 = document.getElementById('batch2')
+                if(dept.value == '' || dept.value.length < 3){
+                  dept.classList.add('invalid')
+                  valid = false;
+                  msg.innerHTML += '<br>Department must have atleast 3 characters!'
+                  setTimeout(clearMsg,2000)
+                } else dept.classList.remove('invalid')
+                if(year.value == '') {
+                  valid = false;
+                  msg.innerHTML += '<br>Please select an year'
+                  setTimeout(clearMsg,2000)
+                }
+                if(!batch1.checked && !batch2.checked){
+                  valid = false
+                  msg.innerHTML += '<br>Please choose a batch!'
+                  setTimeout(clearMsg,2000)
                 }
             }
-            // If the valid status is true, mark the step as finished and valid:
-            if (valid) {
-                document.getElementsByClassName("step")[currentTab].className += " finish";
+
+            if(currentTab === 2){
+                let cno = document.getElementById('contact-no')
+                let wno = document.getElementById('whatsapp-no')
+                if(cno.value.length !== 10){
+                  cno.classList.add('invalid')
+                  valid = false;
+                  msg.innerHTML += '<br>Contact Number must be 10 digits!'
+                  setTimeout(clearMsg,2000)
+                } else cno.classList.remove('invalid')
+                if(wno.value.length !== 10){
+                  wno.classList.add('invalid')
+                  valid = false
+                  msg.innerHTML += '<br>Whatsapp Number must be 10 digits!'
+                  setTimeout(clearMsg,2000)
+                } else wno.classList.remove('invalid')
             }
-            return valid; // return the valid status
-            } */
+
+            if(currentTab === 3){
+                let domain1 = document.getElementById('domain1')
+                let domain2 = document.getElementById('domain2')
+                if(domain1.value == ''){
+                  valid = false;
+                  msg.innerHTML += '<br>Please select a primary domain!'
+                  setTimeout(clearMsg,2000)
+                } 
+                if(domain2.value == ''){
+                  valid = false
+                  msg.innerHTML += '<br>Please select a secondary domain!'
+                  setTimeout(clearMsg,2000)
+                } 
+                if(domain1.value !== '' && domain1.value==domain2.value){
+                  valid = false
+                  msg.innerHTML += '<br>Primary and Secondary Domain must be different!'
+                  setTimeout(clearMsg,2000)
+                }
+            }
+
+            if (valid) {
+              document.getElementsByClassName("step")[currentTab].className += " finish";
+            }
+            return valid; 
+        }
+
+        function clearMsg(){
+          msg.innerHTML = '';
+        }
         
         function fixStepIndicator(n) {
           var i, x = document.getElementsByClassName("step");
@@ -244,12 +328,6 @@
             x[i].className = x[i].className.replace(" active", "");
           }
           x[n].className += " active";
-        }
-        document.querySelector('#regForm').addEventListener('submit', submitForm)
-
-        function submitForm(e){
-          e.preventDefault()
-          console.log('submitted')
         }
     </script>
 </body>
