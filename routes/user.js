@@ -71,13 +71,17 @@ Router.post('/register', async(req,res)=>{
             link = "http://"+req.get('host')+"/user/verify?id="+rand;
 
             let transporter = nodemailer.createTransport({
-                service: 'gmail',
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
                 auth: {
+                    type: 'OAuth2',
                     user: process.env.EMAIL,
-                    pass: process.env.PASSWORD
-                },
-                tls:{
-                    rejectUnauthorized:false
+                    clientId: process.env.MAIL_CLIENT_ID,
+                    clientSecret: process.env.MAIL_CLIENT_SECRET,
+                    refreshToken: process.env.MAIL_REFRESH_TOKEN,
+                    accessToken: process.env.MAIL_ACCESS_TOKEN,
+                    expires: 1484314697598
                 }
             });
             
@@ -234,10 +238,10 @@ Router.post('/forgotpassword', async(req,res) => {
             auth: {
                 type: 'OAuth2',
                 user: process.env.EMAIL,
-                clientId: '555002554908-ok7ob7gniehheumlu0g6vg22c4u6nvvb.apps.googleusercontent.com',
-                clientSecret: '-8juWfb3VImhF9ybVUtjMpjj',
-                refreshToken: '1//04LdsZvpg-hmWCgYIARAAGAQSNwF-L9IrT1JjdIpTRGUynnJ8gw1KjDSOsb1Qv657GNbG3Qg6PvzO1Ag1BIxV09tHXR6aUsIFqK8',
-                accessToken: 'ya29.a0AfH6SMB_wjsbbMd7cY1WXK4HyxhNEU12GZNq8v4951o6fvWbjRCeJg5L117SOk1W1abIEB_q8OBd3wsiBeeDB1AjwbHoQpjD52PQENxUSWucSLvlIck2KMi97XW1X5CriNOXnBOXDp5hn4zxtacPuu5AwUpnucWIPAI',
+                clientId: process.env.MAIL_CLIENT_ID,
+                clientSecret: process.env.MAIL_CLIENT_SECRET,
+                refreshToken: process.env.MAIL_REFRESH_TOKEN,
+                accessToken: process.env.MAIL_ACCESS_TOKEN,
                 expires: 1484314697598
             }
         });
