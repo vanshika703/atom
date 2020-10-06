@@ -228,18 +228,22 @@ Router.post('/forgotpassword', async(req,res) => {
         link = "http://"+req.get('host')+"/user/verifypasswordlink?id="+rand;
     
         let transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
             auth: {
-              user: process.env.EMAIL,
-              pass: process.env.PASSWORD
-            },
-            tls:{
-              rejectUnauthorized:false
+                type: 'OAuth2',
+                user: process.env.EMAIL,
+                clientId: '555002554908-ok7ob7gniehheumlu0g6vg22c4u6nvvb.apps.googleusercontent.com',
+                clientSecret: '-8juWfb3VImhF9ybVUtjMpjj',
+                refreshToken: '1//04LdsZvpg-hmWCgYIARAAGAQSNwF-L9IrT1JjdIpTRGUynnJ8gw1KjDSOsb1Qv657GNbG3Qg6PvzO1Ag1BIxV09tHXR6aUsIFqK8',
+                accessToken: 'ya29.a0AfH6SMB_wjsbbMd7cY1WXK4HyxhNEU12GZNq8v4951o6fvWbjRCeJg5L117SOk1W1abIEB_q8OBd3wsiBeeDB1AjwbHoQpjD52PQENxUSWucSLvlIck2KMi97XW1X5CriNOXnBOXDp5hn4zxtacPuu5AwUpnucWIPAI',
+                expires: 1484314697598
             }
         });
           
         let mailOptions = {
-            from: process.env.EMAIL,
+            from: `Think Digital<${process.env.EMAIL}>`,
             to: req.body.email,
             subject: 'Change password link for TD Atom',
             html: `<body style="background-color:#218EC4;text-align: center;"><table width=40% align="center" cellspacing=0 cellpadding=0 border=0 style="background-color: white; text-align: center;"> <!-- header --> <tr> <td> <table width=100%> <tr> <td><h1 style="font-family: serif; font-weight: 700; font-size: 32px;color: #72E4FE;;border-bottom: 1px solid #c5c9d0; padding-bottom:2%; margin-left:5%;margin-right:5%">Welcome to Think Digital</h1></td> </tr> </table> <!-- text --> <table width="100%" cellspacing=0 cellpadding=0 border=0 style="font-family: 'Open Sans', sans-serif;color: #22364e; text-align: center;" > <tr> <td> <img src="cid:unique@vanshika7030" style="height:200px; width:250px;"> </td> </tr> <tr> <td> <h3 style="font-weight: 600;font-size: 22px; margin-left: 5%; ">Hi,</h3> </td> </tr> <tr> <td> <p style="font-size: 16px;letter-spacing: -0.14px; margin-left: 5%; ">Click the button below to change your password.</p><br> </td> </tr> <tr> <td> <a href="${link}" style="color: #eeeeee ;text-decoration: none;"> <button style="font-size: 16px;letter-spacing: -0.14px; margin:0 0 5% 5%;background-color: #72E4FE;color: #ffffff;border-radius: 24px;padding: 8px 16px;border: none;">Change Password</button><br> </a> </td> </tr> </table> <!-- footer --> <table width="100%" cellspacing=0 cellpadding=0 border=0 style="background-color: #eeeeee!important; z-index: 1; padding-top: 2%; color: #22364e;"> <tr style="text-align: center;"> <td> <ul class="footer-icon-bar" style="margin-left:-10%;"> <li class="icons" style="display: inline; padding: 2%;"><a href="https://www.facebook.com/teamTD/" target="_blank" style="color: #72E4FE;"><i class="fa fa-facebook"></i></a> </li> <li class="icons" style="display: inline;padding: 2%;"><a href="https://www.youtube.com/channel/UC38Rh8mw5OgKQQywPRfCwsg" target="_blank" style="color:#72E4FE"><i class="fa fa-youtube-play"></i></a> </li> <li class="icons" style="display: inline;padding: 2%;"><a href="https://www.linkedin.com/school/think_digital/" target="_blank" style="color: #72E4FE"><i class="fa fa-linkedin"></i></a></li> <li class="icons" style="display: inline;padding: 2%;"><a href="https://www.instagram.com/thinkdigital.td_srm/" target="_blank" style="color: #72E4FE"><i class="fa fa-instagram"></i></a></li> </ul> <p class="address" style="font-size: 12px;">SRM Institute of Science &amp; Technology,<br> Kattankulathur,<br>Tamil Nadu - 603-203</p> <p style="font-size: 12px;" ><a href="tel:+918617362801" style="color: #22364e; text-decoration: none;">8617362801</a><br> <a href="tel:+918428367716" style="color: #22364e; text-decoration: none;">8428367716</a><br> <a class="td-email" href="mailto:thinkdigital.td@gmail.com" style="color: #22364e; text-decoration: none;">thinkdigital.td@gmail.com</a> </p> </div> </td> </tr> </table> </td> </tr> </table> </body></html>`,
@@ -251,7 +255,7 @@ Router.post('/forgotpassword', async(req,res) => {
         };
           
         transporter.sendMail(mailOptions, function(error, info){
-            if(!error) return res.json({msg:"Please check your email"});
+            if(!error) return res.json({msg:"Please check your email!"});
 
             console.error(error)
             res.json({msg:'Server Error!'})
