@@ -1,7 +1,6 @@
 {
   "name": "atom",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -20,7 +19,7 @@
     "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
-    "express-session": "^1.17.0",
+    "express-session": "^1.17.1",
     "google-auth-library": "^6.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.5",
@@ -28,5 +27,14 @@
     "nodemailer": "^6.4.10",
     "path": "^0.12.7",
     "request": "^2.88.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arindamlahiri/atom.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arindamlahiri/atom/issues"
+  },
+  "homepage": "https://github.com/arindamlahiri/atom#readme",
+  "description": ""
 }
