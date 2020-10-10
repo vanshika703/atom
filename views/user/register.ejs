@@ -58,7 +58,7 @@
             align-items: center;
         }
         .reg-form h6{
-            color:#26A4E2;
+            color:hsl(200, 76%, 52%);
         }
         .reg-form span{
             color:#218EC4;
@@ -96,6 +96,9 @@
         .spinner-border{
             display: none;
         }
+        #rc-anchor-container{
+            
+        }
     </style>
 
 </head>
@@ -108,16 +111,20 @@
             </div>
 
             <div class="col-lg-6 reg-form">
-                <h3 class="mt-5">Welcome to TD</h3>
+                <h3 class="mt-5">Welcome!</h3>
                 
-                <h6>Register with email</h6>
+                
                 <form id="reg-form">
-                    
+                    <h6>Register with email</h6>
                     <input type="email" name="email" id="email" placeholder="Email">
                     
                     <input type="password" name="password" id="password" placeholder="Password">
 
-                    <div class="g-recaptcha" data-sitekey="6LciwbgZAAAAAFEHIeH5fRBNPq_3CxG6v-qi7zur"></div>
+                    <div class="g-recaptcha" data-sitekey="6LciwbgZAAAAAFEHIeH5fRBNPq_3CxG6v-qi7zur" style="transform: scale(0.77);
+                    -webkit-transform: scale(0.80);
+                    transform-origin: 0 0;
+                    -webkit-transform-origin: 0 0;
+                    margin-left: 22%;"></div>
 
                     <input class="reg-btn" type="submit">
                     <div id="spinner" class="spinner-border" role="status" style="color: #72E4FE;">
