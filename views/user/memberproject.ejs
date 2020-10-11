@@ -207,7 +207,7 @@
     .project-card{
       color: #eeeeee;
       height: 350px;
-      overflow-y: auto;
+     
       padding: 0;
       background-color: ghostwhite!important;
       border: none;
@@ -235,7 +235,38 @@
         margin: 5%;
       }
     }
+/* scroll-bar */
+.scrollbar
+{
+	margin-left: 30px;
+	float: left;
+	height: 300px;
+	/* width: 200px; */
+	background: #F5F5F5;
+	overflow-y: scroll;
+	margin-bottom: 25px;
+}
 
+.force-overflow
+{
+	min-height: 450px;
+}
+#style-scrollbar::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#style-scrollbar::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+#style-scrollbar::-webkit-scrollbar-thumb
+{
+	background-color: #72E4FE;
+}
   </style>
 </head>
 
@@ -286,12 +317,13 @@
 
     <div class="row">
       <div class="col-lg-3 ">
-        <div class="card project-card">
+        <div class=" card project-card scrollbar " id="style-scrollbar">
           <div class="card-body">
+          <div class="force-overflow">
+        
             <div class="title">
               <h3>Phases</h3>
             </div>
-            
                 <div class="other-text">
                   <% task.phases.forEach((phase,i) => {%>
                     <div class="card card1">
@@ -301,23 +333,22 @@
                       </div>
                     </div>
                   <%})%>
-                      
+                    
+                </div>
             </div>
           </div>
         </div>
       </div>
       <div class="col-lg-3">
-        <div class="card project-card">
+        <div class=" card project-card scrollbar " id="style-scrollbar">
           <div class="card-body" >
+            <div class="force-overflow">
             <h3 class="title">Your Tasks</h3>
               <% task.subtasks.forEach(subtask => {%>
-      
                 <div class="card card1">
                   <div class="card-body">
                     <% if(!subtask.complete) { %>
-                    
                       <h5><%= subtask.title %> </h5><br>
-                    
                     <% }else{ %>
                     <div style="text-decoration: line-through;">
                       <h5><%= subtask.title %> </h5><br>
@@ -332,11 +363,14 @@
                 </div>
               <%})%>
           </div>
-        </div>
       </div>
+    </div>
+  </div>
       <div class="col-lg-3">
-        <div class="card project-card">
+        <div class=" card project-card scrollbar " id="style-scrollbar">
           <div class="card-body" >
+            <div class="force-overflow">
+
             <div class="title">
               <h3>Your Bugs</h3>
             </div>
@@ -366,15 +400,17 @@
               </div>
       
               <%})%>
-      
+            </div>
+          </div>
       
             </div>
           </div>
-        </div>
+        
       </div>
       <div class="col-lg-3">
-        <div class="card project-card">
+        <div class=" card project-card scrollbar " id="style-scrollbar">
           <div class="card-body" >
+            <div class="force-overflow">
             <div class="title">
               <h3>Resources</h3>
             </div>
@@ -388,7 +424,8 @@
             <%})%>
                     
           </div>
-        </div>
+      </div>
+      </div>
       </div>
     </div>
   </div>
