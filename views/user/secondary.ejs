@@ -52,13 +52,16 @@
           padding: 2%;
         }
         .step{
-            height: 50px;
-            width: 50px;
-            line-height: 46px;
+            height: 40px;
+            width: 40px;
+            margin-right: 3%;
+            line-height: 36px;
             text-align: center;
             border-radius: 50%;
             position: relative;
-            color: white;
+            color:white;
+            background-color: #7EE5FC;
+            box-shadow: 0 0 5px #eeeeee;
         }
         .timeline{
           width: 60%;
@@ -67,7 +70,13 @@
         .event-card{
           width: 80%!important;
           margin: 5%!important;
+          border: none;
+          box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5)!important;
           border-bottom: 3px solid #72E4FE;
+          transition: all 0.5s ease;
+        }
+        .event-card:hover{
+          transform: scale(1.02);
         }
         .event-card h5,
         .event-card h6{
@@ -205,82 +214,83 @@
           <% today = new Date %>
           <% eventDate = new Date(result[i].date) %>
 
-                <div class="step green float-left"><%= c++ %> <div class="line green-line"></div></div> 
-                
-                <div class="card event-card" style="width: 18rem;">
-                    <div class="card-body">
-                      <img src="/img/calendar.svg" height="25" width="40" style="float: left;">
-                      <h6><%= result[i].date.substring(0,7) %></h6>
-                      
-                      <h5 class="card-title<%= c %>"><%= result[i].title %></h5>
-                      
-                      
-                    <p style="margin-bottom: 0;">
-                      
-                        <button class="view-btn" data-toggle="collapse" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View Details</button>
+                <div class="step float-left"><%= c++ %></div> 
+                <div>
+                  <div class="card event-card" style="width: 18rem;">
+                      <div class="card-body">
+                        <img src="/img/calendar.svg" height="25" width="40" style="float: left;">
+                        <h6><%= result[i].date.substring(0,7) %></h6>
                         
-                        <% if(today >= eventDate) { %>  
-                          <button id="feedback-btn" type="button" data-toggle="collapse" data-target="#multiCollapseExample2<%= c %>" aria-expanded="false" aria-controls="multiCollapseExample2">Leave Feedback</button>
-                        <% } %> 
-                      
-                    </p>
+                        <h5 class="card-title<%= c %>"><%= result[i].title %></h5>
+                        
+                        
+                      <p style="margin-bottom: 0;">
+                        
+                          <button class="view-btn" data-toggle="collapse" href="#multiCollapseExample1<%= c %>" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View Details</button>
+                          
+                          <% if(today >= eventDate) { %>  
+                            <button id="feedback-btn" type="button" data-toggle="collapse" data-target="#multiCollapseExample2<%= c %>" aria-expanded="false" aria-controls="multiCollapseExample2">Leave Feedback</button>
+                          <% } %> 
+                        
+                      </p>
 
-                    <div id="btn-collapse<%= c %>">
-                    <div class="row">
-                        <div class="col">
-                          <div class="collapse multi-collapse" id="multiCollapseExample1<%= c %>"  data-parent="#btn-collapse<%= c %>" >
-                            
-                            <div id="<%=result[i]._id%>" >
-                              <form class="attendance">
-                                <p>Time:  <%= result[i].startTime %> -  <%= result[i].endTime %></p>
-                                <p>Venue:  <%= result[i].venue %> </p>
-                                
-                                <p><%= result[i].description %> </p>
-
-                                <% if(today <= eventDate) { %>
-                                <hr>
-                                
-                                <p>Will you be attending?</p>
-                                  <input  type="radio" id="yes" name="attendance" value="yes">
-                                  
-                                  <label for="yes">yes</label><br>
-                                  <input  type="radio" id="no" name="attendance" value="no">
-                                  <label for="no">no</label><br>
-                                  <button class="submit-btn" type="submit">Submit</button>
-                                  <% } %>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="collapse multi-collapse" id="multiCollapseExample2<%= c %>" data-parent="#btn-collapse<%= c %>" >
+                      <div id="btn-collapse<%= c %>">
+                      <div class="row">
+                          <div class="col">
+                            <div class="collapse multi-collapse" id="multiCollapseExample1<%= c %>"  data-parent="#btn-collapse<%= c %>" >
+                              
                               <div id="<%=result[i]._id%>" >
-                                <form class="feedback">
+                                <form class="attendance">
+                                  <p>Time:  <%= result[i].startTime %> -  <%= result[i].endTime %></p>
+                                  <p>Venue:  <%= result[i].venue %> </p>
+                                  
+                                  <p><%= result[i].description %> </p>
 
+                                  <% if(today <= eventDate) { %>
+                                  <hr>
+                                  
+                                  <p>Will you be attending?</p>
+                                    <input  type="radio" id="yes" name="attendance" value="yes">
                                     
-                                    <span>&#128578;</span><input oninput="changeEmoji(event)" id="env" class="slider" type="range" min="1" max="5" value="3" name="env">
-                                    <label class="slider-label" for="env">Environment</label><br>
-                                    
-                                    <span>&#128578;</span><input oninput="changeEmoji(event)" id="speaker" class="slider" type="range" min="1" max="5" value="3" name="speaker">
-                                    <label class="slider-label" for="speaker">Speakers</label><br>
-                                    
-                                    <span>&#128578;</span><input oninput="changeEmoji(event)" id="understanding" class="slider" type="range" min="1" max="5" value="3" name="understanding">
-                                    <label class="slider-label" for="understanding">Understanding</label><br>
-                                    <input id="suggestion" type="text" placeholder="Any Suggestions" name="suggestion"><br>
+                                    <label for="yes">yes</label><br>
+                                    <input  type="radio" id="no" name="attendance" value="no">
+                                    <label for="no">no</label><br>
                                     <button class="submit-btn" type="submit">Submit</button>
+                                    <% } %>
                                 </form>
                               </div>
                             </div>
-                        </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col">
+                              <div class="collapse multi-collapse" id="multiCollapseExample2<%= c %>" data-parent="#btn-collapse<%= c %>" >
+                                <div id="<%=result[i]._id%>" >
+                                  <form class="feedback">
+
+                                      
+                                      <span>&#128578;</span><input oninput="changeEmoji(event)" id="env" class="slider" type="range" min="1" max="5" value="3" name="env">
+                                      <label class="slider-label" for="env">Environment</label><br>
+                                      
+                                      <span>&#128578;</span><input oninput="changeEmoji(event)" id="speaker" class="slider" type="range" min="1" max="5" value="3" name="speaker">
+                                      <label class="slider-label" for="speaker">Speakers</label><br>
+                                      
+                                      <span>&#128578;</span><input oninput="changeEmoji(event)" id="understanding" class="slider" type="range" min="1" max="5" value="3" name="understanding">
+                                      <label class="slider-label" for="understanding">Understanding</label><br>
+                                      <input id="suggestion" type="text" placeholder="Any Suggestions" name="suggestion"><br>
+                                      <button class="submit-btn" type="submit">Submit</button>
+                                  </form>
+                                </div>
+                              </div>
+                          </div>
+                      </div>
                     </div>
+                      </div>
+                      <div class="spinner-border text-info" id="spinner<%=result[i]._id%>" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                      <p id="msg<%=result[i]._id%>"></p>
                   </div>
-                    </div>
-                    <div class="spinner-border text-info" id="spinner<%=result[i]._id%>" role="status">
-                      <span class="sr-only">Loading...</span>
-                    </div>
-                    <p id="msg<%=result[i]._id%>"></p>
                 </div>
         <% } %>
       </div>

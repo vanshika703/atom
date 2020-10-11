@@ -150,18 +150,16 @@
 </nav>
 
         <div class="container dash-container">
-  
-        <a class="name navbar-brand" href="#">Hello <%=user.name%> <i class="fas fa-user"></i></a>
-        <hr>
-        <h3 class="mt-5">Your Projects</h3>
+
+        <h3 class="mt-5" style="color: #218ec4;">Your Projects</h3>
         
         <div class="row">
           <% tasks.forEach(task => { %>
-            <div class="card col-lg-3 m-2">
+            <div class="card col-lg-3 m-4" >
               <div class="content">
                 <div class="card-body">  
                   <div class="title">
-                      <img src="/img/concept.svg" style="height: 40px;width: 50px; float: left;"><p><%= task.title %></p>
+                      <img src="/img/concept.svg" style="height: 30px;width: 40px; float: left;"><p><%= task.title %></p>
                   </div>
                   <div class="other-text">
                       <p><%= task.startDate %> - <%= task.deadline %></p>

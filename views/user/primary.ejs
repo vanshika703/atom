@@ -52,13 +52,16 @@
           padding: 2%;
         }
         .step{
-            height: 50px;
-            width: 50px;
-            line-height: 46px;
+            height: 40px;
+            width: 40px;
+            margin-right: 3%;
+            line-height: 36px;
             text-align: center;
             border-radius: 50%;
             position: relative;
-            color: white;
+            color:white;
+            background-color: #7EE5FC;
+            box-shadow: 0 0 5px #eeeeee;
         }
         .timeline{
           width: 60%;
@@ -67,7 +70,13 @@
         .event-card{
           width: 80%!important;
           margin: 5%!important;
+          border: none;
+          box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5)!important;
           border-bottom: 3px solid #72E4FE;
+          transition: all 0.5s ease;
+        }
+        .event-card:hover{
+          transform: scale(1.02);
         }
         .event-card h5,
         .event-card h6{
@@ -205,8 +214,9 @@
           <% today = new Date %>
           <% eventDate = new Date(result[i].date) %>
 
-                <div class="step green float-left"><%= c++ %> <div class="line green-line"></div></div> 
+                <div class="step float-left"><%= c++ %></div> 
                 
+                <div>
                 <div class="card event-card" style="width: 18rem;">
                     <div class="card-body">
                       <img src="/img/calendar.svg" height="25" width="40" style="float: left;">
@@ -281,6 +291,7 @@
                       <span class="sr-only">Loading...</span>
                     </div>
                     <p id="msg<%=result[i]._id%>"></p>
+                </div>
                 </div>
         <% } %>
       </div>
